@@ -4,1011 +4,893 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>جنان الساحل | اللاذقية وطرطوس Explorer AI</title>
-    <meta name="theme-color" content="#0284c7">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-title" content="جنان الساحل">
+    <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <!-- Google Fonts & FontAwesome -->
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
-        :root{--primary:#0284c7;--primary-dark:#0369a1;--secondary:#059669;--accent:#d97706;--bg-main:#f8fafc;--bg-card:#fff;--text-main:#0f172a;--text-muted:#64748b;--border:#e2e8f0;--radius:16px;--shadow:0 10px 25px -5px rgba(0,0,0,.05),0 8px 10px -6px rgba(0,0,0,.05);--transition:all .3s cubic-bezier(.4,0,.2,1)}
-        .dark-mode{--bg-main:#0f172a;--bg-card:#1e293b;--text-main:#f8fafc;--text-muted:#94a3b8;--border:#334155;--shadow:0 10px 25px -5px rgba(0,0,0,.3)}
-        *{box-sizing:border-box;margin:0;padding:0;font-family:'Tajawal',sans-serif}
-        body{background:var(--bg-main);color:var(--text-main);min-height:100vh;display:flex;flex-direction:column;transition:var(--transition)}
-        header{background:linear-gradient(135deg,rgba(2,132,199,.98),rgba(5,150,105,.98));color:#fff;padding:.6rem 1rem;position:sticky;top:0;z-index:1000;box-shadow:0 4px 20px rgba(0,0,0,.15)}
-        .nav-container{max-width:1400px;margin:0 auto;display:flex;justify-content:space-between;align-items:center}
-        .logo{display:flex;align-items:center;gap:8px;font-size:1.15rem;font-weight:900;cursor:pointer;white-space:nowrap}
-        .logo i{font-size:1.5rem;color:#38bdf8}
-        .logo small{display:block;font-size:.65rem;opacity:.85;font-weight:400}
-        .nav-links{display:flex;gap:.3rem;list-style:none;align-items:center}
-        .nav-links a{color:#fff;text-decoration:none;font-weight:500;font-size:.85rem;transition:var(--transition);cursor:pointer;padding:.35rem .6rem;border-radius:6px;white-space:nowrap}
-        .nav-links a:hover,.nav-links a.active{background:rgba(255,255,255,.25)}
-        .nav-actions{display:flex;gap:.5rem;align-items:center}
-        .btn-icon{background:rgba(255,255,255,.2);border:none;color:#fff;width:32px;height:32px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.85rem;transition:var(--transition)}
-        .btn-icon:hover{background:rgba(255,255,255,.35)}
-        .mobile-toggle{display:none;background:rgba(255,255,255,.2);border:none;color:#fff;width:34px;height:34px;border-radius:8px;font-size:1.1rem;cursor:pointer;align-items:center;justify-content:center}
-        @media(max-width:950px){.mobile-toggle{display:flex}.nav-links{display:none;position:absolute;top:100%;right:0;width:100%;background:rgba(2,132,199,.98);flex-direction:column;padding:1rem;gap:.5rem;box-shadow:0 10px 20px rgba(0,0,0,.2)}.nav-links.show{display:flex}.nav-links a{padding:.6rem 1rem;width:100%;text-align:right}}
-        main{flex:1;max-width:1400px;width:100%;margin:0 auto;padding:1.5rem}
-        .section{display:none}.section.active{display:block;animation:fadeIn .4s ease-in-out}
-        @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-        .hero{background:linear-gradient(rgba(0,0,0,.4),rgba(0,0,0,.6)),url('https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&w=1600&q=80') center/cover;border-radius:20px;padding:3.5rem 1.5rem;text-align:center;color:#fff;margin-bottom:2rem;box-shadow:var(--shadow)}
-        .hero h1{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:900;margin-bottom:1rem}
-        .hero p{font-size:clamp(1rem,2vw,1.2rem);max-width:700px;margin:0 auto 2rem;opacity:.95}
-        .region-selector{display:flex;justify-content:center;gap:1rem;margin-bottom:2rem;flex-wrap:wrap}
-        .region-btn{background:var(--bg-card);border:2px solid var(--border);color:var(--text-main);padding:.7rem 1.5rem;border-radius:50px;font-weight:700;font-size:1rem;cursor:pointer;transition:var(--transition);box-shadow:var(--shadow);display:flex;align-items:center;gap:8px}
-        .region-btn:hover,.region-btn.active{background:var(--primary);color:#fff;border-color:var(--primary);transform:translateY(-3px)}
-        .live-stats-bar{display:flex;justify-content:center;gap:2rem;background:var(--bg-card);border:1px solid var(--border);padding:1rem;border-radius:var(--radius);margin-bottom:2rem;box-shadow:var(--shadow);flex-wrap:wrap}
-        .live-stat-item{display:flex;align-items:center;gap:10px;font-size:.95rem;font-weight:700}
-        .pulse-dot{width:10px;height:10px;background:#22c55e;border-radius:50%;display:inline-block;animation:pulse 2s infinite}
-        @keyframes pulse{0%{transform:scale(.95);box-shadow:0 0 0 0 rgba(34,197,94,.7)}70%{transform:scale(1);box-shadow:0 0 0 8px rgba(34,197,94,0)}100%{transform:scale(.95);box-shadow:0 0 0 0 rgba(34,197,94,0)}}
-        .section-title{font-size:1.6rem;font-weight:800;margin-bottom:1.5rem;display:flex;align-items:center;gap:10px}
-        .dest-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;margin-bottom:2.5rem}
-        .dest-card,.ad-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);transition:var(--transition);display:flex;flex-direction:column;cursor:pointer}
-        .dest-card:hover,.ad-card:hover{transform:translateY(-5px)}
-        .dest-img,.ad-img{height:200px;width:100%;object-fit:cover}
-        .dest-body,.ad-body{padding:1.25rem;flex:1;display:flex;flex-direction:column}        .dest-badge{background:rgba(2,132,199,.1);color:var(--primary);padding:3px 10px;border-radius:50px;font-size:.8rem;font-weight:700;align-self:flex-start;margin-bottom:.6rem}
-        .ad-badge{background:rgba(217,119,6,.1);color:var(--accent);padding:3px 10px;border-radius:50px;font-size:.8rem;font-weight:700;align-self:flex-start;margin-bottom:.6rem}
-        .dest-body h3,.ad-body h3{font-size:1.2rem;margin-bottom:.4rem;font-weight:800}
-        .dest-body p,.ad-body p{color:var(--text-muted);font-size:.9rem;margin-bottom:1.2rem;flex:1;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-        .dest-footer{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--border);padding-top:.8rem}
-        .rating{color:#f59e0b;font-weight:700;font-size:.9rem;display:flex;align-items:center;gap:4px}
-        .btn-primary{background:var(--primary);color:#fff;border:none;padding:.5rem 1rem;border-radius:8px;font-weight:700;font-size:.9rem;cursor:pointer;transition:var(--transition)}
-        .btn-primary:hover{background:var(--primary-dark)}
-        .gallery-count-badge{background:rgba(5,150,105,.1);color:var(--secondary);padding:3px 10px;border-radius:50px;font-size:.75rem;font-weight:700;margin-top:.5rem;align-self:flex-start}
-        .show-more-container{text-align:center;margin:-1rem 0 2rem}
-        .btn-show-more{background:linear-gradient(135deg,var(--primary),var(--secondary));color:#fff;border:none;padding:.8rem 2.5rem;border-radius:50px;font-weight:700;font-size:1rem;cursor:pointer;box-shadow:var(--shadow);transition:var(--transition);display:inline-flex;align-items:center;gap:8px}
-        .btn-show-more:hover{transform:translateY(-3px)}
-        #map{height:500px;width:100%;border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--border)}
-        .map-layout{display:grid;grid-template-columns:320px 1fr;gap:1.5rem}
-        @media(max-width:900px){.map-layout{grid-template-columns:1fr}}
-        .map-sidebar{background:var(--bg-card);border:1px solid var(--border);padding:1.25rem;border-radius:var(--radius);box-shadow:var(--shadow)}
-        .ai-container{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
-        @media(max-width:900px){.ai-container{grid-template-columns:1fr}}
-        .chat-box,.planner-box{background:var(--bg-card);border:1px solid var(--border);padding:1.5rem;border-radius:var(--radius);box-shadow:var(--shadow)}
-        .chat-messages{height:350px;border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-y:auto;margin-bottom:1rem;background:var(--bg-main);display:flex;flex-direction:column;gap:.8rem}
-        .message{padding:10px 14px;border-radius:12px;max-width:85%;line-height:1.6;font-size:.92rem}
-        .message.user{background:var(--primary);color:#fff;align-self:flex-end}
-        .message.ai{background:var(--border);color:var(--text-main);align-self:flex-start}
-        .message.ai .suggestion-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
-        .message.ai .chip{background:var(--primary);color:#fff;padding:4px 10px;border-radius:50px;font-size:.75rem;cursor:pointer;border:none;transition:var(--transition)}
-        .message.ai .chip:hover{background:var(--primary-dark)}
-        .chat-input-area{display:flex;gap:8px}
-        .chat-input-area input{flex:1;padding:10px 14px;border:1px solid var(--border);border-radius:8px;outline:none;background:var(--bg-main);color:var(--text-main)}
-        .quick-questions{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
-        .quick-q-btn{background:var(--bg-main);border:1px solid var(--border);color:var(--text-muted);padding:5px 12px;border-radius:50px;font-size:.78rem;cursor:pointer;transition:var(--transition)}
-        .quick-q-btn:hover{background:var(--primary);color:#fff;border-color:var(--primary)}
-        .typing-indicator{display:none;align-self:flex-start;padding:10px 14px}
-        .typing-indicator span{display:inline-block;width:8px;height:8px;background:var(--text-muted);border-radius:50%;margin:0 2px;animation:typingBounce 1.4s infinite}
-        .typing-indicator span:nth-child(2){animation-delay:.2s}
-        .typing-indicator span:nth-child(3){animation-delay:.4s}
-        @keyframes typingBounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-6px)}}
-        .context-badge{background:rgba(2,132,199,.1);color:var(--primary);padding:4px 10px;border-radius:50px;font-size:.75rem;font-weight:600;display:inline-flex;align-items:center;gap:5px;margin-bottom:8px}
-        .admin-gate,.admin-panel{background:var(--bg-card);border:1px solid var(--border);padding:2rem;border-radius:var(--radius);box-shadow:var(--shadow);max-width:600px;margin:2rem auto;text-align:center}
-        .admin-panel{max-width:1000px;text-align:right}
-        .admin-item-row{display:flex;align-items:center;justify-content:space-between;background:var(--bg-main);border:1px solid var(--border);padding:10px;border-radius:8px;margin-bottom:8px;gap:10px;flex-wrap:wrap}
-        .admin-form-group{display:flex;flex-direction:column;gap:6px;margin-bottom:10px;text-align:right}
-        .admin-form-group label{font-size:.85rem;font-weight:700;color:var(--text-muted)}
-        .admin-form-group input,.admin-form-group select,.admin-form-group textarea{padding:8px 12px;border:1px solid var(--border);border-radius:6px;background:var(--bg-card);color:var(--text-main);font-size:.9rem}
-        footer{background:var(--bg-card);border-top:1px solid var(--border);padding:2rem 1.5rem;text-align:center;margin-top:auto;color:var(--text-muted);font-size:.9rem}
-        .events-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1rem}
-        .event-card{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:1rem;box-shadow:var(--shadow);transition:var(--transition);cursor:pointer}
-        .event-card:hover{transform:translateY(-3px);border-color:var(--primary)}
-        .event-date{background:rgba(2,132,199,.1);color:var(--primary);padding:4px 10px;border-radius:6px;font-size:.75rem;font-weight:700;display:inline-block;margin-bottom:8px}
-        .event-card h4{font-size:1rem;margin-bottom:6px;font-weight:800}
-        .event-card p{color:var(--text-muted);font-size:.85rem;line-height:1.4}        .event-location{display:flex;align-items:center;gap:5px;color:var(--secondary);font-size:.8rem;margin-top:8px;font-weight:600}
-        .pulse-marker{background:transparent;border:none}
-        .pulse-marker-inner{width:20px;height:20px;background:#ef4444;border-radius:50%;position:relative;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px}
-        .pulse-marker-inner::before{content:'';position:absolute;width:100%;height:100%;border-radius:50%;background:#ef4444;animation:map-pulse 2s infinite;z-index:-1}
-        @keyframes map-pulse{0%{transform:scale(1);opacity:.8}100%{transform:scale(3);opacity:0}}
-        .detail-modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);z-index:2000;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(5px)}
-        .modal-content{background:var(--bg-card);width:100%;max-width:900px;max-height:90vh;border-radius:var(--radius);overflow-y:auto;position:relative;box-shadow:0 25px 50px -12px rgba(0,0,0,.25);animation:modalSlideUp .3s ease-out}
-        @keyframes modalSlideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-        .modal-header-img{width:100%;height:300px;object-fit:cover}
-        .modal-close{position:absolute;top:15px;left:15px;background:rgba(0,0,0,.5);color:#fff;border:none;width:40px;height:40px;border-radius:50%;cursor:pointer;font-size:1.2rem;display:flex;align-items:center;justify-content:center;transition:var(--transition);z-index:10}
-        .modal-close:hover{background:rgba(0,0,0,.8);transform:rotate(90deg)}
-        .modal-body{padding:2rem}
-        .modal-title{font-size:1.8rem;font-weight:900;margin-bottom:.5rem;color:var(--text-main)}
-        .modal-meta{display:flex;gap:15px;margin-bottom:1.5rem;flex-wrap:wrap}
-        .meta-tag{display:flex;align-items:center;gap:6px;font-size:.9rem;font-weight:600;padding:6px 12px;border-radius:8px}
-        .meta-weather{background:rgba(2,132,199,.1);color:var(--primary)}
-        .meta-region{background:rgba(5,150,105,.1);color:var(--secondary)}
-        .meta-rating{background:rgba(245,158,11,.1);color:#f59e0b}
-        .modal-desc{font-size:1.05rem;line-height:1.8;color:var(--text-main);margin-bottom:2rem}
-        .modal-events-section{background:var(--bg-main);border:1px solid var(--border);border-radius:12px;padding:1.5rem;margin-top:1rem}
-        .modal-events-title{font-size:1.1rem;font-weight:800;margin-bottom:1rem;display:flex;align-items:center;gap:8px;color:var(--accent)}
-        .event-mini-card{background:var(--bg-card);border:1px solid var(--border);padding:1rem;border-radius:8px;margin-bottom:.8rem;display:flex;justify-content:space-between;align-items:center}
-        .event-mini-info h5{font-size:.95rem;margin-bottom:4px}
-        .event-mini-info span{font-size:.8rem;color:var(--text-muted)}
-        .no-events{color:var(--text-muted);font-size:.9rem;font-style:italic;text-align:center;padding:1rem}
-        .gallery-section{margin-top:1.5rem}
-        .gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px;margin-top:1rem}
-        .gallery-item{position:relative;border-radius:10px;overflow:hidden;cursor:pointer;aspect-ratio:1;border:2px solid transparent;transition:var(--transition)}
-        .gallery-item:hover{border-color:var(--primary);transform:scale(1.03)}
-        .gallery-item img{width:100%;height:100%;object-fit:cover}
-        .gallery-lightbox{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.95);z-index:3000;align-items:center;justify-content:center}
-        .gallery-lightbox img{max-width:90%;max-height:85vh;border-radius:10px;object-fit:contain}
-        .lightbox-close{position:absolute;top:20px;left:20px;background:rgba(255,255,255,.2);color:#fff;border:none;width:45px;height:45px;border-radius:50%;cursor:pointer;font-size:1.3rem}
-        .lightbox-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.2);color:#fff;border:none;width:50px;height:50px;border-radius:50%;cursor:pointer;font-size:1.2rem}
-        .lightbox-next{right:20px}.lightbox-prev{left:20px}
-        .install-btn{position:fixed;bottom:20px;left:20px;background:linear-gradient(135deg,var(--primary),var(--secondary));color:#fff;border:none;padding:12px 24px;border-radius:50px;font-weight:700;font-size:.95rem;cursor:pointer;box-shadow:0 8px 25px rgba(2,132,199,.4);display:none;align-items:center;gap:8px;z-index:1500;transition:var(--transition);animation:installBounce 2s infinite}
-        .install-btn:hover{transform:translateY(-3px)}
-        @keyframes installBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
-        .loading-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:var(--bg-main);z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:15px}
-        .loading-spinner{width:50px;height:50px;border:4px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin 1s linear infinite}
-        @keyframes spin{to{transform:rotate(360deg)}}
-        .db-status{display:inline-flex;align-items:center;gap:5px;font-size:.7rem;padding:2px 8px;border-radius:50px;font-weight:600}
-        .db-status.online{background:rgba(34,197,94,.1);color:#22c55e}
-        .db-status.offline{background:rgba(239,68,68,.1);color:#ef4444}
+        :root {
+            --primary: #0284c7;
+            --primary-dark: #0369a1;
+            --secondary: #059669;
+            --accent: #d97706;
+            --bg-main: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --radius: 16px;
+            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .dark-mode {
+            --bg-main: #0f172a;
+            --bg-card: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Tajawal', sans-serif;
+        }
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition);
+        }
+        header {
+            background: linear-gradient(135deg, rgba(2, 132, 199, 0.98), rgba(5, 150, 105, 0.98));
+            color: white;
+            padding: 0.6rem 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1.15rem;
+            font-weight: 900;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        .logo i {
+            font-size: 1.5rem;
+            color: #38bdf8;
+        }
+        .logo small {
+            display: block;
+            font-size: 0.65rem;
+            opacity: 0.85;
+            font-weight: 400;
+        }
+        .nav-links {
+            display: flex;
+            gap: 0.3rem;
+            list-style: none;
+            align-items: center;
+        }
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.85rem;
+            transition: var(--transition);
+            cursor: pointer;
+            padding: 0.35rem 0.6rem;
+            border-radius: 6px;
+            white-space: nowrap;
+        }
+        .nav-links a:hover, .nav-links a.active {
+            background: rgba(255, 255, 255, 0.25);
+        }
+        .nav-actions {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+        .btn-icon {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            transition: var(--transition);
+        }
+        .btn-icon:hover { background: rgba(255, 255, 255, 0.35); }
+        .mobile-toggle {
+            display: none;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+        }
+        @media(max-width: 950px) {
+            .mobile-toggle { display: flex; }
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                right: 0;
+                width: 100%;
+                background: rgba(2, 132, 199, 0.98);
+                flex-direction: column;
+                padding: 1rem;
+                gap: 0.5rem;
+                box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            }
+            .nav-links.show { display: flex; }
+            .nav-links a { padding: 0.6rem 1rem; width: 100%; text-align: right; }
+        }
+        main {
+            flex: 1;
+            max-width: 1400px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+        .section { display: none; }
+        .section.active { display: block; animation: fadeIn 0.4s ease-in-out; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&w=1600&q=80') center/cover;
+            border-radius: 20px;
+            padding: 3.5rem 1.5rem;
+            text-align: center;
+            color: white;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+        }
+        .hero h1 { font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 900; margin-bottom: 1rem; }
+        .hero p { font-size: clamp(1rem, 2vw, 1.2rem); max-width: 700px; margin: 0 auto 2rem; opacity: 0.95; }
+        .region-selector {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        .region-btn {
+            background: var(--bg-card);
+            border: 2px solid var(--border);
+            color: var(--text-main);
+            padding: 0.7rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .region-btn:hover, .region-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            transform: translateY(-3px);
+        }
+        .live-stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 1rem;
+            border-radius: var(--radius);
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            flex-wrap: wrap;
+        }
+        .live-stat-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.95rem;
+            font-weight: 700;
+        }
+        .pulse-dot {
+            width: 10px;
+            height: 10px;
+            background-color: #22c55e;
+            border-radius: 50%;
+            display: inline-block;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(34, 197, 94, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+        }
+        .section-title {
+            font-size: 1.6rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .dest-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+        .dest-card, .ad-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+        }
+        .dest-card:hover, .ad-card:hover { transform: translateY(-5px); }
+        .dest-img, .ad-img { height: 200px; width: 100%; object-fit: cover; }
+        .dest-body, .ad-body { padding: 1.25rem; flex: 1; display: flex; flex-direction: column; }
+        
+        .dest-badge {
+            background: rgba(2, 132, 199, 0.1);
+            color: var(--primary);
+            padding: 3px 10px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            align-self: flex-start;
+            margin-bottom: 0.6rem;
+        }
+        .ad-badge {
+            background: rgba(217, 119, 6, 0.1);
+            color: var(--accent);
+            padding: 3px 10px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            align-self: flex-start;
+            margin-bottom: 0.6rem;
+        }
+        .dest-body h3, .ad-body h3 { font-size: 1.2rem; margin-bottom: 0.4rem; font-weight: 800; }
+        .dest-body p, .ad-body p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.2rem; flex: 1; line-height: 1.5; }
+        
+        .dest-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border);
+            padding-top: 0.8rem;
+        }
+        .rating { color: #f59e0b; font-weight: 700; font-size: 0.9rem; display: flex; align-items: center; gap: 4px; }
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .btn-primary:hover { background: var(--primary-dark); }
+        #map { height: 500px; width: 100%; border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--border); }
+        .map-layout { display: grid; grid-template-columns: 320px 1fr; gap: 1.5rem; }
+        @media(max-width: 900px) { .map-layout { grid-template-columns: 1fr; } }
+        .map-sidebar { background: var(--bg-card); border: 1px solid var(--border); padding: 1.25rem; border-radius: var(--radius); box-shadow: var(--shadow); }
+        .ai-container { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+        @media(max-width: 900px) { .ai-container { grid-template-columns: 1fr; } }
+        .chat-box, .planner-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+        .chat-messages {
+            height: 300px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1rem;
+            overflow-y: auto;
+            margin-bottom: 1rem;
+            background: var(--bg-main);
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+        .message { padding: 10px 14px; border-radius: 12px; max-width: 85%; line-height: 1.5; font-size: 0.95rem; }
+        .message.user { background: var(--primary); color: white; align-self: flex-end; }
+        .message.ai { background: var(--border); color: var(--text-main); align-self: flex-start; }
+        .chat-input-area { display: flex; gap: 8px; }
+        .chat-input-area input {
+            flex: 1; padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; outline: none; background: var(--bg-main); color: var(--text-main);
+        }
+        /* Admin Gate & Panel */
+        .admin-gate, .admin-panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 2rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            max-width: 600px;
+            margin: 2rem auto;
+            text-align: center;
+        }
+        .admin-panel { max-width: 1000px; text-align: right; }
+        .admin-item-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--bg-main);
+            border: 1px solid var(--border);
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .admin-form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 10px;
+            text-align: right;
+        }
+        .admin-form-group label { font-size: 0.85rem; font-weight: 700; color: var(--text-muted); }
+        .admin-form-group input, .admin-form-group select, .admin-form-group textarea {
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: var(--bg-card);
+            color: var(--text-main);
+            font-size: 0.9rem;
+        }
+        footer {
+            background: var(--bg-card);
+            border-top: 1px solid var(--border);
+            padding: 2rem 1.5rem;
+            text-align: center;
+            margin-top: auto;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
     </style>
 </head>
 <body>
-    <div class="loading-overlay" id="loading-overlay">
-        <div class="loading-spinner"></div>
-        <p style="font-weight:700;color:var(--text-muted)">جاري تحميل البيانات من السحابة...</p>    </div>
-
+    <!-- Header -->
     <header>
         <div class="nav-container">
             <div class="logo" onclick="switchSection('home')">
                 <i class="fa-solid fa-water"></i>
-                <div><span>جنان الساحل</span><small>اللاذقية وطرطوس</small></div>
+                <div>
+                    <span>جنان الساحل</span>
+                    <small>اللاذقية وطرطوس</small>
+                </div>
             </div>
+            
             <ul class="nav-links" id="navLinks">
                 <li><a onclick="switchSection('home')" class="active" id="link-home">الرئيسية</a></li>
                 <li><a onclick="switchSection('destinations')" id="link-destinations">المناطق</a></li>
-                <li><a onclick="switchSection('events')" id="link-events">نبض الساحل</a></li>
                 <li><a onclick="switchSection('map-section')" id="link-map-section">الخريطة</a></li>
                 <li><a onclick="switchSection('ai-guide')" id="link-ai-guide">المرشد الذكي</a></li>
                 <li><a onclick="switchSection('admin')" id="link-admin">غرفة الإدارة</a></li>
             </ul>
             <div class="nav-actions">
-                <span class="db-status online" id="db-status"><i class="fa-solid fa-database"></i> متصل</span>
                 <button class="btn-icon" onclick="toggleDarkMode()" title="الوضع الليلي"><i class="fa-solid fa-moon" id="theme-icon"></i></button>
                 <button class="mobile-toggle" onclick="toggleMenu()" title="القائمة"><i class="fa-solid fa-bars"></i></button>
             </div>
         </div>
     </header>
-
+    <!-- Main Content -->
     <main>
+        <!-- HOME SECTION -->
         <section id="home" class="section active">
             <div class="hero">
                 <h1>جنان الساحل السوري<br>اللاذقية وطرطوس</h1>
                 <p>اختر المحافظة لاستعراض أروع المعالم السياحية والبوسترات الإعلانية الحية.</p>
             </div>
             <div class="region-selector">
-                <button class="region-btn active" onclick="filterByRegion('all', event)"><i class="fa-solid fa-globe"></i> كافة مناطق الساحل</button>
-                <button class="region-btn" onclick="filterByRegion('latakia', event)"><i class="fa-solid fa-mountain-city"></i> محافظة اللاذقية</button>
-                <button class="region-btn" onclick="filterByRegion('tartus', event)"><i class="fa-solid fa-water"></i> محافظة طرطوس وأرواد</button>
+                <button class="region-btn active" onclick="filterByRegion('all')"><i class="fa-solid fa-globe"></i> كافة مناطق الساحل</button>
+                <button class="region-btn" onclick="filterByRegion('latakia')"><i class="fa-solid fa-mountain-city"></i> محافظة اللاذقية</button>
+                <button class="region-btn" onclick="filterByRegion('tartus')"><i class="fa-solid fa-water"></i> محافظة طرطوس وأرواد</button>
             </div>
             <div class="live-stats-bar">
-                <div class="live-stat-item"><i class="fa-solid fa-users-viewfinder"></i><span>إجمالي الزوار: <strong id="total-visitors-counter" style="color:var(--primary)">170,001</strong></span></div>
-                <div class="live-stat-item"><span class="pulse-dot"></span><span>المتواجدون حالياً: <strong id="online-users-counter" style="color:var(--secondary)">42</strong> زائر</span></div>
+                <div class="live-stat-item">
+                    <i class="fa-solid fa-users-viewfinder"></i>
+                    <span>إجمالي الزوار: <strong id="total-visitors-counter" style="color: var(--primary);">170,001</strong></span>
+                </div>
+                <div class="live-stat-item">
+                    <span class="pulse-dot"></span>
+                    <span>المتواجدون حالياً: <strong id="online-users-counter" style="color: var(--secondary);">42</strong> زائر</span>
+                </div>
             </div>
             <h2 class="section-title"><i class="fa-solid fa-fire"></i> بطاقات المواقع السياحية والبوسترات</h2>
             <div class="dest-grid" id="home-destinations-grid"></div>
-            <div class="show-more-container" id="show-more-container" style="display:none">
-                <button class="btn-show-more" onclick="toggleShowMore()">
-                    <span id="show-more-text">عرض المزيد من المواقع</span>
-                    <i class="fa-solid fa-chevron-down" id="show-more-icon"></i>
-                </button>
-            </div>
         </section>
-
-        <section id="events" class="section">            <h2 class="section-title"><span style="width:12px;height:12px;background:#ef4444;border-radius:50%;display:inline-block;animation:pulse-red 1.5s infinite"></span> نبض الساحل - جميع الفعاليات</h2>
-            <p style="color:var(--text-muted);margin-bottom:1.5rem">اكتشف أحدث الفعاليات والمهرجانات والنشاطات السياحية.</p>
-            <div class="events-grid" id="all-events-grid"></div>
-        </section>
-
+        <!-- DESTINATIONS SECTION -->
         <section id="destinations" class="section">
             <h2 class="section-title"><i class="fa-solid fa-map-marked-alt"></i> كافة المناطق والوجهات</h2>
-            <div class="region-selector" style="margin-bottom:1.5rem">
-                <button class="region-btn active" onclick="filterByRegion('all', event)">الكل</button>
-                <button class="region-btn" onclick="filterByRegion('latakia', event)">اللاذقية</button>
-                <button class="region-btn" onclick="filterByRegion('tartus', event)">طرطوس</button>
+            <div class="region-selector" style="margin-bottom: 1.5rem;">
+                <button class="region-btn active" onclick="filterByRegion('all')">الكل</button>
+                <button class="region-btn" onclick="filterByRegion('latakia')">اللاذقية</button>
+                <button class="region-btn" onclick="filterByRegion('tartus')">طرطوس</button>
             </div>
             <div class="dest-grid" id="all-destinations-grid"></div>
         </section>
-
+        <!-- MAP SECTION -->
         <section id="map-section" class="section">
             <h2 class="section-title"><i class="fa-solid fa-map-location-dot"></i> الخريطة التفاعلية الشاملة</h2>
             <div class="map-layout">
                 <div class="map-sidebar">
-                    <h3 style="margin-bottom:1rem;font-size:1rem;font-weight:800">فلترة المحافظات</h3>
-                    <div style="display:flex;flex-direction:column;gap:8px">
+                    <h3 style="margin-bottom: 1rem; font-size: 1rem; font-weight: 800;">فلترة المحافظات</h3>
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
                         <button class="btn-primary" onclick="filterMapRegion('all')">كل المواقع</button>
-                        <button class="btn-primary" style="background:var(--primary)" onclick="filterMapRegion('latakia')">اللاذقية</button>
-                        <button class="btn-primary" style="background:var(--secondary)" onclick="filterMapRegion('tartus')">طرطوس</button>
-                        <button class="btn-primary" style="background:#ef4444;margin-top:10px" onclick="filterMapRegion('events')"><i class="fa-solid fa-calendar-check"></i> إظهار الفعاليات</button>
-                    </div>
-                    <div style="margin-top:1.5rem;padding:10px;background:rgba(239,68,68,.1);border-radius:8px;border:1px solid rgba(239,68,68,.2)">
-                        <h4 style="font-size:.9rem;margin-bottom:8px;display:flex;align-items:center;gap:5px"><span style="width:8px;height:8px;background:#ef4444;border-radius:50%;display:inline-block"></span> مواقع الفعاليات النابضة</h4>
-                        <p style="font-size:.8rem;color:var(--text-muted)">المواقع ذات الإشارة الحمراء النابضة هي فعاليات حالية.</p>
+                        <button class="btn-primary" style="background: var(--primary);" onclick="filterMapRegion('latakia')">اللاذقية</button>
+                        <button class="btn-primary" style="background: var(--secondary);" onclick="filterMapRegion('tartus')">طرطوس</button>
                     </div>
                 </div>
                 <div id="map"></div>
             </div>
         </section>
-
+        <!-- AI GUIDE SECTION -->
         <section id="ai-guide" class="section">
-            <h2 class="section-title"><i class="fa-solid fa-robot"></i> مرشد الساحل الذكي المتقدم</h2>
+            <h2 class="section-title"><i class="fa-solid fa-robot"></i> مرشد الساحل الذكي (Gemini AI)</h2>
             <div class="ai-container">
                 <div class="chat-box">
-                    <h3 style="margin-bottom:.8rem;font-weight:800;font-size:1rem"><i class="fa-solid fa-comments"></i> المحادثة الذكية التفاعلية</h3>
-                    <div id="ai-context-badge" class="context-badge" style="display:none"><i class="fa-solid fa-brain"></i><span id="ai-context-text"></span></div>
-                    <div class="quick-questions">
-                        <button class="quick-q-btn" onclick="askQuickQuestion('أقترح لي رحلة ليوم واحد')">رحلة يوم واحد</button>
-                        <button class="quick-q-btn" onclick="askQuickQuestion('أين أذهب مع العائلة؟')">مع العائلة</button>
-                        <button class="quick-q-btn" onclick="askQuickQuestion('ما هي أفضل الشواطئ؟')">أفضل الشواطئ</button>
-                        <button class="quick-q-btn" onclick="askQuickQuestion('أخبرني عن القلاع التاريخية')">القلاع التاريخية</button>
-                        <button class="quick-q-btn" onclick="askQuickQuestion('ما الفعاليات المتاحة الآن؟')">الفعاليات الحالية</button>
-                    </div>
+                    <h3 style="margin-bottom: 0.8rem; font-weight: 800; font-size: 1rem;"><i class="fa-solid fa-comments"></i> المحادثة الفورية الذكية</h3>
                     <div class="chat-messages" id="chat-messages">
-                        <div class="message ai">أهلاً بك! 👋 أنا مرشدك الذكي للساحل السوري.<br><br>🏖️ اقتراح أفضل الشواطئ<br>🏰 معلومات عن القلاع<br>📅 الفعاليات الحالية<br>🗺️ تخطيط رحلات مخصصة<br><br>اسألني أي شيء!</div>                    </div>
-                    <div class="typing-indicator" id="typing-indicator"><span></span><span></span><span></span></div>
+                        <div class="message ai">أهلاً بك! اسألني عن أي معلم في اللاذقية أو طرطوس، وسأوفر لك تفاصيل دقيقة فوراً.</div>
+                    </div>
                     <div class="chat-input-area">
-                        <input type="text" id="chat-input" placeholder="اكتب استفسارك هنا..." onkeypress="if(event.key==='Enter')sendAIMessage()">
-                        <button class="btn-primary" onclick="sendAIMessage()"><i class="fa-solid fa-paper-plane"></i></button>
+                        <input type="text" id="chat-input" placeholder="اكتب استفسارك هنا...">
+                        <button class="btn-primary" onclick="sendAIMessage()">إرسال</button>
                     </div>
                 </div>
                 <div class="planner-box">
-                    <h3 style="margin-bottom:.8rem;font-weight:800;font-size:1rem"><i class="fa-solid fa-route"></i> المخطط الذكي للرحلات</h3>
-                    <p style="color:var(--text-muted);font-size:.9rem;margin-bottom:1rem">اختر نوع الرحلة:</p>
-                    <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:1rem">
-                        <button class="btn-primary" onclick="generateSmartPlan('family')"><i class="fa-solid fa-users"></i> رحلة عائلية</button>
-                        <button class="btn-primary" style="background:var(--secondary)" onclick="generateSmartPlan('adventure')"><i class="fa-solid fa-hiking"></i> مغامرة واستكشاف</button>
-                        <button class="btn-primary" style="background:var(--accent)" onclick="generateSmartPlan('relax')"><i class="fa-solid fa-spa"></i> استرخاء وهدوء</button>
-                        <button class="btn-primary" style="background:#8b5cf6" onclick="generateSmartPlan('cultural')"><i class="fa-solid fa-landmark"></i> جولة ثقافية</button>
-                    </div>
-                    <div id="plan-result" style="margin-top:1rem;font-size:.9rem;color:var(--text-muted);line-height:1.6"></div>
+                    <h3 style="margin-bottom: 0.8rem; font-weight: 800; font-size: 1rem;"><i class="fa-solid fa-route"></i> المخطط الذكي</h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">احصل على خطة رحلة مخصصة لزيارة أروع شواطئ وقلاع الساحل السوري.</p>
+                    <button class="btn-primary" style="width: 100%; padding: 10px;" onclick="generateSmartPlan()">توليد البرنامج المقترح</button>
+                    <div id="plan-result" style="margin-top: 1rem; font-size: 0.9rem; color: var(--text-muted); line-height: 1.5;"></div>
                 </div>
             </div>
         </section>
-
+        <!-- ADMIN SECTION -->
         <section id="admin" class="section">
             <div id="admin-gate-box" class="admin-gate">
-                <h2 style="margin-bottom:1rem"><i class="fa-solid fa-lock"></i> غرفة الإدارة الآمنة</h2>
-                <p style="color:var(--text-muted);font-size:.9rem;margin-bottom:1.5rem">أدخل كلمة المرور الخاصة بالمسؤول:</p>
-                <input type="password" id="admin-pass-input" placeholder="كلمة المرور..." style="width:100%;padding:10px;border:1px solid var(--border);border-radius:8px;margin-bottom:1rem;background:var(--bg-main);color:var(--text-main)">
-                <button class="btn-primary" style="width:100%;padding:10px" onclick="checkAdminPassword()">دخول الإدارة</button>
+                <h2 style="margin-bottom: 1rem;"><i class="fa-solid fa-lock"></i> غرفة الإدارة الآمنة</h2>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">أدخل كلمة المرور `salem1959` للتحكم بالمواقع والبوسترات:</p>
+                <input type="password" id="admin-pass-input" placeholder="كلمة المرور..." style="width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 1rem; background: var(--bg-main); color: var(--text-main);">
+                <button class="btn-primary" style="width: 100%; padding: 10px;" onclick="checkAdminPassword()">دخول الإدارة</button>
             </div>
-            <div id="admin-panel-box" class="admin-panel" style="display:none">
-                <h2 style="margin-bottom:1.5rem"><i class="fa-solid fa-gauge-high"></i> لوحة التحكم والسيطرة الشاملة</h2>
-                <div style="background:var(--bg-main);padding:1.2rem;border-radius:8px;border:1px solid var(--border);margin-bottom:1.5rem">
-                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:10px">
-                        <h3 style="font-size:1.1rem"><i class="fa-solid fa-map-pin"></i> إدارة المواقع السياحية</h3>
+            <div id="admin-panel-box" class="admin-panel" style="display: none;">
+                <h2 style="margin-bottom: 1.5rem;"><i class="fa-solid fa-gauge-high"></i> لوحة التحكم والسيطرة الشاملة</h2>
+                
+                <!-- Destinations Management Section -->
+                <div style="background: var(--bg-main); padding: 1.2rem; border-radius: 8px; border: 1px solid var(--border); margin-bottom: 1.5rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                        <h3 style="font-size: 1.1rem;"><i class="fa-solid fa-map-pin"></i> إدارة ومقرات المواقع السياحية (إضافة وتحرير)</h3>
                         <button class="btn-primary" onclick="openDestinationModal()"><i class="fa-solid fa-plus"></i> إضافة موقع جديد</button>
                     </div>
                     <div id="admin-destinations-list"></div>
                 </div>
-                <div style="background:var(--bg-main);padding:1.2rem;border-radius:8px;border:1px solid var(--border);margin-bottom:1.5rem">
-                    <h3 style="margin-bottom:1rem;font-size:1.1rem"><i class="fa-solid fa-images"></i> إدارة بوسترات الإعلانات</h3>
-                    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:1rem">
-                        <input type="file" id="ad-file-input" accept="image/*" style="flex:1;padding:6px;background:var(--bg-card);border:1px solid var(--border);border-radius:6px">
-                        <input type="text" id="ad-title-input" placeholder="عنوان البوستر..." style="flex:1;padding:6px;border:1px solid var(--border);border-radius:6px;background:var(--bg-card);color:var(--text-main)">
+                <!-- Ad Posters Management Section -->
+                <div style="background: var(--bg-main); padding: 1.2rem; border-radius: 8px; border: 1px solid var(--border); margin-bottom: 1.5rem;">
+                    <h3 style="margin-bottom: 1rem; font-size: 1.1rem;"><i class="fa-solid fa-images"></i> إدارة بوسترات الإعلانات المضغوطة (تظهر كل 3 بطاقات)</h3>
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 1rem;">
+                        <input type="file" id="ad-file-input" accept="image/*" style="flex: 1; padding: 6px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 6px;">
+                        <input type="text" id="ad-title-input" placeholder="عنوان البوستر الإعلاني..." style="flex: 1; padding: 6px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg-card); color: var(--text-main);">
                         <button class="btn-primary" onclick="addNewAdPoster()">إضافة بوستر</button>
                     </div>
                     <div id="admin-ads-list"></div>
                 </div>
-                <div style="display:flex;gap:10px;flex-wrap:wrap">
-                    <button class="btn-primary" onclick="resetCounters()"><i class="fa-solid fa-rotate"></i> تصفير العدادات</button>
-                    <button class="btn-primary" style="background:var(--accent)" onclick="lockAdminPanel()"><i class="fa-solid fa-lock"></i> إغلاق غرفة الإدارة</button>
-                </div>            </div>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <button class="btn-primary" onclick="resetCounters()"><i class="fa-solid fa-rotate"></i> تصفير وإعادة تعيين العدادات</button>
+                    <button class="btn-primary" style="background: var(--accent);" onclick="lockAdminPanel()"><i class="fa-solid fa-lock"></i> إغلاق غرفة الإدارة</button>
+                </div>
+            </div>
         </section>
     </main>
-
-    <button class="install-btn" id="install-btn" onclick="installApp()"><i class="fa-solid fa-download"></i> تثبيت التطبيق</button>
-
-    <div id="dest-modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.6);z-index:2000;align-items:center;justify-content:center">
-        <div style="background:var(--bg-card);padding:2rem;border-radius:var(--radius);max-width:600px;width:90%;border:1px solid var(--border);box-shadow:var(--shadow);max-height:90vh;overflow-y:auto">
-            <h3 id="modal-title" style="margin-bottom:1rem;font-weight:800">إضافة موقع سياحي جديد</h3>
+    <!-- Destination Add/Edit Modal Form -->
+    <div id="dest-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:2000; align-items:center; justify-content:center;">
+        <div style="background:var(--bg-card); padding:2rem; border-radius:var(--radius); max-width:500px; width:90%; border:1px solid var(--border); box-shadow:var(--shadow); max-height:90vh; overflow-y:auto;">
+            <h3 id="modal-title" style="margin-bottom:1rem; font-weight:800;">إضافة موقع سياحي جديد</h3>
             <input type="hidden" id="edit-dest-id">
-            <div class="admin-form-group"><label>اسم الموقع:</label><input type="text" id="form-dest-name" placeholder="مثال: شاطئ الصافي"></div>
-            <div class="admin-form-group"><label>المحافظة:</label><select id="form-dest-region"><option value="latakia">محافظة اللاذقية</option><option value="tartus">محافظة طرطوس</option></select></div>
-            <div class="admin-form-group"><label>الوصف الكامل:</label><textarea id="form-dest-desc" rows="3" placeholder="وصف تعريفي للموقع..."></textarea></div>
-            <div class="admin-form-group"><label>الصورة الرئيسية:</label><input type="file" id="form-dest-img" accept="image/*"></div>
-            <div class="admin-form-group"><label>معرض الصور:</label><input type="file" id="form-dest-gallery" accept="image/*" multiple></div>
-            <div id="gallery-preview" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"></div>
-            <div class="admin-form-group"><label>التقييم (من 1 إلى 5):</label><input type="number" step="0.1" id="form-dest-rating" value="4.8" min="1" max="5"></div>
-            <div style="display:flex;gap:10px;margin-top:1.5rem">
-                <button class="btn-primary" style="flex:1" onclick="saveDestinationData()">حفظ الموقع</button>
-                <button class="btn-primary" style="background:#ef4444;flex:1" onclick="closeDestinationModal()">إلغاء</button>
+            
+            <div class="admin-form-group">
+                <label>اسم الموقع:</label>
+                <input type="text" id="form-dest-name" placeholder="مثال: شاطئ الصافي">
+            </div>
+            <div class="admin-form-group">
+                <label>المحافظة:</label>
+                <select id="form-dest-region">
+                    <option value="latakia">محافظة اللاذقية</option>
+                    <option value="tartus">محافظة طرطوس</option>
+                </select>
+            </div>
+            <div class="admin-form-group">
+                <label>التصنيف أو الوصف الموجز:</label>
+                <textarea id="form-dest-desc" rows="3" placeholder="وصف تعريفي للموقع..."></textarea>
+            </div>
+            <div class="admin-form-group">
+                <label>صورة الموقع (اختر من الجهاز):</label>
+                <input type="file" id="form-dest-img" accept="image/*">
+            </div>
+            <div class="admin-form-group">
+                <label>التقييم (من 1 إلى 5):</label>
+                <input type="number" step="0.1" id="form-dest-rating" value="4.8" min="1" max="5">
+            </div>
+            <div style="display:flex; gap:10px; margin-top:1.5rem;">
+                <button class="btn-primary" style="flex:1;" onclick="saveDestinationData()">حفظ الموقع</button>
+                <button class="btn-primary" style="background:#ef4444; flex:1;" onclick="closeDestinationModal()">إلغاء</button>
             </div>
         </div>
     </div>
-
-    <div id="detail-modal" class="detail-modal" onclick="if(event.target===this)closeModalDetail()">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeModalDetail()"><i class="fa-solid fa-times"></i></button>
-            <img src="" alt="" class="modal-header-img" id="modal-detail-img">
-            <div class="modal-body">
-                <h2 class="modal-title" id="modal-detail-title"></h2>
-                <div class="modal-meta">
-                    <div class="meta-tag meta-region" id="modal-detail-region"></div>
-                    <div class="meta-tag meta-weather" id="modal-detail-weather"></div>
-                    <div class="meta-tag meta-rating" id="modal-detail-rating"></div>
-                </div>
-                <p class="modal-desc" id="modal-detail-desc"></p>
-                <div class="gallery-section" id="modal-gallery-section">
-                    <div class="modal-events-title"><i class="fa-solid fa-images"></i> معرض الصور</div>
-                    <div class="gallery-grid" id="modal-gallery-grid"></div>
-                </div>
-                <div class="modal-events-section">
-                    <div class="modal-events-title"><i class="fa-solid fa-calendar-star"></i> نبض الساحل: فعاليات الموقع</div>
-                    <div id="modal-detail-events-list"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="gallery-lightbox" class="gallery-lightbox" onclick="if(event.target===this)closeLightbox()">
-        <button class="lightbox-close" onclick="closeLightbox()"><i class="fa-solid fa-times"></i></button>        <button class="lightbox-nav lightbox-prev" onclick="navigateLightbox(-1)"><i class="fa-solid fa-chevron-right"></i></button>
-        <img src="" alt="" id="lightbox-img">
-        <button class="lightbox-nav lightbox-next" onclick="navigateLightbox(1)"><i class="fa-solid fa-chevron-left"></i></button>
-    </div>
-
-    <footer><p>جميع الحقوق محفوظة © 2026 | جنان الساحل (اللاذقية وطرطوس) - Explorer AI</p></footer>
-
+    <footer>
+        <p>جميع الحقوق محفوظة © 2026 | جنان الساحل (اللاذقية وطرطوس) - Explorer AI</p>
+    </footer>
+    <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-analytics.js";
-        import { getFirestore, collection, getDocs, setDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-        // استيراد Firebase Storage لحل مشكلة الصور
-        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyCTsiK2ab45sliFv-Aj-KgWXqv8lIbxsO8",
-            authDomain: "syriajanna-a429c.firebaseapp.com",
-            projectId: "syriajanna-a429c",
-            storageBucket: "syriajanna-a429c.firebasestorage.app",
-            messagingSenderId: "412644446806",
-            appId: "1:412644446806:web:9b9ca6d1f3bdbe41b2e1f7",
-            measurementId: "G-DY6GYB5L4N"
-        };
-        const app = initializeApp(firebaseConfig);
-        let analytics = null;
-        try { analytics = getAnalytics(app); } catch (e) { console.log('Analytics غير مدعوم هنا'); }
-        const db = getFirestore(app);
-        const storage = getStorage(app); // تهيئة التخزين
-
-        const ADMIN_KEY = atob('c2FsZW0xOTU5');
-        const DEFAULT_DESTINATIONS = [
-            { id: "1", name: "كسب", region: "latakia", description: "بلدة سياحية غناء تعانق الجبال وتطل على البحر في اللاذقية.", lat: 35.9325, lng: 35.9892, rating: 4.9, img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80", gallery: [] },
-            { id: "2", name: "رأس البسيط", region: "latakia", description: "شبه جزيرة ساحرة ذات رمال ذهبية ومياه نقية في اللاذقية.", lat: 35.9183, lng: 35.8056, rating: 4.8, img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80", gallery: [] },
-            { id: "3", name: "صلنفة", region: "latakia", description: "عروس المصايف السورية وتشتهر بغابات الصنوبر والضباب.", lat: 35.5833, lng: 36.2167, rating: 4.9, img: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&q=80", gallery: [] },
-            { id: "4", name: "قلعة صلاح الدين", region: "latakia", description: "تحفة معمارية عسكرية تاريخية مسجلة في اليونسكو.", lat: 35.6, lng: 36.05, rating: 5.0, img: "https://images.unsplash.com/photo-1599839575945-a9e5af0c3fa5?auto=format&fit=crop&w=600&q=80", gallery: [] },
-            { id: "5", name: "جزيرة أرواد", region: "tartus", description: "الجزيرة المأهولة الوحيدة في الساحل السوري.", lat: 34.8517, lng: 35.8569, rating: 4.9, img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80", gallery: [] },
-            { id: "6", name: "قلعة المرقب", region: "tartus", description: "قلعة حصينة من أهم القلاع التاريخية المطلة على البحر.", lat: 35.15, lng: 35.95, rating: 4.9, img: "https://images.unsplash.com/photo-1599839575945-a9e5af0c3fa5?auto=format&fit=crop&w=600&q=80", gallery: [] },
-            { id: "7", name: "مشتى الحلو", region: "tartus", description: "مصيف جبلي رائع يتميز بينابيعه العذبة.", lat: 34.8833, lng: 36.2167, rating: 4.7, img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80", gallery: [] },
-            { id: "8", name: "قلعة صافيتا", region: "tartus", description: "برج صافيتا الأثري الشامخ في محافظة طرطوس.", lat: 34.8167, lng: 36.1167, rating: 4.8, img: "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=600&q=80", gallery: [] }
+    <script>
+        // --- Initial Destinations Storage ---
+        let destinationsData = JSON.parse(localStorage.getItem('jnan_destinations')) || [
+            { id: 1, name: "كسب", region: "latakia", description: "بلدة سياحية غناء تعانق الجبال وتطل على البحر في اللاذقية.", lat: 35.9325, lng: 35.9892, rating: 4.9, img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80" },
+            { id: 2, name: "رأس البسيط", region: "latakia", description: "شبه جزيرة ساحرة ذات رمال ذهبية ومياه نقية في اللاذقية.", lat: 35.9183, lng: 35.8056, rating: 4.8, img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80" },
+            { id: 3, name: "صلنفة", region: "latakia", description: "عروس المصايف السورية وتشتهر بغابات الصنوبر والضباب.", lat: 35.5833, lng: 36.2167, rating: 4.9, img: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&q=80" },
+            { id: 4, name: "قلعة صلاح الدين", region: "latakia", description: "تحفة معمارية عسكرية تاريخية مسجلة في اليونسكو باللاذقية.", lat: 35.6, lng: 36.05, rating: 5.0, img: "https://images.unsplash.com/photo-1599839575945-a9e5af0c3fa5?auto=format&fit=crop&w=600&q=80" },
+            { id: 5, name: "جزيرة أرواد", region: "tartus", description: "الجزيرة المأهولة الوحيدة في الساحل السوري في طرطوس.", lat: 34.8517, lng: 35.8569, rating: 4.9, img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80" },
+            { id: 6, name: "قلعة المرقب (بانياس)", region: "tartus", description: "قلعة حصينة من أهم القلاع التاريخية المطلة على البحر في طرطوس.", lat: 35.15, lng: 35.95, rating: 4.9, img: "https://images.unsplash.com/photo-1599839575945-a9e5af0c3fa5?auto=format&fit=crop&w=600&q=80" },
+            { id: 7, name: "مشتى الحلو", region: "tartus", description: "مصيف جبلي رائع يتميز بينابيعه العذبة في طرطوس.", lat: 34.8833, lng: 36.2167, rating: 4.7, img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80" },
+            { id: 8, name: "قلعة صافيتا", region: "tartus", description: "برج صافيتا الأثري الشامخ في محافظة طرطوس.", lat: 34.8167, lng: 36.1167, rating: 4.8, img: "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=600&q=80" }
         ];
-
-        let destinationsData = [];
-        let adPosters = [];
-        let showAllDestinations = false;
-        let currentGalleryImages = [];
-        let currentLightboxImages = [];
-        let currentLightboxIndex = 0;
-        let totalVisitors = 170001;
+        // --- Ad Posters Data Storage ---
+        let adPosters = JSON.parse(localStorage.getItem('jnan_ad_posters')) || [
+            { id: 1, title: "مهرجان الساحل السياحي", img: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=600&q=80", desc: "تابعوا عروض الفنادق والمقاهي البحرية لهذا الموسم." },
+            { id: 2, title: "رحلات جزيرة أرواد البحرية", img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80", desc: "خصومات خاصة للعائلات في القوارب التقليدية." }
+        ];
+        let totalVisitors = localStorage.getItem('jnan_total_v') ? parseInt(localStorage.getItem('jnan_total_v')) : 170001;
         let onlineUsers = 42;
-
-        const eventsData = [
-            { id: 1, destName: "رأس البسيط", title: "مهرجان الساحل البحري", date: "15 أغسطس 2026", description: "مهرجان سنوي يضم عروض بحرية وموسيقى حية.", location: "شاطئ البسيط", region: "latakia", lat: 35.9183, lng: 35.8056 },            { id: 2, destName: "جزيرة أرواد", title: "رحلة أرواد التاريخية", date: "20 أغسطس 2026", description: "جولة إرشادية في جزيرة أرواد.", location: "جزيرة أرواد", region: "tartus", lat: 34.8517, lng: 35.8569 },
-            { id: 3, destName: "صلنفة", title: "مهرجان صلنفة السياحي", date: "25 أغسطس 2026", description: "فعاليات ثقافية وفنية في مرتفعات صلنفة.", location: "صلنفة", region: "latakia", lat: 35.5833, lng: 36.2167 },
-            { id: 4, destName: "قلعة صلاح الدين", title: "جولة تاريخية مرشدّة", date: "كل جمعة", description: "زيارة برفقة مرشد أثري.", location: "قلعة صلاح الدين", region: "latakia", lat: 35.6, lng: 36.05 }
-        ];
-
-        // ====== مهلة زمنية لمنع التعليق ======
-        function withTimeout(promise, ms) {
-            return Promise.race([
-                promise,
-                new Promise((resolve) => setTimeout(() => resolve(null), ms))
-            ]);
-        }
-
-        function updateDBStatus(online) {
-            const el = document.getElementById('db-status');
-            if (online) { el.className = 'db-status online'; el.innerHTML = '<i class="fa-solid fa-database"></i> متصل'; }
-            else { el.className = 'db-status offline'; el.innerHTML = '<i class="fa-solid fa-database"></i> غير متصل'; }
-        }
-
-        // دالة جديدة لرفع الصورة إلى Firebase Storage والحصول على رابطها
-        async function uploadImageToStorage(file, path) {
-            try {
-                const storageRef = ref(storage, path);
-                const snapshot = await uploadBytes(storageRef, file);
-                const url = await getDownloadURL(snapshot.ref);
-                return url;
-            } catch (error) {
-                console.error("خطأ في رفع الصورة:", error);
-                throw error;
-            }
-        }
-
-        // دالة مساعدة لضغط الصورة
-        function compressImage(file, maxW = 800, q = 0.7) {
-            return new Promise((resolve, reject) => {
-                const r = new FileReader();
-                r.onload = e => {
-                    const img = new Image();
-                    img.onload = () => {
-                        const c = document.createElement('canvas');
-                        let w = img.width, h = img.height;
-                        if (w > maxW) { h = Math.round(h * maxW / w); w = maxW; }
-                        c.width = w; c.height = h;
-                        c.getContext('2d').drawImage(img, 0, 0, w, h);
-                        c.toBlob(blob => resolve(blob), 'image/jpeg', q);
-                    };
-                    img.onerror = reject; img.src = e.target.result;
-                };
-                r.onerror = reject; r.readAsDataURL(file);
-            });
-        }
-
-        async function loadDestinationsFromFirestore() {
-            try {
-                const snapshot = await getDocs(collection(db, 'destinations'));
-                if (snapshot.empty) {
-                    // رفع الصور الافتراضية إلى التخزين في أول تشغيل (اختياري)
-                    // لكننا سنبقيها كروابط خارجية لتجنب تعقيد الرفع الأولي
-                    destinationsData = [...DEFAULT_DESTINATIONS];
-                    await Promise.all(destinationsData.map(dest => setDoc(doc(db, 'destinations', dest.id), dest)));
-                } else {
-                    destinationsData = snapshot.docs.map(d => ({ ...d.data(), id: d.id }));
-                    destinationsData.sort((a, b) => (parseInt(a.id) || 0) - (parseInt(b.id) || 0));
-                }
-                updateDBStatus(true);
-            } catch (e) {
-                console.error('فشل تحميل البيانات:', e);
-                updateDBStatus(false);
-                destinationsData = [...DEFAULT_DESTINATIONS];
-            }
-        }
-
-        async function loadAdsFromFirestore() {
-            try {
-                const snapshot = await getDocs(collection(db, 'ad_posters'));
-                adPosters = snapshot.docs.map(d => ({ ...d.data(), id: d.id }));
-            } catch (e) {
-                console.error('فشل تحميل الإعلانات:', e);
-                adPosters = [];
-            }
-        }
-
-        // دوال الحفظ المحسّنة باستخدام Storage
-        async function saveDestToFirestore(dest) {
-            try {
-                await setDoc(doc(db, 'destinations', String(dest.id)), dest);
-                updateDBStatus(true);
-                return true;
-            } catch (e) {
-                console.error('خطأ في حفظ الموقع:', e);
-                updateDBStatus(false);
-                alert('خطأ في الحفظ السحابي: ' + e.message);
-                return false;
-            }
-        }
-
-        async function deleteDestFromFirestore(id) {
-            try { await deleteDoc(doc(db, 'destinations', String(id))); updateDBStatus(true); return true; }
-            catch (e) { console.error('خطأ في الحذف:', e); updateDBStatus(false); return false; }
-        }
-
-        async function saveAdToFirestore(ad) {
-            try { await setDoc(doc(db, 'ad_posters', String(ad.id)), ad); return true; }
-            catch (e) { console.error('خطأ في حفظ الإعلان:', e); return false; }
-        }
-        async function deleteAdFromFirestore(id) {
-            try { await deleteDoc(doc(db, 'ad_posters', String(id))); return true; }
-            catch (e) { console.error('خطأ في حذف الإعلان:', e); return false; }
-        }
-
-        // ====== تهيئة محمية بالكامل ======
-        async function initApp() {
-            try {
-                await withTimeout(loadDestinationsFromFirestore(), 8000);
-                await withTimeout(loadAdsFromFirestore(), 5000);
-            } catch (e) {
-                console.error('Firestore error:', e);
-                updateDBStatus(false);
-            } finally {
-                if (!destinationsData || destinationsData.length === 0) {
-                    destinationsData = [...DEFAULT_DESTINATIONS];
-                }
-                if (!adPosters) adPosters = [];
-                document.getElementById('loading-overlay').style.display = 'none';
-                filterByRegion('all');
-                updateCountersDisplay();
-            }
-        }
-
-        // ====== AI ENGINE (بدون تعديل) ======
-        const aiMemory = { lastTopics: [], conversationCount: 0 };
-        const knowledgeBase = {
-            "كسب": { info: "كسب بلدة جبلية ساحرة على ارتفاع 800 متر، تحيط بها غابات الصنوبر.", tips: "أفضل وقت: الصيف والربيع.", nearby: ["رأس البسيط", "صلنفة"], bestFor: ["عائلة", "استرخاء"] },
-            "رأس البسيط": { info: "شبه جزيرة رائعة برمال ذهبية ومياه صافية من أجمل شواطئ المتوسط.", tips: "احجز مبكراً في الصيف!", nearby: ["كسب", "صلنفة"], bestFor: ["عائلة", "سباحة"] },
-            "صلنفة": { info: "عروس المصايف السورية على ارتفاع 1100 متر، غابات صنوبر وضباب.", tips: "خذ سترة حتى في الصيف!", nearby: ["كسب", "قلعة صلاح الدين"], bestFor: ["عائلة", "استرخاء"] },
-            "قلعة صلاح الدين": { info: "من أهم القلاع في العالم، مسجلة في اليونسكو.", tips: "خصص ساعتين للزيارة.", nearby: ["صلنفة", "كسب"], bestFor: ["ثقافة", "تاريخ"] },
-            "جزيرة أرواد": { info: "الجزيرة المأهولة الوحيدة في سوريا، تاريخ فينيقي عريق.", tips: "جرب رحلة الغروب البحرية!", nearby: ["قلعة المرقب", "قلعة صافيتا"], bestFor: ["عائلة", "تاريخ"] },
-            "قلعة المرقب": { info: "من أكبر القلاع الصليبية في الشرق، مطلة على بانياس والبحر.", tips: "الإطلالة عند الغروب خلابة!", nearby: ["جزيرة أرواد", "مشتى الحلو"], bestFor: ["ثقافة", "تاريخ"] },
-            "مشتى الحلو": { info: "مصيف جبلي هادئ يشتهر بينابيعه العذبة.", tips: "جرب ماء النبع مباشرة!", nearby: ["قلعة صافيتا", "جزيرة أرواد"], bestFor: ["عائلة", "استرخاء"] },
-            "قلعة صافيتا": { info: "برج أثري شامخ يعود للحقبة الصليبية.", tips: "يمكن دمجها مع مشتى الحلو.", nearby: ["مشتى الحلو", "جزيرة أرواد"], bestFor: ["ثقافة", "تاريخ"] }
-        };
-
-        function detectIntent(text) {
-            const l = text.toLowerCase();
-            if (l.includes('اقتراح') || l.includes('أقترح') || l.includes('انصح') || l.includes('وين أروح') || l.includes('أين أذهب')) return 'suggestion';
-            if (l.includes('عائلة') || l.includes('أطفال')) return 'family';
-            if (l.includes('شاطئ') || l.includes('شواطئ') || l.includes('بحر') || l.includes('سباحة')) return 'beach';
-            if (l.includes('قلعة') || l.includes('قلاع') || l.includes('تاريخ')) return 'history';
-            if (l.includes('فعالية') || l.includes('فعاليات') || l.includes('مهرجان')) return 'events';
-            if (l.includes('طقس') || l.includes('حرارة') || l.includes('جو')) return 'weather';
-            if (l.includes('رحلة') || l.includes('برنامج') || l.includes('خطة')) return 'plan';
-            if (l.includes('هادئ') || l.includes('استرخاء') || l.includes('هدوء')) return 'relax';
-            if (l.includes('شكرا') || l.includes('شكراً')) return 'thanks';
-            if (l.includes('مرحبا') || l.includes('أهلا') || l.includes('سلام')) return 'greeting';            for (const p of Object.keys(knowledgeBase)) { if (l.includes(p)) return 'place:' + p; }
-            return 'general';
-        }
-
-        function getContextualSuggestion() {
-            if (aiMemory.lastTopics.length === 0) return null;
-            const last = aiMemory.lastTopics[aiMemory.lastTopics.length - 1];
-            const info = knowledgeBase[last];
-            return info && info.nearby.length > 0 ? info.nearby[Math.floor(Math.random() * info.nearby.length)] : null;
-        }
-
-        function generateAIResponse(userText) {
-            const intent = detectIntent(userText);
-            let response = '', suggestions = [];
-            switch(intent) {
-                case 'greeting': response = 'أهلاً وسهلاً! 😊 كيف يمكنني مساعدتك؟'; suggestions = ['أقترح لي مكاناً', 'ما أفضل الشواطئ؟']; break;
-                case 'thanks': response = 'العفو! 😊 هل تحتاج شيئاً آخر؟'; suggestions = ['أقترح لي مكاناً آخر']; break;
-                case 'suggestion': case 'general':
-                    const rp = [...destinationsData].sort(() => Math.random() - 0.5).slice(0, 3);
-                    response = 'أقترح عليك:<br><br>'; rp.forEach((p, i) => response += `${i+1}. <strong>${p.name}</strong> ⭐ ${p.rating}<br>`);
-                    suggestions = rp.map(p => `أخبرني عن ${p.name}`); break;
-                case 'family':
-                    const fp = destinationsData.filter(d => knowledgeBase[d.name]?.bestFor.includes('عائلة'));
-                    response = '👨‍👩‍👧‍ أفضل الوجهات العائلية:<br><br>'; fp.slice(0,4).forEach(p => response += `• <strong>${p.name}</strong>: ${p.description.substring(0,60)}...<br>`);
-                    suggestions = ['أخبرني عن رأس البسيط', 'أخبرني عن جزيرة أرواد']; break;
-                case 'beach':
-                    response = '🏖️ أفضل الشواطئ:<br><br>• <strong>رأس البسيط</strong>: رمال ذهبية ومياه صافية<br><br>🌊 من أجمل شواطئ المتوسط!';
-                    suggestions = ['أخبرني عن رأس البسيط']; break;
-                case 'history':
-                    const castles = destinationsData.filter(d => d.name.includes('قلعة'));
-                    response = '🏰 القلاع التاريخية:<br><br>'; castles.forEach(c => response += `• <strong>${c.name}</strong><br>`);
-                    suggestions = castles.slice(0,3).map(c => `أخبرني عن ${c.name}`); break;
-                case 'events':
-                    response = '📅 الفعاليات الحالية:<br><br>'; eventsData.forEach(e => response += `• <strong>${e.title}</strong> - ${e.date}<br>`);
-                    suggestions = ['أخبرني عن أرواد']; break;
-                case 'weather':
-                    const t = Math.floor(Math.random()*6)+25;
-                    response = `🌤️ الطقس: ${t}°م، مشمس ☀️، رطوبة ${Math.floor(Math.random()*20)+50}%`;
-                    suggestions = ['أقترح لي مكاناً']; break;
-                case 'plan':
-                    response = '🗺️ خطة يوم:<br>الصباح: قلعة صلاح الدين<br>الظهيرة: غداء بحري<br>العصر: شاطئ البسيط<br>المساء: عشاء في صلنفة';
-                    suggestions = ['خطة عائلية', 'خطة استرخاء']; break;
-                case 'relax':
-                    response = '🧘 أماكن الاسترخاء:<br>• مشتى الحلو<br>• صلنفة<br>• كسب';
-                    suggestions = ['أخبرني عن مشتى الحلو', 'أخبرني عن صلنفة']; break;
-                default:
-                    if (intent.startsWith('place:')) {
-                        const pn = intent.replace('place:', '');
-                        const info = knowledgeBase[pn];
-                        if (!aiMemory.lastTopics.includes(pn)) { aiMemory.lastTopics.push(pn); if (aiMemory.lastTopics.length > 10) aiMemory.lastTopics.shift(); }                        aiMemory.conversationCount++;
-                        updateContextBadge();
-                        if (info) {
-                            response = `📍 <strong>${pn}</strong><br><br>${info.info}<br><br>💡 ${info.tips}<br>`;
-                            const re = eventsData.filter(e => e.destName === pn);
-                            if (re.length > 0) { response += '<br>📅 فعاليات:<br>'; re.forEach(e => response += `• ${e.title}<br>`); }
-                            if (info.nearby.length > 0) response += `<br>🗺️ مواقع قريبة: ${info.nearby.join('، ')}`;
-                            suggestions = info.nearby.map(n => `أخبرني عن ${n}`);
-                        } else {
-                            const d = destinationsData.find(x => x.name === pn);
-                            response = d ? `📍 <strong>${pn}</strong><br><br>${d.description}<br>⭐ ${d.rating}/5` : 'لم أجد معلومات عن هذا المكان.';
-                            suggestions = ['أقترح لي مكاناً'];
-                        }
-                    } else {
-                        response = 'أنا هنا لمساعدتك! اسألني عن أي مكان في الساحل.';
-                        suggestions = ['أقترح لي مكاناً', 'ما أفضل الشواطئ؟'];
-                    }
-            }
-            if (aiMemory.conversationCount > 2 && aiMemory.lastTopics.length > 0 && !intent.startsWith('place:')) {
-                const cs = getContextualSuggestion();
-                if (cs) response += `<br><br>💭 ربما يعجبك <strong>${cs}</strong>!`;
-            }
-            return { response, suggestions };
-        }
-
-        function updateContextBadge() {
-            const b = document.getElementById('ai-context-badge');
-            const t = document.getElementById('ai-context-text');
-            if (aiMemory.lastTopics.length > 0) { b.style.display = 'inline-flex'; t.innerText = `السياق: ${aiMemory.lastTopics[aiMemory.lastTopics.length-1]}`; }
-            else b.style.display = 'none';
-        }
-
-        function sendAIMessage() {
-            const input = document.getElementById('chat-input');
-            const messages = document.getElementById('chat-messages');
-            const typing = document.getElementById('typing-indicator');
-            if (!input.value.trim()) return;
-            const userText = input.value.trim();
-            messages.innerHTML += `<div class="message user">${userText}</div>`;
-            input.value = '';
-            messages.scrollTop = messages.scrollHeight;
-            typing.style.display = 'flex';
-            setTimeout(() => {
-                typing.style.display = 'none';
-                const { response, suggestions } = generateAIResponse(userText);
-                let shtml = '';
-                if (suggestions.length > 0) {
-                    shtml = '<div class="suggestion-chips">';
-                    suggestions.forEach(s => shtml += `<button class="chip" onclick="askQuickQuestion('${s}')">${s}</button>`);
-                    shtml += '</div>';                }
-                messages.innerHTML += `<div class="message ai">${response}${shtml}</div>`;
-                messages.scrollTop = messages.scrollHeight;
-            }, 800 + Math.random() * 1000);
-        }
-
-        function askQuickQuestion(q) { document.getElementById('chat-input').value = q; sendAIMessage(); }
-
-        function generateSmartPlan(type) {
-            const r = document.getElementById('plan-result');
-            const plans = {
-                family: '📋 خطة عائلية (3 أيام):<br>اليوم 1: شاطئ البسيط<br>اليوم 2: قلعة صلاح الدين → صلنفة<br>اليوم 3: طرطوس → أرواد',
-                adventure: '📋 مغامرة (3 أيام):<br>اليوم 1: غابات كسب<br>اليوم 2: مغارة صلنفة<br>اليوم 3: غوص في البسيط',
-                relax: '📋 استرخاء (3 أيام):<br>اليوم 1: مشتى الحلو<br>اليوم 2: صلنفة<br>اليوم 3: شاطئ هادئ',
-                cultural: '📋 جولة ثقافية (3 أيام):<br>اليوم 1: قلعة صلاح الدين<br>اليوم 2: قلعة المرقب<br>اليوم 3: أرواد'
-            };
-            r.innerHTML = plans[type] || '';
-        }
-
-        // ====== RENDER ======
         function updateCountersDisplay() {
             document.getElementById('total-visitors-counter').innerText = totalVisitors.toLocaleString();
             document.getElementById('online-users-counter').innerText = onlineUsers;
         }
-
-        function renderEvents(containerId) {
-            const c = document.getElementById(containerId);
-            if (!c) return;
-            c.innerHTML = eventsData.map(e => `
-                <div class="event-card" onclick="alert('تفاصيل: ${e.title}')">
-                    <span class="event-date"><i class="fa-solid fa-calendar"></i> ${e.date}</span>
-                    <h4>${e.title}</h4><p>${e.description}</p>
-                    <div class="event-location"><i class="fa-solid fa-location-dot"></i> ${e.location}</div>
-                </div>`).join('');
+        if (!sessionStorage.getItem('visited_session')) {
+            totalVisitors++;
+            localStorage.setItem('jnan_total_v', totalVisitors);
+            sessionStorage.setItem('visited_session', 'true');
         }
-
-        function filterByRegion(region, event) {
-            document.querySelectorAll('.region-btn').forEach(b => b.classList.remove('active'));
-            if (event && event.currentTarget) event.currentTarget.classList.add('active');
+        // --- Region Filtering System & Ad Insertion Every 3 Cards ---
+        function filterByRegion(region) {
+            document.querySelectorAll('.region-btn').forEach(btn => btn.classList.remove('active'));
+            event && event.currentTarget && event.currentTarget.classList.add('active');
             let filtered = destinationsData;
-            if (region !== 'all') filtered = destinationsData.filter(d => d.region === region);
+            if (region !== 'all') {
+                filtered = destinationsData.filter(d => d.region === region);
+            }
             renderGridWithAds('home-destinations-grid', filtered);
             renderGridWithAds('all-destinations-grid', filtered);
         }
-
         function renderGridWithAds(containerId, data) {
             const container = document.getElementById(containerId);
             if (!container) return;
-            let html = '', adIndex = 0;
-            let dataToShow = (containerId === 'home-destinations-grid' && !showAllDestinations) ? data.slice(0, 4) : data;            dataToShow.forEach((dest, index) => {
-                const gc = dest.gallery ? dest.gallery.length : 0;
-                html += `<div class="dest-card" onclick="openDetailModal('${dest.id}')">
-                    <img src="${dest.img}" class="dest-img" alt="${dest.name}" loading="lazy">
-                    <div class="dest-body">
-                        <span class="dest-badge">${dest.region === 'latakia' ? 'اللاذقية' : 'طرطوس'}</span>
-                        <h3>${dest.name}</h3><p>${dest.description}</p>
-                        ${gc > 0 ? `<span class="gallery-count-badge"><i class="fa-solid fa-images"></i> ${gc} صور</span>` : ''}
-                        <div class="dest-footer"><div class="rating"><i class="fa-solid fa-star"></i> ${dest.rating}</div>
-                        <button class="btn-primary" onclick="event.stopPropagation();openDetailModal('${dest.id}')">استكشف</button></div>
-                    </div></div>`;
-                if ((index+1) % 3 === 0 && adPosters.length > 0 && (containerId !== 'home-destinations-grid' || showAllDestinations)) {
+            
+            let html = '';
+            let adIndex = 0;
+            data.forEach((dest, index) => {
+                html += `
+                    <div class="dest-card">
+                        <img src="${dest.img}" class="dest-img" alt="${dest.name}">
+                        <div class="dest-body">
+                            <span class="dest-badge">${dest.region === 'latakia' ? 'محافظة اللاذقية' : 'محافظة طرطوس'}</span>
+                            <h3>${dest.name}</h3>
+                            <p>${dest.description}</p>
+                            <div class="dest-footer">
+                                <div class="rating"><i class="fa-solid fa-star"></i> ${dest.rating}</div>
+                                <button class="btn-primary" onclick="alert('تفاصيل الموقع: ${dest.name}')">استكشف</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                if ((index + 1) % 3 === 0 && adPosters.length > 0) {
                     const ad = adPosters[adIndex % adPosters.length];
-                    html += `<div class="ad-card"><img src="${ad.img}" class="ad-img" alt="${ad.title}" loading="lazy">
-                        <div class="ad-body"><span class="ad-badge"><i class="fa-solid fa-rectangle-ad"></i> إعلان</span>
-                        <h3>${ad.title}</h3><p>${ad.desc || ''}</p>
-                        <div class="dest-footer"><span style="font-size:.8rem;color:var(--accent);font-weight:700">بوستر إعلاني</span>
-                        <button class="btn-primary" style="background:var(--accent)" onclick="alert('إعلان: ${ad.title}')">التفاصيل</button></div></div></div>`;
+                    html += `
+                        <div class="ad-card">
+                            <img src="${ad.img}" class="ad-img" alt="${ad.title}">
+                            <div class="ad-body">
+                                <span class="ad-badge"><i class="fa-solid fa-rectangle-ad"></i> إعلان ممول</span>
+                                <h3>${ad.title}</h3>
+                                <p>${ad.desc}</p>
+                                <div class="dest-footer">
+                                    <span style="font-size: 0.8rem; color: var(--accent); font-weight: 700;">بوستر إعلاني معتمد</span>
+                                    <button class="btn-primary" style="background: var(--accent);" onclick="alert('تم النقر على إعلان: ${ad.title}')">التفاصيل</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
                     adIndex++;
                 }
             });
             container.innerHTML = html;
-            const smb = document.getElementById('show-more-container');
-            if (smb && containerId === 'home-destinations-grid') {
-                if (data.length > 4) {
-                    smb.style.display = 'block';
-                    document.getElementById('show-more-text').innerText = showAllDestinations ? 'إخفاء المواقع' : `عرض المزيد (${data.length-4})`;
-                    document.getElementById('show-more-icon').style.transform = showAllDestinations ? 'rotate(180deg)' : 'rotate(0deg)';
-                } else smb.style.display = 'none';
-            }
         }
-
-        function toggleShowMore() { showAllDestinations = !showAllDestinations; filterByRegion('all'); }
-
-        function openDetailModal(id) {
-            const dest = destinationsData.find(d => String(d.id) === String(id));
-            if (!dest) return;
-            document.getElementById('modal-detail-img').src = dest.img;
-            document.getElementById('modal-detail-title').innerText = dest.name;
-            document.getElementById('modal-detail-region').innerHTML = `<i class="fa-solid fa-map-pin"></i> ${dest.region === 'latakia' ? 'اللاذقية' : 'طرطوس'}`;
-            document.getElementById('modal-detail-rating').innerHTML = `<i class="fa-solid fa-star"></i> ${dest.rating}`;
-            document.getElementById('modal-detail-desc').innerText = dest.description;
-            const t = dest.region === 'latakia' ? 28 : 27;
-            document.getElementById('modal-detail-weather').innerHTML = Math.random() > 0.3 ? `☀️ مشمس ${t}°م` : `⛅ غائم ${t-3}°م`;
-            const gs = document.getElementById('modal-gallery-section');
-            const gg = document.getElementById('modal-gallery-grid');
-            const gallery = dest.gallery || [];
-            if (gallery.length > 0) {
-                gs.style.display = 'block';
-                gg.innerHTML = gallery.map((img, i) => `<div class="gallery-item" onclick="openLightbox('${dest.id}',${i})"><img src="${img}" alt="" loading="lazy"></div>`).join('');            } else gs.style.display = 'none';
-            const de = eventsData.filter(e => e.destName === dest.name);
-            const ec = document.getElementById('modal-detail-events-list');
-            if (de.length > 0) {
-                ec.innerHTML = de.map(e => `<div class="event-mini-card"><div class="event-mini-info"><h5>${e.title}</h5><span>${e.date}</span></div><i class="fa-solid fa-ticket" style="color:var(--accent)"></i></div>`).join('');
-            } else ec.innerHTML = '<div class="no-events">لا توجد فعاليات حالياً.</div>';
-            document.getElementById('detail-modal').style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeModalDetail() { document.getElementById('detail-modal').style.display = 'none'; document.body.style.overflow = 'auto'; }
-        function openLightbox(id, i) {
-            const d = destinationsData.find(x => String(x.id) === String(id));
-            if (!d || !d.gallery) return;
-            currentLightboxImages = d.gallery; currentLightboxIndex = i;
-            document.getElementById('lightbox-img').src = currentLightboxImages[i];
-            document.getElementById('gallery-lightbox').style.display = 'flex';
-        }
-        function closeLightbox() { document.getElementById('gallery-lightbox').style.display = 'none'; }
-        function navigateLightbox(dir) {
-            currentLightboxIndex += dir;
-            if (currentLightboxIndex < 0) currentLightboxIndex = currentLightboxImages.length - 1;
-            if (currentLightboxIndex >= currentLightboxImages.length) currentLightboxIndex = 0;
-            document.getElementById('lightbox-img').src = currentLightboxImages[currentLightboxIndex];
-        }
-
-        // ====== ADMIN ======
+        // --- Admin Room Management ---
         function checkAdminPassword() {
-            if (document.getElementById('admin-pass-input').value === ADMIN_KEY) {
+            const pass = document.getElementById('admin-pass-input').value;
+            if (pass === 'salem1959') {
                 document.getElementById('admin-gate-box').style.display = 'none';
                 document.getElementById('admin-panel-box').style.display = 'block';
-                renderAdminDestinationsList(); renderAdminAdsList();
-            } else alert('كلمة المرور غير صحيحة!');
+                renderAdminDestinationsList();
+                renderAdminAdsList();
+            } else {
+                alert('كلمة المرور غير صحيحة!');
+            }
         }
         function lockAdminPanel() {
             document.getElementById('admin-panel-box').style.display = 'none';
             document.getElementById('admin-gate-box').style.display = 'block';
             document.getElementById('admin-pass-input').value = '';
         }
+        // --- Destinations Management (Add, Edit, Delete) ---
         function renderAdminDestinationsList() {
-            const c = document.getElementById('admin-destinations-list');
-            if (destinationsData.length === 0) { c.innerHTML = '<p style="color:var(--text-muted)">لا توجد مواقع.</p>'; return; }
-            c.innerHTML = destinationsData.map(d => {
-                const gc = d.gallery ? d.gallery.length : 0;
-                return `<div class="admin-item-row">
-                    <div style="display:flex;align-items:center;gap:10px">
-                        <img src="${d.img}" style="width:50px;height:50px;object-fit:cover;border-radius:6px" alt="">
-                        <div><h4 style="font-size:.95rem">${d.name} <span style="font-size:.75rem;color:var(--primary)">(${d.region === 'latakia' ? 'اللاذقية' : 'طرطوس'})</span></h4>
-                        <small style="color:var(--text-muted)">${d.description.substring(0,40)}...</small>
-                        ${gc > 0 ? `<small style="color:var(--secondary);display:block;font-size:.7rem"><i class="fa-solid fa-images"></i> ${gc} صور</small>` : ''}</div>                    </div>
-                    <div style="display:flex;gap:6px">
-                        <button class="btn-primary" style="background:var(--secondary);padding:4px 10px;font-size:.8rem" onclick="openEditDestinationModal('${d.id}')">تحرير</button>
-                        <button class="btn-primary" style="background:#ef4444;padding:4px 10px;font-size:.8rem" onclick="deleteDestination('${d.id}')">حذف</button>
-                    </div></div>`;
-            }).join('');
-        }
-        function renderAdminAdsList() {
-            const c = document.getElementById('admin-ads-list');
-            if (adPosters.length === 0) { c.innerHTML = '<p style="color:var(--text-muted)">لا توجد بوسترات.</p>'; return; }
-            c.innerHTML = adPosters.map((a, i) => `<div class="admin-item-row">
-                <div style="display:flex;align-items:center;gap:10px">
-                    <img src="${a.img}" style="width:50px;height:50px;object-fit:cover;border-radius:6px" alt="">
-                    <div><h4 style="font-size:.9rem">${a.title}</h4></div></div>
-                <button class="btn-primary" style="background:#ef4444;padding:4px 10px;font-size:.8rem" onclick="deleteAdPoster('${a.id}')">حذف</button></div>`).join('');
+            const listContainer = document.getElementById('admin-destinations-list');
+            if (destinationsData.length === 0) {
+                listContainer.innerHTML = '<p style="color: var(--text-muted); font-size: 0.9rem;">لا توجد مواقع مسجلة حالياً.</p>';
+                return;
+            }
+            listContainer.innerHTML = destinationsData.map((dest, idx) => `
+                <div class="admin-item-row">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <img src="${dest.img}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 6px;" alt="">
+                        <div>
+                            <h4 style="font-size: 0.95rem;">${dest.name} <span style="font-size: 0.75rem; color: var(--primary);">(${dest.region === 'latakia' ? 'اللاذقية' : 'طرطوس'})</span></h4>
+                            <small style="color: var(--text-muted);">${dest.description.substring(0, 40)}...</small>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 6px;">
+                        <button class="btn-primary" style="background: var(--secondary); padding: 4px 10px; font-size: 0.8rem;" onclick="openEditDestinationModal(${dest.id})">تحرير</button>
+                        <button class="btn-primary" style="background: #ef4444; padding: 4px 10px; font-size: 0.8rem;" onclick="deleteDestination(${dest.id})">حذف</button>
+                    </div>
+                </div>
+            `).join('');
         }
         function openDestinationModal() {
-            document.getElementById('modal-title').innerText = 'إضافة موقع جديد';
+            document.getElementById('modal-title').innerText = 'إضافة موقع سياحي جديد';
             document.getElementById('edit-dest-id').value = '';
             document.getElementById('form-dest-name').value = '';
             document.getElementById('form-dest-desc').value = '';
             document.getElementById('form-dest-rating').value = '4.8';
             document.getElementById('form-dest-img').value = '';
-            document.getElementById('form-dest-gallery').value = '';
-            currentGalleryImages = [];
-            renderGalleryPreview();
             document.getElementById('dest-modal').style.display = 'flex';
         }
         function openEditDestinationModal(id) {
-            const d = destinationsData.find(x => String(x.id) === String(id));
-            if (!d) return;
-            document.getElementById('modal-title').innerText = 'تحرير الموقع';
-            document.getElementById('edit-dest-id').value = d.id;
-            document.getElementById('form-dest-name').value = d.name;
-            document.getElementById('form-dest-region').value = d.region;
-            document.getElementById('form-dest-desc').value = d.description;
-            document.getElementById('form-dest-rating').value = d.rating;
+            const dest = destinationsData.find(d => d.id === id);
+            if (!dest) return;
+            document.getElementById('modal-title').innerText = 'تحرير وتعديل الموقع';
+            document.getElementById('edit-dest-id').value = dest.id;
+            document.getElementById('form-dest-name').value = dest.name;
+            document.getElementById('form-dest-region').value = dest.region;
+            document.getElementById('form-dest-desc').value = dest.description;
+            document.getElementById('form-dest-rating').value = dest.rating;
             document.getElementById('form-dest-img').value = '';
-            document.getElementById('form-dest-gallery').value = '';
-            currentGalleryImages = d.gallery ? [...d.gallery] : [];
-            renderGalleryPreview();
             document.getElementById('dest-modal').style.display = 'flex';
         }
-        function closeDestinationModal() { document.getElementById('dest-modal').style.display = 'none'; currentGalleryImages = []; }
-        function renderGalleryPreview() {
-            const p = document.getElementById('gallery-preview');
-            if (currentGalleryImages.length === 0) { p.innerHTML = ''; return; }
-            p.innerHTML = currentGalleryImages.map((img, i) => `<div style="position:relative;width:60px;height:60px">
-                <img src="${img}" style="width:60px;height:60px;object-fit:cover;border-radius:6px;border:1px solid var(--border)">
-                <button onclick="removeGalleryImage(${i})" style="position:absolute;top:-5px;right:-5px;background:#ef4444;color:#fff;border:none;width:18px;height:18px;border-radius:50%;font-size:.6rem;cursor:pointer">×</button></div>`).join('');        }
-        function removeGalleryImage(i) { currentGalleryImages.splice(i, 1); renderGalleryPreview(); }
-        document.getElementById('form-dest-gallery').addEventListener('change', async function(e) {
-            for (const f of Array.from(e.target.files)) {
-                try {
-                    const compressedBlob = await compressImage(f, 600, 0.6);
-                    // رفع الصورة إلى Storage
-                    const path = `destinations/gallery_${Date.now()}_${f.name}`;
-                    const url = await uploadImageToStorage(compressedBlob, path);
-                    currentGalleryImages.push(url);
-                } catch(err) { console.error('خطأ في رفع صورة المعرض:', err); }
-            }
-            renderGalleryPreview(); this.value = '';
-        });
-
-        // تحديث دالة الحفظ لاستخدام Storage للصورة الرئيسية
-        async function saveDestinationData() {
+        function closeDestinationModal() {
+            document.getElementById('dest-modal').style.display = 'none';
+        }
+        function saveDestinationData() {
             const editId = document.getElementById('edit-dest-id').value;
             const name = document.getElementById('form-dest-name').value.trim();
             const region = document.getElementById('form-dest-region').value;
             const description = document.getElementById('form-dest-desc').value.trim();
             const rating = parseFloat(document.getElementById('form-dest-rating').value) || 4.8;
             const fileInput = document.getElementById('form-dest-img');
-            if (!name || !description) { alert('يرجى ملء الاسم والوصف.'); return; }
-            
-            let mainImage = null;
-            if (fileInput.files && fileInput.files[0]) {
-                try {
-                    const compressedBlob = await compressImage(fileInput.files[0], 800, 0.7);
-                    const path = `destinations/main_${Date.now()}_${fileInput.files[0].name}`;
-                    mainImage = await uploadImageToStorage(compressedBlob, path);
-                } catch(e) { 
-                    console.error('خطأ في رفع الصورة الرئيسية:', e);
-                    alert('حدث خطأ في رفع الصورة الرئيسية. تأكد من الاتصال بالإنترنت.');
-                    return;
-                }
-            } else if (editId) {
-                const ex = destinationsData.find(d => String(d.id) === String(editId));
-                mainImage = ex ? ex.img : null;
+            if (!name || !description) {
+                alert('يرجى ملء اسم الموقع ووصفه على الأقل.');
+                return;
             }
-            const defaultImg = "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80";
-            
-            if (editId) {
-                const idx = destinationsData.findIndex(d => String(d.id) === String(editId));
-                if (idx !== -1) {
-                    destinationsData[idx] = { ...destinationsData[idx], name, region, description, rating, gallery: currentGalleryImages };
-                    if (mainImage) destinationsData[idx].img = mainImage;                    
-                    if (!(await saveDestToFirestore(destinationsData[idx]))) return;
+            const proceedSave = (imgUrl) => {
+                if (editId) {
+                    // Update existing
+                    const index = destinationsData.findIndex(d => d.id == editId);
+                    if (index !== -1) {
+                        destinationsData[index].name = name;
+                        destinationsData[index].region = region;
+                        destinationsData[index].description = description;
+                        destinationsData[index].rating = rating;
+                        if (imgUrl) destinationsData[index].img = imgUrl;
+                    }
+                } else {
+                    // Add new
+                    const newDest = {
+                        id: Date.now(),
+                        name: name,
+                        region: region,
+                        description: description,
+                        lat: region === 'latakia' ? 35.52 : 34.89,
+                        lng: region === 'latakia' ? 35.79 : 35.88,
+                        rating: rating,
+                        img: imgUrl || "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"
+                    };
+                    destinationsData.push(newDest);
                 }
-            } else {
-                const newId = String(Date.now());
-                const newDest = { id: newId, name, region, description, lat: region === 'latakia' ? 35.52 : 34.89, lng: region === 'latakia' ? 35.79 : 35.88, rating, img: mainImage || defaultImg, gallery: currentGalleryImages };
-                destinationsData.push(newDest);
-                if (!(await saveDestToFirestore(newDest))) return;
-            }
-            closeDestinationModal();
-            renderAdminDestinationsList();
-            filterByRegion('all');
-            alert('تم حفظ الموقع في السحابة بنجاح! ✅');
-        }
-
-        async function deleteDestination(id) {
-            if (confirm('هل أنت متأكد من حذف هذا الموقع؟')) {
-                destinationsData = destinationsData.filter(d => String(d.id) !== String(id));
-                await deleteDestFromFirestore(id);
+                localStorage.setItem('jnan_destinations', JSON.stringify(destinationsData));
+                closeDestinationModal();
                 renderAdminDestinationsList();
                 filterByRegion('all');
-                alert('تم حذف الموقع من السحابة.');
+                alert('تم حفظ وتحديث بيانات الموقع بنجاح!');
+            };
+            if (fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    proceedSave(e.target.result);
+                }
+                reader.readAsDataURL(fileInput.files[0]);
+            } else {
+                const existingImg = editId ? destinationsData.find(d => d.id == editId).img : null;
+                proceedSave(existingImg);
             }
         }
-
-        // تحديث دالة إضافة البوستر لاستخدام Storage
-        async function addNewAdPoster() {
-            const fi = document.getElementById('ad-file-input');
-            const ti = document.getElementById('ad-title-input');
-            const title = ti.value.trim() || 'إعلان جديد';
-            if (fi.files && fi.files[0]) {
-                try {
-                    const compressedBlob = await compressImage(fi.files[0], 600, 0.6);
-                    const path = `ads/poster_${Date.now()}_${fi.files[0].name}`;
-                    const img = await uploadImageToStorage(compressedBlob, path);
-                    const newAd = { id: String(Date.now()), title, img, desc: 'بوستر إعلاني' };
-                    adPosters.push(newAd);
-                    await saveAdToFirestore(newAd);
-                    ti.value = ''; fi.value = '';
-                    renderAdminAdsList(); filterByRegion('all');
-                    alert('تمت إضافة البوستر! ✅');
-                } catch(e) { 
-                    console.error('خطأ في رفع البوستر:', e);
-                    alert('حدث خطأ في رفع البوستر. تأكد من الاتصال بالإنترنت.');
+        function deleteDestination(id) {
+            if (confirm('هل أنت متأكد من حذف هذا الموقع السياحي؟')) {
+                destinationsData = destinationsData.filter(d => d.id !== id);
+                localStorage.setItem('jnan_destinations', JSON.stringify(destinationsData));
+                renderAdminDestinationsList();
+                filterByRegion('all');
+                alert('تم حذف الموقع بنجاح.');
+            }
+        }
+        // --- Ad Posters Management ---
+        function renderAdminAdsList() {
+            const listContainer = document.getElementById('admin-ads-list');
+            if (adPosters.length === 0) {
+                listContainer.innerHTML = '<p style="color: var(--text-muted); font-size: 0.9rem;">لا توجد بوسترات إعلانية حالياً.</p>';
+                return;
+            }
+            listContainer.innerHTML = adPosters.map((ad, idx) => `
+                <div class="admin-item-row">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <img src="${ad.img}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 6px;" alt="">
+                        <div>
+                            <h4 style="font-size: 0.9rem;">${ad.title}</h4>
+                            <small style="color: var(--text-muted);">${ad.desc}</small>
+                        </div>
+                    </div>
+                    <button class="btn-primary" style="background: #ef4444; padding: 4px 10px; font-size: 0.8rem;" onclick="deleteAdPoster(${idx})">حذف</button>
+                </div>
+            `).join('');
+        }
+        function addNewAdPoster() {
+            const fileInput = document.getElementById('ad-file-input');
+            const titleInput = document.getElementById('ad-title-input');
+            const title = titleInput.value.trim() || 'إعلان سياحي جديد';
+            if (fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    adPosters.push({
+                        id: Date.now(),
+                        title: title,
+                        img: e.target.result,
+                        desc: "بوستر إعلاني مضاف محلياً من الجهاز."
+                    });
+                    localStorage.setItem('jnan_ad_posters', JSON.stringify(adPosters));
+                    titleInput.value = '';
+                    fileInput.value = '';
+                    renderAdminAdsList();
+                    filterByRegion('all');
+                    alert('تمت إضافة البوستر الإعلاني بنجاح!');
                 }
-            } else alert('يرجى اختيار صورة.');
+                reader.readAsDataURL(fileInput.files[0]);
+            } else {
+                alert('يرجى اختيار صورة الإعلان من الجهاز أولاً.');
+            }
         }
-
-        async function deleteAdPoster(id) {
-            adPosters = adPosters.filter(a => String(a.id) !== String(id));
-            await deleteAdFromFirestore(id);
-            renderAdminAdsList(); filterByRegion('all');
-            alert('تم حذف البوستر.');
+        function deleteAdPoster(index) {
+            adPosters.splice(index, 1);
+            localStorage.setItem('jnan_ad_posters', JSON.stringify(adPosters));
+            renderAdminAdsList();
+            filterByRegion('all');
+            alert('تم حذف البوستر بنجاح.');
         }
-
-        function switchSection(id) {
-            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));            document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            const l = document.getElementById(`link-${id}`);
-            if (l) l.classList.add('active');
+        // --- Navigation & Sections ---
+        function switchSection(sectionId) {
+            document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+            document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+            
+            document.getElementById(sectionId).classList.add('active');
+            const link = document.getElementById(`link-${sectionId}`);
+            if (link) link.classList.add('active');
             document.getElementById('navLinks').classList.remove('show');
             window.scrollTo({ top: 0, behavior: 'smooth' });
-            if (id === 'map-section' && !window.mapInitialized) { initMap(); window.mapInitialized = true; }
-            if (id === 'events') renderEvents('all-events-grid');
-        }
-        function toggleMenu() { document.getElementById('navLinks').classList.toggle('show'); }
-        let map, mapMarkers = [];
-        function initMap() {
-            map = L.map('map').setView([35.2, 35.9], 9);
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OSM' }).addTo(map);
-            renderMapMarkers('all');
-        }
-        function renderMapMarkers(ft) {
-            mapMarkers.forEach(m => map.removeLayer(m)); mapMarkers = [];
-            destinationsData.forEach(d => {
-                if (ft === 'all' || ft === d.region) {
-                    const he = eventsData.some(e => e.destName === d.name);
-                    if (he) {
-                        const pi = L.divIcon({ className: 'pulse-marker', html: '<div class="pulse-marker-inner"><i class="fa-solid fa-bolt"></i></div>', iconSize: [20,20], iconAnchor: [10,10] });
-                        mapMarkers.push(L.marker([d.lat, d.lng], { icon: pi }).addTo(map).bindPopup(`<b style="color:#ef4444">${d.name}</b><br>🔥 فعاليات هنا!`));
-                    } else mapMarkers.push(L.marker([d.lat, d.lng]).addTo(map).bindPopup(`<b>${d.name}</b>`));
-                }
-            });
-            if (ft === 'events') {
-                eventsData.forEach(e => {
-                    const pi = L.divIcon({ className: 'pulse-marker', html: '<div class="pulse-marker-inner"><i class="fa-solid fa-calendar"></i></div>', iconSize: [20,20], iconAnchor: [10,10] });
-                    mapMarkers.push(L.marker([e.lat, e.lng], { icon: pi }).addTo(map).bindPopup(`<b style="color:#ef4444">${e.title}</b>`));
-                });
+            if (sectionId === 'map-section' && !window.mapInitialized) {
+                initMap();
+                window.mapInitialized = true;
             }
         }
-        function filterMapRegion(r) {
-            renderMapMarkers(r);
-            if (r === 'all') map.setView([35.2,35.9],9);
-            else if (r === 'latakia') map.setView([35.5,35.9],10);
-            else if (r === 'tartus') map.setView([34.9,35.9],10);
+        function toggleMenu() {
+            document.getElementById('navLinks').classList.toggle('show');
         }
-        function resetCounters() { totalVisitors = 170001; updateCountersDisplay(); alert('تم تصفير العداد.'); }
+        // --- Map Functions ---
+        let map;
+        function initMap() {
+            map = L.map('map').setView([35.2, 35.9], 9);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap'
+            }).addTo(map);
+            destinationsData.forEach(dest => {
+                L.marker([dest.lat, dest.lng]).addTo(map)
+                    .bindPopup(`<b>${dest.name}</b><br>${dest.description}`);
+            });
+        }
+        function filterMapRegion(reg) {
+            alert(`تم فلترة الخريطة لعرض منطقة: ${reg === 'all' ? 'الكل' : reg}`);
+        }
+        // --- AI Chat ---
+        function sendAIMessage() {
+            const input = document.getElementById('chat-input');
+            const messages = document.getElementById('chat-messages');
+            if (!input.value.trim()) return;
+            messages.innerHTML += `<div class="message user">${input.value}</div>`;
+            const q = input.value;
+            input.value = '';
+            messages.scrollTop = messages.scrollHeight;
+            setTimeout(() => {
+                let reply = "بصفتي مرشدك الذكي، أنصحك بزيارة جزيرة أرواد ومرتفعات صلنفة وكسب لما تتمتع به من جمال فريد.";
+                if (q.includes('أرواد')) reply = "جزيرة أرواد تقع في طرطوس وتتميز بالقوارب والقلاع التاريخية والمطاعم البحرية.";
+                messages.innerHTML += `<div class="message ai">${reply}</div>`;
+                messages.scrollTop = messages.scrollHeight;
+            }, 500);
+        }
+        function generateSmartPlan() {
+            document.getElementById('plan-result').innerHTML = "<b>برنامج سياحي مقترح:</b><br>• اليوم الأول: اللاذقية وشاطئ البسيط.<br>• اليوم الثاني: صلنفة وغاباتها.<br>• اليوم الثالث: طرطوس وجزيرة أرواد.";
+        }
+        function resetCounters() {
+            totalVisitors = 170001;
+            localStorage.setItem('jnan_total_v', totalVisitors);
+            updateCountersDisplay();
+            alert('تمت إعادة تعيين العداد ليصبح 170,001 بنجاح.');
+        }
         function toggleDarkMode() {
             document.body.classList.toggle('dark-mode');
-            const i = document.getElementById('theme-icon');
-            i.classList.toggle('fa-moon'); i.classList.toggle('fa-sun');
+            const icon = document.getElementById('theme-icon');
+            icon.classList.toggle('fa-moon');
+            icon.classList.toggle('fa-sun');
         }
-
-        // PWA
-        const APP_ICON = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0ea5e9"/><stop offset="1" stop-color="#059669"/></linearGradient></defs><rect width="512" height="512" rx="100" fill="url(#g)"/><circle cx="370" cy="150" r="55" fill="#fcd34d" opacity=".9"/><path d="M0 300C80 260 160 340 240 300S400 260 512 300V512H0Z" fill="#fff" opacity=".25"/><path d="M0 350C80 310 160 390 240 350S400 310 512 350V512H0Z" fill="#fff" opacity=".35"/><path d="M0 400C80 360 160 440 240 400S400 360 512 400V512H0Z" fill="#fff" opacity=".45"/><path d="M150 290Q155 220 160 170" stroke="#92400e" stroke-width="12" fill="none" stroke-linecap="round"/><path d="M160 170Q120 130 80 140" stroke="#16a34a" stroke-width="8" fill="none" stroke-linecap="round"/><path d="M160 170Q200 120 240 130" stroke="#16a34a" stroke-width="8" fill="none" stroke-linecap="round"/><path d="M160 170Q130 110 100 100" stroke="#22c55e" stroke-width="7" fill="none" stroke-linecap="round"/><path d="M160 170Q190 100 220 90" stroke="#22c55e" stroke-width="7" fill="none" stroke-linecap="round"/></svg>`;
-        const iconURL = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(APP_ICON)));        const manifest = { name: "جنان الساحل", short_name: "جنان الساحل", start_url: ".", display: "standalone", background_color: "#0284c7", theme_color: "#0284c7", icons: [{ src: iconURL, sizes: "512x512", type: "image/svg+xml", purpose: "any maskable" }] };
-        const mLink = document.createElement('link'); mLink.rel = 'manifest'; mLink.href = URL.createObjectURL(new Blob([JSON.stringify(manifest)], { type: 'application/json' })); document.head.appendChild(mLink);
-        let deferredPrompt;
-        window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredPrompt = e; document.getElementById('install-btn').style.display = 'flex'; });
-        function installApp() { if (deferredPrompt) { deferredPrompt.prompt(); deferredPrompt.userChoice.then(() => { deferredPrompt = null; document.getElementById('install-btn').style.display = 'none'; }); } }
-
-        window.switchSection = switchSection; window.toggleMenu = toggleMenu; window.toggleDarkMode = toggleDarkMode;
-        window.filterByRegion = filterByRegion; window.toggleShowMore = toggleShowMore; window.filterMapRegion = filterMapRegion;
-        window.sendAIMessage = sendAIMessage; window.askQuickQuestion = askQuickQuestion; window.generateSmartPlan = generateSmartPlan;
-        window.checkAdminPassword = checkAdminPassword; window.lockAdminPanel = lockAdminPanel;
-        window.openDestinationModal = openDestinationModal; window.openEditDestinationModal = openEditDestinationModal;
-        window.closeDestinationModal = closeDestinationModal; window.saveDestinationData = saveDestinationData;
-        window.deleteDestination = deleteDestination; window.addNewAdPoster = addNewAdPoster; window.deleteAdPoster = deleteAdPoster;
-        window.resetCounters = resetCounters; window.openDetailModal = openDetailModal; window.closeModalDetail = closeModalDetail;
-        window.openLightbox = openLightbox; window.closeLightbox = closeLightbox; window.navigateLightbox = navigateLightbox;
-        window.removeGalleryImage = removeGalleryImage; window.installApp = installApp;
-
-        initApp();
+        window.onload = function() {
+            filterByRegion('all');
+            updateCountersDisplay();
+        };
     </script>
 </body>
 </html>
