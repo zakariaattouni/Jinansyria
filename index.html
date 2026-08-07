@@ -134,7 +134,7 @@
             justify-content: center;
         }
 
-        /* === NEW: Stats Bar Under Header === */
+        /* === Stats Bar Under Header === */
         .header-stats-bar {
             background: rgba(0, 0, 0, 0.15);
             border-top: 1px solid rgba(255, 255, 255, 0.1);
@@ -247,7 +247,7 @@
             gap: 10px;
         }
 
-        /* === NEW: Compact Pulse Section (Horizontal Scroll) === */
+        /* === Compact Pulse Section (Horizontal Scroll) === */
         .pulse-section {
             margin-bottom: 2rem;
             padding: 1.2rem;
@@ -302,7 +302,7 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 1.5rem;
-            margin-bottom: 2.5rem;
+            margin-bottom: 1.5rem;
         }
         .dest-card, .ad-card {
             background: var(--bg-card);
@@ -341,17 +341,17 @@
             flex-shrink: 0;
         }
         .mini-gallery img:hover { transform: scale(1.05); border-color: var(--primary); }
-        /* === NEW: Collapsible Description === */
+        /* === Collapsible Description === */
         .dest-desc {
             color: var(--text-muted);
             font-size: 0.9rem;
             margin-bottom: 0.5rem;
-            flex: 1;
             line-height: 1.5;
             max-height: 2.7em;
             overflow: hidden;
             transition: max-height 0.4s ease;
             position: relative;
+            cursor: pointer;
         }
         .dest-desc.expanded {
             max-height: 500px;
@@ -483,7 +483,7 @@
         }
         .btn-primary:hover { background: var(--primary-dark); }
 
-        /* === NEW: Show More Button === */
+        /* === Show More Button === */
         .show-more-wrap {
             text-align: center;
             margin-bottom: 2rem;
@@ -613,7 +613,7 @@
                 <button class="mobile-toggle" onclick="toggleMenu()" title="القائمة"><i class="fa-solid fa-bars"></i></button>
             </div>
         </div>
-        <!-- === NEW: Stats Bar Under Header === -->
+        <!-- Stats Bar Under Header -->
         <div class="header-stats-bar">
             <div class="header-stats-inner">
                 <div class="live-stat-item">
@@ -640,7 +640,7 @@
                 <button class="region-btn" onclick="filterByRegion('tartus')"><i class="fa-solid fa-water"></i> محافظة طرطوس وأرواد</button>
             </div>
 
-            <!-- === NEW: Compact Pulse Section (Horizontal Scroll) === -->
+            <!-- Compact Pulse Section -->
             <div class="pulse-section">
                 <h2 class="section-title"><i class="fa-solid fa-heart-pulse" style="color: var(--accent);"></i> نبض الساحل: فعاليات ونشاطات</h2>
                 <div class="pulse-scroll">
@@ -669,7 +669,7 @@
 
             <h2 class="section-title"><i class="fa-solid fa-fire"></i> بطاقات المواقع السياحية والبوسترات</h2>
             <div class="dest-grid" id="home-destinations-grid"></div>
-            <!-- === NEW: Show More Button === -->
+            <!-- Show More Button -->
             <div class="show-more-wrap" id="home-show-more-wrap" style="display:none;">
                 <button class="btn-show-more" onclick="toggleHomeShowMore()">
                     <i class="fa-solid fa-angles-down"></i> عرض باقي المواقع
@@ -820,6 +820,7 @@
         let adPosters = [];
         let adCarousels = {};
         let homeExpanded = false;
+        let currentRegionFilter = 'all';
 
         // --- Load Initial Data into Firebase if Empty, then Sync ---
         function initFirebaseData() {
@@ -830,8 +831,8 @@
                         2: { id: 2, name: "رأس البسيط", region: "latakia", description: "شبه جزيرة ساحرة ذات رمال ذهبية ومياه نقية في اللاذقية.", lat: 35.9183, lng: 35.8056, rating: 4.8, img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80" },
                         3: { id: 3, name: "صلنفة", region: "latakia", description: "عروس المصايف السورية وتشتهر بغابات الصنوبر والضباب.", lat: 35.5833, lng: 36.2167, rating: 4.9, img: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&q=80" },
                         4: { id: 4, name: "قلعة صلاح الدين", region: "latakia", description: "تحفة معمارية عسكرية تاريخية مسجلة في اليونسكو باللاذقية.", lat: 35.6, lng: 36.05, rating: 5.0, img: "https://images.unsplash.com/photo-1599839575945-a9e5af0c3fa5?auto=format&fit=crop&w=600&q=80" },
-                        5: { id: 5, name: "جزيرة أرواد", region: "tartus", description: "الجزيرة المأهولة الوحيدة في الساحل السوري في طرطوس.", lat: 34.8517, lng: 35.8569, rating: 4.9, img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80" },
-                        6: { id: 6, name: "قلعة المرقب (بانياس)", region: "tartus", description: "قلعة حصينة من أهم القلاع التاريخية المطلة على البحر في طرطوس.", lat: 35.15, lng: 35.95, rating: 4.9, img: "https://images.unsplash.com/photo-1599839575945-a9e5af0c3fa5?auto=format&fit=crop&w=600&q=80" },                        7: { id: 7, name: "مشتى الحلو", region: "tartus", description: "مصيف جبلي رائع يتميز بينابيعه العذبة في طرطوس.", lat: 34.8833, lng: 36.2167, rating: 4.7, img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80" },
+                        5: { id: 5, name: "جزيرة أرواد", region: "tartus", description: "الجزيرة المأهولة الوحيدة في الساحل السوري في طرطوس.", lat: 34.8517, lng: 35.8569, rating: 4.9, img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80" },                        6: { id: 6, name: "قلعة المرقب (بانياس)", region: "tartus", description: "قلعة حصينة من أهم القلاع التاريخية المطلة على البحر في طرطوس.", lat: 35.15, lng: 35.95, rating: 4.9, img: "https://images.unsplash.com/photo-1599839575945-a9e5af0c3fa5?auto=format&fit=crop&w=600&q=80" },
+                        7: { id: 7, name: "مشتى الحلو", region: "tartus", description: "مصيف جبلي رائع يتميز بينابيعه العذبة في طرطوس.", lat: 34.8833, lng: 36.2167, rating: 4.7, img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80" },
                         8: { id: 8, name: "قلعة صافيتا", region: "tartus", description: "برج صافيتا الأثري الشامخ في محافظة طرطوس.", lat: 34.8167, lng: 36.1167, rating: 4.8, img: "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=600&q=80" }
                     };
                     db.ref('destinations').set(defaultDestinations);
@@ -850,7 +851,7 @@
             db.ref('destinations').on('value', (snapshot) => {
                 const data = snapshot.val();
                 destinationsData = data ? Object.values(data) : [];
-                filterByRegion('all');
+                renderAllGrids();
                 if (document.getElementById('admin-panel-box').style.display === 'block') {
                     renderAdminDestinationsList();
                 }
@@ -858,18 +859,28 @@
             db.ref('ad_posters').on('value', (snapshot) => {
                 const data = snapshot.val();
                 adPosters = data ? Object.values(data) : [];
-                filterByRegion('all');
+                renderAllGrids();
                 if (document.getElementById('admin-panel-box').style.display === 'block') {
                     renderAdminAdsList();
                 }
             });
         }
+
+        // === NEW: Central render function ===
+        function renderAllGrids() {
+            let filtered = destinationsData;
+            if (currentRegionFilter !== 'all') {
+                filtered = destinationsData.filter(d => d.region === currentRegionFilter);
+            }
+            renderGridWithAds('home-destinations-grid', filtered, true);
+            renderGridWithAds('all-destinations-grid', filtered, false);
+        }
+
         let totalVisitors = 170001;
         let onlineUsers = 42;
         function updateCountersDisplay() {
             const visitorEl = document.getElementById('total-visitors-counter');
-            const onlineEl = document.getElementById('online-users-counter');
-            if (visitorEl) visitorEl.innerText = totalVisitors.toLocaleString();
+            const onlineEl = document.getElementById('online-users-counter');            if (visitorEl) visitorEl.innerText = totalVisitors.toLocaleString();
             if (onlineEl) onlineEl.innerText = onlineUsers;
         }
         if (!sessionStorage.getItem('visited_session')) {
@@ -880,7 +891,8 @@
         function compressImage(file, callback) {
             const reader = new FileReader();
             reader.onload = function (e) {
-                const img = new Image();                img.onload = function () {
+                const img = new Image();
+                img.onload = function () {
                     const canvas = document.createElement('canvas');
                     const MAX_WIDTH = 500;
                     const MAX_HEIGHT = 500;
@@ -902,51 +914,35 @@
                     const ctx = canvas.getContext('2d');
                     ctx.drawImage(img, 0, 0, width, height);
                     
-                    const dataUrl = canvas.toDataURL('image/jpeg', 0.5); // 50% quality for compact size
+                    const dataUrl = canvas.toDataURL('image/jpeg', 0.5);
                     callback(dataUrl);
                 };
                 img.src = e.target.result;
             };
             reader.readAsDataURL(file);
         }
-        // --- Region Filtering System & Ad Insertion Every 4 Cards ---
+        // --- Region Filtering System ---
         function filterByRegion(region) {
+            currentRegionFilter = region;
             document.querySelectorAll('.region-btn').forEach(btn => btn.classList.remove('active'));
             if (window.event && window.event.currentTarget) {
                 window.event.currentTarget.classList.add('active');
             }
-            let filtered = destinationsData;
-            if (region !== 'all') {
-                filtered = destinationsData.filter(d => d.region === region);
-            }
-            renderGridWithAds('home-destinations-grid', filtered, true);
-            renderGridWithAds('all-destinations-grid', filtered, false);
+            renderAllGrids();
         }
-
-        // === NEW: Toggle Show More on Home ===
+        // === Toggle Show More on Home ===
         function toggleHomeShowMore() {
             homeExpanded = !homeExpanded;
             const btn = document.querySelector('#home-show-more-wrap .btn-show-more');
             if (homeExpanded) {
                 btn.innerHTML = '<i class="fa-solid fa-angles-up"></i> إخفاء المواقع الإضافية';
-            } else {                btn.innerHTML = '<i class="fa-solid fa-angles-down"></i> عرض باقي المواقع';
+            } else {
+                btn.innerHTML = '<i class="fa-solid fa-angles-down"></i> عرض باقي المواقع';
             }
-            // Re-render with current filter
-            const activeRegionBtn = document.querySelector('.region-btn.active');
-            let currentRegion = 'all';
-            if (activeRegionBtn && activeRegionBtn.onclick) {
-                const onclickStr = activeRegionBtn.getAttribute('onclick');
-                if (onclickStr.includes('latakia')) currentRegion = 'latakia';
-                else if (onclickStr.includes('tartus')) currentRegion = 'tartus';
-            }
-            let filtered = destinationsData;
-            if (currentRegion !== 'all') {
-                filtered = destinationsData.filter(d => d.region === currentRegion);
-            }
-            renderGridWithAds('home-destinations-grid', filtered, true);
+            renderAllGrids();
         }
 
-        // === NEW: Toggle Description Expand/Collapse ===
+        // === Toggle Description Expand/Collapse ===
         function toggleDescription(el) {
             el.classList.toggle('expanded');
             const btn = el.nextElementSibling;
@@ -978,11 +974,11 @@
                 };
                 adCarousels[id] = setInterval(rotate, 8000);
                 dots.forEach((dot, idx) => {
-                    dot.addEventListener('click', () => {                        slides[current].classList.remove('active-slide');
+                    dot.addEventListener('click', () => {
+                        slides[current].classList.remove('active-slide');
                         dots[current].classList.remove('active');
                         current = idx;
-                        slides[current].classList.add('active-slide');
-                        dots[current].classList.add('active');
+                        slides[current].classList.add('active-slide');                        dots[current].classList.add('active');
                         if (counter) counter.innerText = (current + 1) + '/' + slides.length;
                     });
                 });
@@ -993,9 +989,9 @@
             const container = document.getElementById(containerId);
             if (!container) return;
             
-            // Apply limit for home section
+            // Apply limit for home section: show only 4 cards
             let displayData = data;
-            if (isHome && !homeExpanded) {
+            if (isHome && !homeExpanded && data.length > 4) {
                 displayData = data.slice(0, 4);
             }
             
@@ -1017,54 +1013,52 @@
                     'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=150&q=60'
                 ];
                 
-                let galleryHtml = `<div class="mini-gallery">`;
+                let galleryHtml = '<div class="mini-gallery">';
                 galleryImgs.forEach(gImg => {
-                    galleryHtml += `<img src="${gImg}" alt="gallery thumb" loading="lazy">`;
+                    galleryHtml += '<img src="' + gImg + '" alt="gallery thumb" loading="lazy">';
                 });
-                galleryHtml += `</div>`;
+                galleryHtml += '</div>';
 
-                html += `
-                    <div class="dest-card">
-                        <img src="${dest.img}" class="dest-img" alt="${dest.name}">
-                        <div class="dest-body">
-                            <span class="dest-badge">${dest.region === 'latakia' ? 'محافظة اللاذقية' : 'محافظة طرطوس'}</span>                            <h3>${dest.name}</h3>
-                            ${galleryHtml}
-                            <p class="dest-desc" onclick="toggleDescription(this)">${dest.description}</p>
-                            <button class="toggle-desc-btn" onclick="toggleDescription(this.previousElementSibling)"><i class="fa-solid fa-chevron-down"></i> اقرأ المزيد</button>
-                            <div class="dest-footer">
-                                <div class="rating"><i class="fa-solid fa-star"></i> ${dest.rating}</div>
-                                <button class="btn-primary" onclick="alert('تفاصيل الموقع: ${dest.name}')">استكشف</button>
-                            </div>
-                        </div>
-                    </div>
-                `;
+                html += '<div class="dest-card">';
+                html += '<img src="' + dest.img + '" class="dest-img" alt="' + dest.name + '">';
+                html += '<div class="dest-body">';
+                html += '<span class="dest-badge">' + (dest.region === 'latakia' ? 'محافظة اللاذقية' : 'محافظة طرطوس') + '</span>';
+                html += '<h3>' + dest.name + '</h3>';
+                html += galleryHtml;
+                html += '<p class="dest-desc" onclick="toggleDescription(this)">' + dest.description + '</p>';
+                html += '<button class="toggle-desc-btn" onclick="toggleDescription(this.previousElementSibling)"><i class="fa-solid fa-chevron-down"></i> اقرأ المزيد</button>';
+                html += '<div class="dest-footer">';                html += '<div class="rating"><i class="fa-solid fa-star"></i> ' + dest.rating + '</div>';
+                html += '<button class="btn-primary" onclick="alert(\'تفاصيل الموقع: ' + dest.name + '\')">استكشف</button>';
+                html += '</div>';
+                html += '</div>';
+                html += '</div>';
+
+                // Insert Ad every 4 items
                 if ((index + 1) % 4 === 0 && adPosters.length > 0) {
                     const ad = adPosters[adIndex % adPosters.length];
                     const images = ad.images || [ad.img];
                     let slidesHtml = '';
                     let dotsHtml = '';
                     images.forEach((img, i) => {
-                        slidesHtml += `<img src="${img}" class="ad-slide ${i === 0 ? 'active-slide' : ''}" alt="${ad.title}" loading="lazy">`;
-                        dotsHtml += `<span class="dot ${i === 0 ? 'active' : ''}"></span>`;
+                        slidesHtml += '<img src="' + img + '" class="ad-slide ' + (i === 0 ? 'active-slide' : '') + '" alt="' + ad.title + '" loading="lazy">';
+                        dotsHtml += '<span class="dot ' + (i === 0 ? 'active' : '') + '"></span>';
                     });
-                    html += `
-                        <div class="ad-card">
-                            <div class="ad-carousel">
-                                <span class="ad-carousel-counter">1/${images.length}</span>
-                                ${slidesHtml}
-                                <div class="ad-carousel-dots">${dotsHtml}</div>
-                            </div>
-                            <div class="ad-body">
-                                <span class="ad-badge"><i class="fa-solid fa-rectangle-ad"></i> إعلان ممول</span>
-                                <h3>${ad.title}</h3>
-                                <p>${ad.desc}</p>
-                                <div class="dest-footer">
-                                    <span style="font-size: 0.8rem; color: var(--accent); font-weight: 700;"><i class="fa-solid fa-images"></i> ${images.length} صور</span>
-                                    <button class="btn-primary" style="background: var(--accent);" onclick="alert('تم النقر على إعلان: ${ad.title}')">التفاصيل</button>
-                                </div>
-                            </div>
-                        </div>
-                    `;
+                    html += '<div class="ad-card">';
+                    html += '<div class="ad-carousel">';
+                    html += '<span class="ad-carousel-counter">1/' + images.length + '</span>';
+                    html += slidesHtml;
+                    html += '<div class="ad-carousel-dots">' + dotsHtml + '</div>';
+                    html += '</div>';
+                    html += '<div class="ad-body">';
+                    html += '<span class="ad-badge"><i class="fa-solid fa-rectangle-ad"></i> إعلان ممول</span>';
+                    html += '<h3>' + ad.title + '</h3>';
+                    html += '<p>' + ad.desc + '</p>';
+                    html += '<div class="dest-footer">';
+                    html += '<span style="font-size: 0.8rem; color: var(--accent); font-weight: 700;"><i class="fa-solid fa-images"></i> ' + images.length + ' صور</span>';
+                    html += '<button class="btn-primary" style="background: var(--accent);" onclick="alert(\'تم النقر على إعلان: ' + ad.title + '\')">التفاصيل</button>';
+                    html += '</div>';
+                    html += '</div>';
+                    html += '</div>';
                     adIndex++;
                 }
             });
@@ -1076,13 +1070,13 @@
             const passInput = document.getElementById('admin-pass-input');
             if (!passInput) return;
             const pass = passInput.value;
-            if (pass === 'salem1959') {                document.getElementById('admin-gate-box').style.display = 'none';
+            if (pass === 'salem1959') {
+                document.getElementById('admin-gate-box').style.display = 'none';
                 document.getElementById('admin-panel-box').style.display = 'block';
                 renderAdminDestinationsList();
                 renderAdminAdsList();
             } else {
-                alert('كلمة المرور غير صحيحة!');
-            }
+                alert('كلمة المرور غير صحيحة!');            }
         }
         function lockAdminPanel() {
             document.getElementById('admin-panel-box').style.display = 'none';
@@ -1125,13 +1119,13 @@
         function openEditDestinationModal(id) {
             const dest = destinationsData.find(d => d.id === id);
             if (!dest) return;
-            document.getElementById('modal-title').innerText = 'تحرير وتعديل الموقع';            document.getElementById('edit-dest-id').value = dest.id;
+            document.getElementById('modal-title').innerText = 'تحرير وتعديل الموقع';
+            document.getElementById('edit-dest-id').value = dest.id;
             document.getElementById('form-dest-name').value = dest.name;
             document.getElementById('form-dest-region').value = dest.region;
             document.getElementById('form-dest-desc').value = dest.description;
             document.getElementById('form-dest-rating').value = dest.rating;
-            document.getElementById('form-dest-img').value = '';
-            document.getElementById('dest-modal').style.display = 'flex';
+            document.getElementById('form-dest-img').value = '';            document.getElementById('dest-modal').style.display = 'flex';
         }
         function closeDestinationModal() {
             document.getElementById('dest-modal').style.display = 'none';
@@ -1174,13 +1168,13 @@
                     proceedSave(compressedDataUrl);
                 });
             } else {
-                proceedSave(null);            }
+                proceedSave(null);
+            }
         }
         function deleteDestination(id) {
             if (confirm('هل أنت متأكد من حذف هذا الموقع السياحي؟')) {
                 db.ref('destinations/' + id).remove().then(() => {
-                    alert('تم حذف الموقع بنجاح.');
-                });
+                    alert('تم حذف الموقع بنجاح.');                });
             }
         }
         // --- Ad Posters Management ---
@@ -1223,13 +1217,13 @@
                             const adId = Date.now();
                             const adObj = {
                                 id: adId,
-                                title: title,                                images: compressedImages,
+                                title: title,
+                                images: compressedImages,
                                 desc: "بوستر إعلاني مضاف حديثاً."
                             };
                             db.ref('ad_posters/' + adId).set(adObj).then(() => {
                                 titleInput.value = '';
-                                fileInput.value = '';
-                                alert(`تمت إضافة البوستر الإعلاني مع ${compressedImages.length} صور بنجاح!`);
+                                fileInput.value = '';                                alert('تمت إضافة البوستر الإعلاني مع ' + compressedImages.length + ' صور بنجاح!');
                             });
                         }
                     });
@@ -1251,7 +1245,7 @@
             const targetSection = document.getElementById(sectionId);
             if (targetSection) targetSection.classList.add('active');
             
-            const link = document.getElementById(`link-${sectionId}`);
+            const link = document.getElementById('link-' + sectionId);
             if (link) link.classList.add('active');
             
             const navLinks = document.getElementById('navLinks');
@@ -1272,16 +1266,16 @@
         function initMap() {
             if (document.getElementById('map')) {
                 map = L.map('map').setView([35.2, 35.9], 9);
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {                    attribution: '&copy; OpenStreetMap'
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; OpenStreetMap'
                 }).addTo(map);
                 destinationsData.forEach(dest => {
                     L.marker([dest.lat, dest.lng]).addTo(map)
-                        .bindPopup(`<b>${dest.name}</b><br>${dest.description}`);
-                });
-            }
+                        .bindPopup('<b>' + dest.name + '</b><br>' + dest.description);
+                });            }
         }
         function filterMapRegion(reg) {
-            alert(`تم فلترة الخريطة لعرض منطقة: ${reg === 'all' ? 'الكل' : reg}`);
+            alert('تم فلترة الخريطة لعرض منطقة: ' + (reg === 'all' ? 'الكل' : reg));
         }
         // --- AI Chat ---
         function sendAIMessage() {
@@ -1289,7 +1283,7 @@
             const messages = document.getElementById('chat-messages');
             if (!input || !input.value.trim()) return;
             
-            messages.innerHTML += `<div class="message user">${input.value}</div>`;
+            messages.innerHTML += '<div class="message user">' + input.value + '</div>';
             const q = input.value;
             input.value = '';
             messages.scrollTop = messages.scrollHeight;
@@ -1297,7 +1291,7 @@
             setTimeout(() => {
                 let reply = "بصفتي مرشدك الذكي، أنصحك بزيارة جزيرة أرواد ومرتفعات صلنفة وكسب لما تتمتع به من جمال فريد.";
                 if (q.includes('أرواد')) reply = "جزيرة أرواد تقع في طرطوس وتتميز بالقوارب والقلاع التاريخية والمطاعم البحرية.";
-                messages.innerHTML += `<div class="message ai">${reply}</div>`;
+                messages.innerHTML += '<div class="message ai">' + reply + '</div>';
                 messages.scrollTop = messages.scrollHeight;
             }, 500);
         }
@@ -1321,7 +1315,8 @@
             }
         }
         window.onload = function() {
-            initFirebaseData();            updateCountersDisplay();
+            initFirebaseData();
+            updateCountersDisplay();
         };
     </script>
 </body>
