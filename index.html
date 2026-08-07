@@ -787,8 +787,8 @@
     </style>
 </head>
 <body>
-    <!-- PWA Install Banner -->
-    <div id="install-banner">
+    <!-- PWA Install Banner - Always visible with a toggle -->
+    <div id="install-banner" class="show">
         <div class="banner-content">
             <div class="banner-icon"><i class="fa-solid fa-mobile-screen-button"></i></div>
             <div class="banner-text">
@@ -817,7 +817,7 @@
                 <li><a data-action="nav" data-section="admin">الإدارة</a></li>
             </ul>
             <div class="nav-actions">
-                <button class="btn-install-nav" id="btn-install-nav"><i class="fa-solid fa-download"></i> تثبيت</button>
+                <button class="btn-install-nav show" id="btn-install-nav"><i class="fa-solid fa-download"></i> تثبيت</button>
                 <button class="btn-icon" data-action="toggle-theme"><i class="fa-solid fa-moon" id="theme-icon"></i></button>
                 <button class="mobile-toggle" data-action="toggle-menu"><i class="fa-solid fa-bars"></i></button>
             </div>
@@ -962,7 +962,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
 
     <script>
-        // ===== PWA INSTALL - FIXED =====
+        // ===== PWA INSTALL - SIMPLIFIED =====
         var deferredPrompt = null;
         var installBanner = document.getElementById('install-banner');
         var btnInstall = document.getElementById('btn-install-app');
@@ -1014,8 +1014,31 @@
                 });
             } else {
                 // Fallback for browsers that don't support beforeinstallprompt
-                alert('لتثبيت التطبيق:\n\n📱 على Android: اضغط على ⋮ ثم "تثبيت التطبيق"\n📱 على iPhone: اضغط على مشاركة ثم "إضافة إلى الشاشة الرئيسية"');
+                showInstallInstructions();
             }
+        }
+
+        function showInstallInstructions() {
+            var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+            var isAndroid = /Android/.test(navigator.userAgent);
+            
+            var msg = '';
+            if (isIOS) {
+                msg = '📱 لتثبيت التطبيق على iPhone/iPad:\n\n' +
+                      '1. اضغط على زر المشاركة 🔄\n' +
+                      '2. اختر "إضافة إلى الشاشة الرئيسية"\n' +
+                      '3. اضغط على "إضافة"';
+            } else if (isAndroid) {
+                msg = '📱 لتثبيت التطبيق على Android:\n\n' +
+                      '1. اضغط على زر القائمة ⋮\n' +
+                      '2. اختر "تثبيت التطبيق" أو "إضافة إلى الشاشة الرئيسية"\n' +
+                      '3. اتبع التعليمات';
+            } else {
+                msg = '📱 لتثبيت التطبيق:\n\n' +
+                      '• على Android: اضغط ⋮ ثم "تثبيت التطبيق"\n' +
+                      '• على iPhone: اضغط مشاركة 🔄 ثم "إضافة إلى الشاشة الرئيسية"';
+            }
+            alert(msg);
         }
 
         btnCloseInstall.addEventListener('click', function() {
@@ -1030,14 +1053,6 @@
             btnInstallNav.classList.remove('show');
             console.log('✅ تم تثبيت التطبيق بنجاح!');
         });
-
-        // Show install button on page load if not installed
-        setTimeout(function() {
-            if (!isAppInstalled && !installBanner.classList.contains('show')) {
-                // Try to show banner if not shown yet
-                // This is a fallback for browsers that might have missed the event
-            }
-        }, 3000);
 
         // ===== FIREBASE =====
         var db = null;
@@ -1609,7 +1624,7 @@
         updateCounters();
 
         console.log('✅ جنان الساحل يعمل مع تحديثات الطقس وميزة التثبيت!');
-        console.log('📱 لعرض زر التثبيت، تأكد من فتح الصفحة عبر HTTPS أو localhost');
+        console.log('📱 اضغط على زر "تثبيت" في الشريط السفلي أو في رأس الصفحة');
     </script>
 </body>
 </html>
