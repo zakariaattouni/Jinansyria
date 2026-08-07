@@ -384,7 +384,6 @@
             flex: 1; padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; outline: none; background: var(--bg-main); color: var(--text-main);
         }
 
-        /* Admin Gate & Panel */
         .admin-gate, .admin-panel {
             background: var(--bg-card);
             border: 1px solid var(--border);
@@ -633,7 +632,25 @@
 
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script>
+    <script type="module">
+        // --- Firebase Integration SDKs (Modular) ---
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-analytics.js";
+
+        const firebaseConfig = {
+          apiKey: "AIzaSyBxax4sLB1xRqqb0YjptZwhV25ZkttQGZk",
+          authDomain: "jinansyr.firebaseapp.com",
+          projectId: "jinansyr",
+          storageBucket: "jinansyr.firebasestorage.app",
+          messagingSenderId: "619748190483",
+          appId: "1:619748190483:web:e8b7d13fd275824c8552e6",
+          measurementId: "G-Z706KNHDFK"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+
         // --- Initial Destinations Storage ---
         let destinationsData = JSON.parse(localStorage.getItem('jnan_destinations')) || [
             { id: 1, name: "كسب", region: "latakia", description: "بلدة سياحية غناء تعانق الجبال وتطل على البحر في اللاذقية.", lat: 35.9325, lng: 35.9892, rating: 4.9, img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80" },
@@ -810,7 +827,6 @@
 
             const proceedSave = (imgUrl) => {
                 if (editId) {
-                    // Update existing
                     const index = destinationsData.findIndex(d => d.id == editId);
                     if (index !== -1) {
                         destinationsData[index].name = name;
@@ -820,7 +836,6 @@
                         if (imgUrl) destinationsData[index].img = imgUrl;
                     }
                 } else {
-                    // Add new
                     const newDest = {
                         id: Date.now(),
                         name: name,
@@ -995,6 +1010,25 @@
             icon.classList.toggle('fa-moon');
             icon.classList.toggle('fa-sun');
         }
+
+        // Exposing functions globally to window so HTML onclick triggers work correctly inside type="module"
+        window.switchSection = switchSection;
+        window.toggleMenu = toggleMenu;
+        window.toggleDarkMode = toggleDarkMode;
+        window.filterByRegion = filterByRegion;
+        window.filterMapRegion = filterMapRegion;
+        window.sendAIMessage = sendAIMessage;
+        window.generateSmartPlan = generateSmartPlan;
+        window.checkAdminPassword = checkAdminPassword;
+        window.lockAdminPanel = lockAdminPanel;
+        window.openDestinationModal = openDestinationModal;
+        window.openEditDestinationModal = openEditDestinationModal;
+        window.closeDestinationModal = closeDestinationModal;
+        window.saveDestinationData = saveDestinationData;
+        window.deleteDestination = deleteDestination;
+        window.addNewAdPoster = addNewAdPoster;
+        window.deleteAdPoster = deleteAdPoster;
+        window.resetCounters = resetCounters;
 
         window.onload = function() {
             filterByRegion('all');
