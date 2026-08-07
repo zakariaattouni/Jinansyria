@@ -47,8 +47,7 @@
             flex-direction: column;
             transition: var(--transition);
         }
-        header {
-            background: linear-gradient(135deg, rgba(2, 132, 199, 0.98), rgba(5, 150, 105, 0.98));
+        header {            background: linear-gradient(135deg, rgba(2, 132, 199, 0.98), rgba(5, 150, 105, 0.98));
             color: white;
             padding: 0.6rem 1rem;
             position: sticky;
@@ -97,8 +96,7 @@
             cursor: pointer;
             padding: 0.35rem 0.6rem;
             border-radius: 6px;
-            white-space: nowrap;
-        }
+            white-space: nowrap;        }
         .nav-links a:hover, .nav-links a.active {
             background: rgba(255, 255, 255, 0.25);
         }
@@ -147,8 +145,7 @@
                 flex-direction: column;
                 padding: 1rem;
                 gap: 0.5rem;
-                box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-            }
+                box-shadow: 0 10px 20px rgba(0,0,0,0.2);            }
             .nav-links.show { display: flex; }
             .nav-links a { padding: 0.6rem 1rem; width: 100%; text-align: right; }
         }
@@ -197,8 +194,7 @@
             display: flex;
             align-items: center;
             gap: 8px;
-        }
-        .region-btn:hover, .region-btn.active {
+        }        .region-btn:hover, .region-btn.active {
             background: var(--primary);
             color: white;
             border-color: var(--primary);
@@ -247,8 +243,7 @@
         .dest-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2.5rem;
+            gap: 1.5rem;            margin-bottom: 2.5rem;
         }
         .dest-card, .ad-card {
             background: var(--bg-card);
@@ -261,9 +256,123 @@
             flex-direction: column;
         }
         .dest-card:hover, .ad-card:hover { transform: translateY(-5px); }
-        .dest-img, .ad-img { height: 200px; width: 100%; object-fit: cover; }
+        .dest-img { height: 200px; width: 100%; object-fit: cover; }
         .dest-body, .ad-body { padding: 1.25rem; flex: 1; display: flex; flex-direction: column; }
         
+        /* Mini Gallery Styles */
+        .mini-gallery {
+            display: flex;
+            gap: 6px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            margin-bottom: 10px;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary) transparent;
+        }
+        .mini-gallery::-webkit-scrollbar { height: 4px; }
+        .mini-gallery::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 4px; }
+        .mini-gallery img {
+            width: 60px;
+            height: 45px;
+            object-fit: cover;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: var(--transition);
+            flex-shrink: 0;
+        }
+        .mini-gallery img:hover { transform: scale(1.05); border-color: var(--primary); }
+
+        /* Collapsible Description Styles */
+        .dest-desc {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 1.2rem;
+            flex: 1;
+            overflow: hidden;
+            max-height: 400px;
+            opacity: 1;            transition: max-height 0.5s ease, opacity 0.4s ease, margin-bottom 0.4s ease;
+        }
+        .dest-desc.collapsed {
+            max-height: 0;
+            opacity: 0;
+            margin-bottom: 0;
+            flex: none;
+        }
+        .desc-toggle {
+            align-self: flex-start;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: transparent;
+            border: 1px dashed var(--primary);
+            color: var(--primary);
+            font-size: 0.78rem;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-bottom: 0.7rem;
+            transition: var(--transition);
+        }
+        .desc-toggle:hover { background: rgba(2, 132, 199, 0.1); }
+
+        /* Ad Carousel Styles */
+        .ad-carousel {
+            position: relative;
+            width: 100%;
+            height: 220px;
+            overflow: hidden;
+            background: #000;
+        }
+        .ad-carousel .ad-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+        .ad-carousel .ad-slide.active-slide {
+            opacity: 1;
+        }
+        .ad-carousel-dots {
+            position: absolute;
+            bottom: 10px;            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 6px;
+            z-index: 5;
+        }
+        .ad-carousel-dots .dot {
+            width: 10px;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 1px solid rgba(0,0,0,0.2);
+        }
+        .ad-carousel-dots .dot.active {
+            background: #fff;
+            transform: scale(1.3);
+        }
+        .ad-carousel-counter {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.6);
+            color: #fff;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            z-index: 5;
+        }
+
         .dest-badge {
             background: rgba(2, 132, 199, 0.1);
             color: var(--primary);
@@ -281,11 +390,10 @@
             border-radius: 50px;
             font-size: 0.8rem;
             font-weight: 700;
-            align-self: flex-start;
-            margin-bottom: 0.6rem;
+            align-self: flex-start;            margin-bottom: 0.6rem;
         }
         .dest-body h3, .ad-body h3 { font-size: 1.2rem; margin-bottom: 0.4rem; font-weight: 800; }
-        .dest-body p, .ad-body p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.2rem; flex: 1; line-height: 1.5; }
+        .ad-body p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.2rem; flex: 1; line-height: 1.5; }
         
         .dest-footer {
             display: flex;
@@ -307,6 +415,32 @@
             transition: var(--transition);
         }
         .btn-primary:hover { background: var(--primary-dark); }
+
+        /* Pulse of the Coast Section Styles */
+        .pulse-section {
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(2, 132, 199, 0.05), rgba(5, 150, 105, 0.05));
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+        }
+        .pulse-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        .pulse-card {
+            background: var(--bg-card);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border-right: 4px solid var(--accent);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        .pulse-card:hover { transform: translateX(-5px); }
+        .pulse-date { font-size: 0.8rem; color: var(--accent); font-weight: 700; margin-bottom: 0.5rem; display: block; }
+        .pulse-title { font-size: 1.1rem; font-weight: 800; margin-bottom: 0.5rem; color: var(--text-main); }        .pulse-desc { font-size: 0.9rem; color: var(--text-muted); line-height: 1.5; }
+
         #map { height: 500px; width: 100%; border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--border); }
         .map-layout { display: grid; grid-template-columns: 320px 1fr; gap: 1.5rem; }
         @media(max-width: 900px) { .map-layout { grid-template-columns: 1fr; } }
@@ -354,8 +488,7 @@
         .admin-item-row {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            background: var(--bg-main);
+            justify-content: space-between;            background: var(--bg-main);
             border: 1px solid var(--border);
             padding: 10px;
             border-radius: 8px;
@@ -404,8 +537,7 @@
             
             <ul class="nav-links" id="navLinks">
                 <li><a onclick="switchSection('home')" class="active" id="link-home">الرئيسية</a></li>
-                <li><a onclick="switchSection('destinations')" id="link-destinations">المناطق</a></li>
-                <li><a onclick="switchSection('map-section')" id="link-map-section">الخريطة</a></li>
+                <li><a onclick="switchSection('destinations')" id="link-destinations">المناطق</a></li>                <li><a onclick="switchSection('map-section')" id="link-map-section">الخريطة</a></li>
                 <li><a onclick="switchSection('ai-guide')" id="link-ai-guide">المرشد الذكي</a></li>
                 <li><a onclick="switchSection('admin')" id="link-admin">غرفة الإدارة</a></li>
             </ul>
@@ -438,6 +570,33 @@
                     <span>المتواجدون حالياً: <strong id="online-users-counter" style="color: var(--secondary);">42</strong> زائر</span>
                 </div>
             </div>
+
+            <!-- Pulse of the Coast Section -->
+            <div class="pulse-section">
+                <h2 class="section-title" style="margin-bottom: 1rem;"><i class="fa-solid fa-heart-pulse" style="color: var(--accent);"></i> نبض الساحل: فعاليات ونشاطات</h2>
+                <div class="pulse-grid">
+                    <div class="pulse-card">
+                        <span class="pulse-date"><i class="fa-regular fa-calendar-check"></i> كل جمعة</span>
+                        <div class="pulse-title">سوق المينا البحري الشعبي</div>
+                        <div class="pulse-desc">تجمع أسبوعي للحرف اليدوية والمأكولات البحرية التقليدية على كورنيش طرطوس.</div>
+                    </div>
+                    <div class="pulse-card">
+                        <span class="pulse-date"><i class="fa-regular fa-calendar-check"></i> موسم صيفي</span>
+                        <div class="pulse-title">ليالي قلعة صلاح الدين</div>
+                        <div class="pulse-desc">عروض موسيقية حيوية وأمسيات شعرية ضمن أسوار القلعة التاريخية في اللاذقية.</div>
+                    </div>
+                    <div class="pulse-card">
+                        <span class="pulse-date"><i class="fa-regular fa-calendar-check"></i> يومي</span>                        <div class="pulse-title">رحلات الغوص والاستكشاف</div>
+                        <div class="pulse-desc">نادي الغوص السوري ينظم رحلات يومية لاكتشاف الشعاب المرجانية وحطام السفن.</div>
+                    </div>
+                    <div class="pulse-card">
+                        <span class="pulse-date"><i class="fa-regular fa-calendar-check"></i> نهاية الأسبوع</span>
+                        <div class="pulse-title">مهرجان الحمضيات والتفاح</div>
+                        <div class="pulse-desc">احتفال سنوي بمواسم القطاف في ريف اللاذقية مع عروض تراثية.</div>
+                    </div>
+                </div>
+            </div>
+
             <h2 class="section-title"><i class="fa-solid fa-fire"></i> بطاقات المواقع السياحية والبوسترات</h2>
             <div class="dest-grid" id="home-destinations-grid"></div>
         </section>
@@ -476,8 +635,7 @@
                         <div class="message ai">أهلاً بك! اسألني عن أي معلم في اللاذقية أو طرطوس، وسأوفر لك تفاصيل دقيقة فوراً.</div>
                     </div>
                     <div class="chat-input-area">
-                        <input type="text" id="chat-input" placeholder="اكتب استفسارك هنا...">
-                        <button class="btn-primary" onclick="sendAIMessage()">إرسال</button>
+                        <input type="text" id="chat-input" placeholder="اكتب استفسارك هنا...">                        <button class="btn-primary" onclick="sendAIMessage()">إرسال</button>
                     </div>
                 </div>
                 <div class="planner-box">
@@ -492,14 +650,13 @@
         <section id="admin" class="section">
             <div id="admin-gate-box" class="admin-gate">
                 <h2 style="margin-bottom: 1rem;"><i class="fa-solid fa-lock"></i> غرفة الإدارة الآمنة</h2>
-                <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">أدخل كلمة المرور `salem1959` للتحكم بالمواقع والبوسترات:</p>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">يرجى إدخال كلمة المرور المصرح بها للدخول إلى لوحة التحكم:</p>
                 <input type="password" id="admin-pass-input" placeholder="كلمة المرور..." style="width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 1rem; background: var(--bg-main); color: var(--text-main);">
                 <button class="btn-primary" style="width: 100%; padding: 10px;" onclick="checkAdminPassword()">دخول الإدارة</button>
             </div>
             <div id="admin-panel-box" class="admin-panel" style="display: none;">
                 <h2 style="margin-bottom: 1.5rem;"><i class="fa-solid fa-gauge-high"></i> لوحة التحكم والسيطرة الشاملة</h2>
                 
-                <!-- Destinations Management Section -->
                 <div style="background: var(--bg-main); padding: 1.2rem; border-radius: 8px; border: 1px solid var(--border); margin-bottom: 1.5rem;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
                         <h3 style="font-size: 1.1rem;"><i class="fa-solid fa-map-pin"></i> إدارة ومقرات المواقع السياحية (إضافة وتحرير)</h3>
@@ -507,11 +664,10 @@
                     </div>
                     <div id="admin-destinations-list"></div>
                 </div>
-                <!-- Ad Posters Management Section -->
                 <div style="background: var(--bg-main); padding: 1.2rem; border-radius: 8px; border: 1px solid var(--border); margin-bottom: 1.5rem;">
-                    <h3 style="margin-bottom: 1rem; font-size: 1.1rem;"><i class="fa-solid fa-images"></i> إدارة بوسترات الإعلانات المضغوطة (تظهر كل 3 بطاقات)</h3>
+                    <h3 style="margin-bottom: 1rem; font-size: 1.1rem;"><i class="fa-solid fa-images"></i> إدارة بوسترات الإعلانات متعددة الصور (تظهر كل 4 بطاقات)</h3>
                     <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 1rem;">
-                        <input type="file" id="ad-file-input" accept="image/*" style="flex: 1; padding: 6px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 6px;">
+                        <input type="file" id="ad-file-input" accept="image/*" multiple style="flex: 1; padding: 6px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 6px;">
                         <input type="text" id="ad-title-input" placeholder="عنوان البوستر الإعلاني..." style="flex: 1; padding: 6px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg-card); color: var(--text-main);">
                         <button class="btn-primary" onclick="addNewAdPoster()">إضافة بوستر</button>
                     </div>
@@ -528,8 +684,7 @@
     <div id="dest-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:2000; align-items:center; justify-content:center;">
         <div style="background:var(--bg-card); padding:2rem; border-radius:var(--radius); max-width:500px; width:90%; border:1px solid var(--border); box-shadow:var(--shadow); max-height:90vh; overflow-y:auto;">
             <h3 id="modal-title" style="margin-bottom:1rem; font-weight:800;">إضافة موقع سياحي جديد</h3>
-            <input type="hidden" id="edit-dest-id">
-            
+            <input type="hidden" id="edit-dest-id">            
             <div class="admin-form-group">
                 <label>اسم الموقع:</label>
                 <input type="text" id="form-dest-name" placeholder="مثال: شاطئ الصافي">
@@ -565,11 +720,10 @@
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     
-    <!-- Firebase SDKs (Compat version for standard script execution) -->
+    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-analytics-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
-
     <script>
         // --- Firebase Initialization ---
         const firebaseConfig = {
@@ -579,17 +733,15 @@
           projectId: "jinansyr-28efc",
           storageBucket: "jinansyr-28efc.firebasestorage.app",
           messagingSenderId: "662247928226",
-          appId: "1:662247928226:web:6b6249b1d38862c06702fb",
-          measurementId: "G-FZLQGVV6Y4"
+          appId: "1:662247928226:web:6b6249b1d38862c06702fb",          measurementId: "G-FZLQGVV6Y4"
         };
         const app = firebase.initializeApp(firebaseConfig);
         const analytics = firebase.analytics();
         const db = firebase.database();
-
         let destinationsData = [];
         let adPosters = [];
+        let adCarousels = {};
 
-        // --- Load Initial Data into Firebase if Empty, then Sync ---
         function initFirebaseData() {
             db.ref('destinations').once('value', (snapshot) => {
                 if (!snapshot.exists()) {
@@ -606,18 +758,33 @@
                     db.ref('destinations').set(defaultDestinations);
                 }
             });
-
             db.ref('ad_posters').once('value', (snapshot) => {
                 if (!snapshot.exists()) {
                     const defaultAds = {
-                        1: { id: 1, title: "مهرجان الساحل السياحي", img: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=600&q=80", desc: "تابعوا عروض الفنادق والمقاهي البحرية لهذا الموسم." },
-                        2: { id: 2, title: "رحلات جزيرة أرواد البحرية", img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80", desc: "خصومات خاصة للعائلات في القوارب التقليدية." }
+                        1: { 
+                            id: 1, 
+                            title: "مهرجان الساحل السياحي", 
+                            images: [
+                                "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=600&q=80",
+                                "https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=600&q=80",
+                                "https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&w=600&q=80"
+                            ], 
+                            desc: "تابعوا عروض الفنادق والمقاهي البحرية لهذا الموسم." 
+                        },
+                        2: { 
+                            id: 2, 
+                            title: "رحلات جزيرة أرواد البحرية", 
+                            images: [
+                                "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80",
+                                "https://images.unsplash.com/photo-1544551763-46a8723ba3f9?auto=format&fit=crop&w=600&q=80",
+                                "https://images.unsplash.com/photo-1500930287596-c1ecaa71f4ca?auto=format&fit=crop&w=600&q=80"
+                            ], 
+                            desc: "خصومات خاصة للعائلات في القوارب التقليدية." 
+                        }
                     };
-                    db.ref('ad_posters').set(defaultAds);
-                }
+                    db.ref('ad_posters').set(defaultAds);                }
             });
-
-            // Realtime listeners
+            
             db.ref('destinations').on('value', (snapshot) => {
                 const data = snapshot.val();
                 destinationsData = data ? Object.values(data) : [];
@@ -626,7 +793,6 @@
                     renderAdminDestinationsList();
                 }
             });
-
             db.ref('ad_posters').on('value', (snapshot) => {
                 const data = snapshot.val();
                 adPosters = data ? Object.values(data) : [];
@@ -652,7 +818,6 @@
             sessionStorage.setItem('visited_session', 'true');
         }
 
-        // --- High Compression Image Utility ---
         function compressImage(file, callback) {
             const reader = new FileReader();
             reader.onload = function (e) {
@@ -663,25 +828,21 @@
                     const MAX_HEIGHT = 500;
                     let width = img.width;
                     let height = img.height;
-
                     if (width > height) {
                         if (width > MAX_WIDTH) {
                             height *= MAX_WIDTH / width;
-                            width = MAX_WIDTH;
-                        }
+                            width = MAX_WIDTH;                        }
                     } else {
                         if (height > MAX_HEIGHT) {
                             width *= MAX_HEIGHT / height;
                             height = MAX_HEIGHT;
                         }
                     }
-
                     canvas.width = width;
                     canvas.height = height;
                     const ctx = canvas.getContext('2d');
                     ctx.drawImage(img, 0, 0, width, height);
-                    
-                    const dataUrl = canvas.toDataURL('image/jpeg', 0.5); // 50% quality for compact size
+                    const dataUrl = canvas.toDataURL('image/jpeg', 0.5);
                     callback(dataUrl);
                 };
                 img.src = e.target.result;
@@ -689,7 +850,6 @@
             reader.readAsDataURL(file);
         }
 
-        // --- Region Filtering System & Ad Insertion Every 3 Cards ---
         function filterByRegion(region) {
             document.querySelectorAll('.region-btn').forEach(btn => btn.classList.remove('active'));
             if (window.event && window.event.currentTarget) {
@@ -699,24 +859,98 @@
             if (region !== 'all') {
                 filtered = destinationsData.filter(d => d.region === region);
             }
-            renderGridWithAds('home-destinations-grid', filtered);
-            renderGridWithAds('all-destinations-grid', filtered);
+            // Home grid: collapsible descriptions (true) | Destinations grid: full text (false)
+            renderGridWithAds('home-destinations-grid', filtered, true);
+            renderGridWithAds('all-destinations-grid', filtered, false);
         }
 
-        function renderGridWithAds(containerId, data) {
+        // --- Collapsible Description Toggle ---
+        function toggleDestDesc(btn) {
+            const body = btn.closest('.dest-body');
+            if (!body) return;
+            const desc = body.querySelector('.dest-desc');
+            if (!desc) return;
+            desc.classList.toggle('collapsed');
+            const isOpen = !desc.classList.contains('collapsed');
+            btn.innerHTML = isOpen
+                ? '<i class="fa-solid fa-chevron-up"></i> إخفاء الوصف'
+                : '<i class="fa-solid fa-chevron-down"></i> عرض الوصف الكامل';
+        }
+
+        // --- Carousel Rotation System ---
+        function startAdCarousels() {
+            Object.values(adCarousels).forEach(interval => clearInterval(interval));
+            adCarousels = {};
+            document.querySelectorAll('.ad-carousel').forEach(carousel => {
+                const slides = carousel.querySelectorAll('.ad-slide');
+                const dots = carousel.querySelectorAll('.ad-carousel-dots .dot');
+                const counter = carousel.querySelector('.ad-carousel-counter');
+                
+                if (slides.length <= 1) return;
+
+                let current = 0;
+                const id = 'carousel-' + Date.now() + '-' + Math.random().toString(36).substr(2, 5);
+                
+                const rotate = () => {
+                    slides[current].classList.remove('active-slide');
+                    if (dots[current]) dots[current].classList.remove('active');
+                    
+                    current = (current + 1) % slides.length;
+                    
+                    slides[current].classList.add('active-slide');
+                    if (dots[current]) dots[current].classList.add('active');
+                    if (counter) counter.innerText = (current + 1) + '/' + slides.length;
+                };
+
+                // Rotate every 8 seconds
+                adCarousels[id] = setInterval(rotate, 8000);
+                
+                dots.forEach((dot, idx) => {
+                    dot.addEventListener('click', () => {
+                        slides[current].classList.remove('active-slide');
+                        dots[current].classList.remove('active');
+                        current = idx;
+                        slides[current].classList.add('active-slide');
+                        dots[current].classList.add('active');
+                        if (counter) counter.innerText = (current + 1) + '/' + slides.length;
+                    });
+                });
+            });
+        }
+
+        function renderGridWithAds(containerId, data, collapsible = false) {
             const container = document.getElementById(containerId);
             if (!container) return;
             
             let html = '';
             let adIndex = 0;
+            
             data.forEach((dest, index) => {
+                const galleryImgs = [
+                    dest.img.replace('w=600', 'w=150'), 
+                    'https://images.unsplash.com/photo-1544551763-46a8723ba3f9?auto=format&fit=crop&w=150&q=60',
+                    'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=150&q=60'                ];
+                
+                let galleryHtml = `<div class="mini-gallery">`;
+                galleryImgs.forEach(gImg => {
+                    galleryHtml += `<img src="${gImg}" alt="gallery thumb" loading="lazy">`;
+                });
+                galleryHtml += `</div>`;
+
+                // Collapsible description only for the home page grid
+                const descBlock = collapsible
+                    ? `<button class="desc-toggle" onclick="toggleDestDesc(this)"><i class="fa-solid fa-chevron-down"></i> عرض الوصف الكامل</button>
+                       <p class="dest-desc collapsed">${dest.description}</p>`
+                    : `<p class="dest-desc">${dest.description}</p>`;
+
                 html += `
                     <div class="dest-card">
                         <img src="${dest.img}" class="dest-img" alt="${dest.name}">
                         <div class="dest-body">
                             <span class="dest-badge">${dest.region === 'latakia' ? 'محافظة اللاذقية' : 'محافظة طرطوس'}</span>
                             <h3>${dest.name}</h3>
-                            <p>${dest.description}</p>
+                            ${galleryHtml}
+                            ${descBlock}
                             <div class="dest-footer">
                                 <div class="rating"><i class="fa-solid fa-star"></i> ${dest.rating}</div>
                                 <button class="btn-primary" onclick="alert('تفاصيل الموقع: ${dest.name}')">استكشف</button>
@@ -724,17 +958,33 @@
                         </div>
                     </div>
                 `;
-                if ((index + 1) % 3 === 0 && adPosters.length > 0) {
+
+                // AD INSERTED EVERY 4 DESTINATIONS
+                if ((index + 1) % 4 === 0 && adPosters.length > 0) {
                     const ad = adPosters[adIndex % adPosters.length];
+                    const images = ad.images || [ad.img];
+                    
+                    let slidesHtml = '';
+                    let dotsHtml = '';
+                    images.forEach((img, i) => {
+                        slidesHtml += `<img src="${img}" class="ad-slide ${i === 0 ? 'active-slide' : ''}" alt="${ad.title}" loading="lazy">`;
+                        dotsHtml += `<span class="dot ${i === 0 ? 'active' : ''}"></span>`;
+                    });
+
                     html += `
                         <div class="ad-card">
-                            <img src="${ad.img}" class="ad-img" alt="${ad.title}">
-                            <div class="ad-body">
-                                <span class="ad-badge"><i class="fa-solid fa-rectangle-ad"></i> إعلان ممول</span>
+                            <div class="ad-carousel">
+                                <span class="ad-carousel-counter">1/${images.length}</span>
+                                ${slidesHtml}
+                                <div class="ad-carousel-dots">${dotsHtml}</div>
+                            </div>
+                            <div class="ad-body">                                <span class="ad-badge"><i class="fa-solid fa-rectangle-ad"></i> إعلان ممول</span>
                                 <h3>${ad.title}</h3>
                                 <p>${ad.desc}</p>
                                 <div class="dest-footer">
-                                    <span style="font-size: 0.8rem; color: var(--accent); font-weight: 700;">بوستر إعلاني معتمد</span>
+                                    <span style="font-size: 0.8rem; color: var(--accent); font-weight: 700;">
+                                        <i class="fa-solid fa-images"></i> ${images.length} صور
+                                    </span>
                                     <button class="btn-primary" style="background: var(--accent);" onclick="alert('تم النقر على إعلان: ${ad.title}')">التفاصيل</button>
                                 </div>
                             </div>
@@ -744,14 +994,14 @@
                 }
             });
             container.innerHTML = html;
+
+            startAdCarousels();
         }
 
-        // --- Admin Room Management ---
         function checkAdminPassword() {
             const passInput = document.getElementById('admin-pass-input');
             if (!passInput) return;
-            const pass = passInput.value;
-            if (pass === 'salem1959') {
+            if (passInput.value === 'salem1959') {
                 document.getElementById('admin-gate-box').style.display = 'none';
                 document.getElementById('admin-panel-box').style.display = 'block';
                 renderAdminDestinationsList();
@@ -767,7 +1017,6 @@
             document.getElementById('admin-pass-input').value = '';
         }
 
-        // --- Destinations Management (Add, Edit, Delete) ---
         function renderAdminDestinationsList() {
             const listContainer = document.getElementById('admin-destinations-list');
             if (!listContainer) return;
@@ -778,8 +1027,7 @@
             listContainer.innerHTML = destinationsData.map((dest) => `
                 <div class="admin-item-row">
                     <div style="display: flex; align-items: center; gap: 10px;">
-                        <img src="${dest.img}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 6px;" alt="">
-                        <div>
+                        <img src="${dest.img}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 6px;" alt="">                        <div>
                             <h4 style="font-size: 0.95rem;">${dest.name} <span style="font-size: 0.75rem; color: var(--primary);">(${dest.region === 'latakia' ? 'اللاذقية' : 'طرطوس'})</span></h4>
                             <small style="color: var(--text-muted);">${dest.description.substring(0, 40)}...</small>
                         </div>
@@ -828,38 +1076,25 @@
             const fileInput = document.getElementById('form-dest-img');
             
             if (!name || !description) {
-                alert('يرجى ملء اسم الموقع ووصفه على الأقل.');
-                return;
+                alert('يرجى ملء اسم الموقع ووصفه على الأقل.');                return;
             }
-
             const proceedSave = (imgUrl) => {
                 let targetId = editId ? parseInt(editId) : Date.now();
                 const existingDest = editId ? destinationsData.find(d => d.id == editId) : null;
                 const finalImg = imgUrl || (existingDest ? existingDest.img : "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80");
-
                 const destObj = {
-                    id: targetId,
-                    name: name,
-                    region: region,
-                    description: description,
+                    id: targetId, name, region, description,
                     lat: region === 'latakia' ? 35.52 : 34.89,
                     lng: region === 'latakia' ? 35.79 : 35.88,
-                    rating: rating,
-                    img: finalImg
+                    rating, img: finalImg
                 };
-
                 db.ref('destinations/' + targetId).set(destObj).then(() => {
                     closeDestinationModal();
                     alert('تم حفظ وتحديث بيانات الموقع بنجاح!');
-                }).catch((error) => {
-                    alert('حدث خطأ أثناء الحفظ: ' + error.message);
-                });
+                }).catch(err => alert('حدث خطأ أثناء الحفظ: ' + err.message));
             };
-
             if (fileInput.files && fileInput.files[0]) {
-                compressImage(fileInput.files[0], function(compressedDataUrl) {
-                    proceedSave(compressedDataUrl);
-                });
+                compressImage(fileInput.files[0], proceedSave);
             } else {
                 proceedSave(null);
             }
@@ -867,13 +1102,10 @@
 
         function deleteDestination(id) {
             if (confirm('هل أنت متأكد من حذف هذا الموقع السياحي؟')) {
-                db.ref('destinations/' + id).remove().then(() => {
-                    alert('تم حذف الموقع بنجاح.');
-                });
+                db.ref('destinations/' + id).remove().then(() => alert('تم حذف الموقع بنجاح.'));
             }
         }
 
-        // --- Ad Posters Management ---
         function renderAdminAdsList() {
             const listContainer = document.getElementById('admin-ads-list');
             if (!listContainer) return;
@@ -881,18 +1113,19 @@
                 listContainer.innerHTML = '<p style="color: var(--text-muted); font-size: 0.9rem;">لا توجد بوسترات إعلانية حالياً.</p>';
                 return;
             }
-            listContainer.innerHTML = adPosters.map((ad) => `
+            listContainer.innerHTML = adPosters.map((ad) => {
+                const images = ad.images || [ad.img];
+                return `
                 <div class="admin-item-row">
                     <div style="display: flex; align-items: center; gap: 10px;">
-                        <img src="${ad.img}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 6px;" alt="">
+                        <img src="${images[0]}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 6px;" alt="">
                         <div>
                             <h4 style="font-size: 0.9rem;">${ad.title}</h4>
-                            <small style="color: var(--text-muted);">${ad.desc}</small>
+                            <small style="color: var(--text-muted);">${ad.desc} <span style="color:var(--accent); font-weight:700;">(${images.length} صور)</span></small>
                         </div>
                     </div>
                     <button class="btn-primary" style="background: #ef4444; padding: 4px 10px; font-size: 0.8rem;" onclick="deleteAdPoster(${ad.id})">حذف</button>
-                </div>
-            `).join('');
+                </div>            `}).join('');
         }
 
         function addNewAdPoster() {
@@ -900,46 +1133,48 @@
             const titleInput = document.getElementById('ad-title-input');
             const title = titleInput.value.trim() || 'إعلان سياحي جديد';
             
-            if (fileInput.files && fileInput.files[0]) {
-                compressImage(fileInput.files[0], function(compressedDataUrl) {
-                    const adId = Date.now();
-                    const adObj = {
-                        id: adId,
-                        title: title,
-                        img: compressedDataUrl,
-                        desc: "بوستر إعلاني مضاف حديثاً."
-                    };
-                    db.ref('ad_posters/' + adId).set(adObj).then(() => {
-                        titleInput.value = '';
-                        fileInput.value = '';
-                        alert('تمت إضافة البوستر الإعلاني بنجاح!');
+            if (fileInput.files && fileInput.files.length > 0) {
+                const files = Array.from(fileInput.files);
+                let compressedImages = [];
+                let processedCount = 0;
+
+                files.forEach(file => {
+                    compressImage(file, function(compressedDataUrl) {
+                        compressedImages.push(compressedDataUrl);
+                        processedCount++;
+                        if (processedCount === files.length) {
+                            const adId = Date.now();
+                            const adObj = {
+                                id: adId,
+                                title: title,
+                                images: compressedImages,
+                                desc: "بوستر إعلاني مضاف حديثاً."
+                            };
+                            db.ref('ad_posters/' + adId).set(adObj).then(() => {
+                                titleInput.value = '';
+                                fileInput.value = '';
+                                alert(`تمت إضافة البوستر الإعلاني مع ${compressedImages.length} صور بنجاح!`);
+                            });
+                        }
                     });
                 });
             } else {
-                alert('يرجى اختيار صورة الإعلان من الجهاز أولاً.');
+                alert('يرجى اختيار صورة واحدة أو أكثر للإعلان من الجهاز أولاً.');
             }
         }
 
         function deleteAdPoster(id) {
-            db.ref('ad_posters/' + id).remove().then(() => {
-                alert('تم حذف البوستر بنجاح.');
-            });
+            db.ref('ad_posters/' + id).remove().then(() => alert('تم حذف البوستر بنجاح.'));
         }
 
-        // --- Navigation & Sections ---
         function switchSection(sectionId) {
             document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
             document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
-            
             const targetSection = document.getElementById(sectionId);
             if (targetSection) targetSection.classList.add('active');
-            
             const link = document.getElementById(`link-${sectionId}`);
             if (link) link.classList.add('active');
-            
-            const navLinks = document.getElementById('navLinks');
-            if (navLinks) navLinks.classList.remove('show');
-            
+            const navLinks = document.getElementById('navLinks');            if (navLinks) navLinks.classList.remove('show');
             window.scrollTo({ top: 0, behavior: 'smooth' });
             if (sectionId === 'map-section' && !window.mapInitialized) {
                 initMap();
@@ -952,7 +1187,6 @@
             if (navLinks) navLinks.classList.toggle('show');
         }
 
-        // --- Map Functions ---
         let map;
         function initMap() {
             if (document.getElementById('map')) {
@@ -971,17 +1205,14 @@
             alert(`تم فلترة الخريطة لعرض منطقة: ${reg === 'all' ? 'الكل' : reg}`);
         }
 
-        // --- AI Chat ---
         function sendAIMessage() {
             const input = document.getElementById('chat-input');
             const messages = document.getElementById('chat-messages');
             if (!input || !input.value.trim()) return;
-            
             messages.innerHTML += `<div class="message user">${input.value}</div>`;
             const q = input.value;
             input.value = '';
             messages.scrollTop = messages.scrollHeight;
-            
             setTimeout(() => {
                 let reply = "بصفتي مرشدك الذكي، أنصحك بزيارة جزيرة أرواد ومرتفعات صلنفة وكسب لما تتمتع به من جمال فريد.";
                 if (q.includes('أرواد')) reply = "جزيرة أرواد تقع في طرطوس وتتميز بالقوارب والقلاع التاريخية والمطاعم البحرية.";
@@ -992,8 +1223,7 @@
 
         function generateSmartPlan() {
             const planResult = document.getElementById('plan-result');
-            if (planResult) {
-                planResult.innerHTML = "<b>برنامج سياحي مقترح:</b><br>• اليوم الأول: اللاذقية وشاطئ البسيط.<br>• اليوم الثاني: صلنفة وغاباتها.<br>• اليوم الثالث: طرطوس وجزيرة أرواد.";
+            if (planResult) {                planResult.innerHTML = "<b>برنامج سياحي مقترح:</b><br>• اليوم الأول: اللاذقية وشاطئ البسيط.<br>• اليوم الثاني: صلنفة وغاباتها.<br>• اليوم الثالث: طرطوس وجزيرة أرواد.";
             }
         }
 
