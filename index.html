@@ -568,6 +568,7 @@
     <!-- Firebase SDKs (Compat version for standard script execution) -->
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-analytics-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
 
     <script>
         // --- Firebase Initialization ---
@@ -583,26 +584,54 @@
         };
         const app = firebase.initializeApp(firebaseConfig);
         const analytics = firebase.analytics();
+        const db = firebase.database();
 
-        // --- Initial Destinations Storage ---
-        let destinationsData = JSON.parse(localStorage.getItem('jnan_destinations')) || [
-            { id: 1, name: "كسب", region: "latakia", description: "بلدة سياحية غناء تعانق الجبال وتطل على البحر في اللاذقية.", lat: 35.9325, lng: 35.9892, rating: 4.9, img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80" },
-            { id: 2, name: "رأس البسيط", region: "latakia", description: "شبه جزيرة ساحرة ذات رمال ذهبية ومياه نقية في اللاذقية.", lat: 35.9183, lng: 35.8056, rating: 4.8, img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80" },
-            { id: 3, name: "صلنفة", region: "latakia", description: "عروس المصايف السورية وتشتهر بغابات الصنوبر والضباب.", lat: 35.5833, lng: 36.2167, rating: 4.9, img: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&q=80" },
-            { id: 4, name: "قلعة صلاح الدين", region: "latakia", description: "تحفة معمارية عسكرية تاريخية مسجلة في اليونسكو باللاذقية.", lat: 35.6, lng: 36.05, rating: 5.0, img: "https://images.unsplash.com/photo-1599839575945-a9e5af0c3fa5?auto=format&fit=crop&w=600&q=80" },
-            { id: 5, name: "جزيرة أرواد", region: "tartus", description: "الجزيرة المأهولة الوحيدة في الساحل السوري في طرطوس.", lat: 34.8517, lng: 35.8569, rating: 4.9, img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80" },
-            { id: 6, name: "قلعة المرقب (بانياس)", region: "tartus", description: "قلعة حصينة من أهم القلاع التاريخية المطلة على البحر في طرطوس.", lat: 35.15, lng: 35.95, rating: 4.9, img: "https://images.unsplash.com/photo-1599839575945-a9e5af0c3fa5?auto=format&fit=crop&w=600&q=80" },
-            { id: 7, name: "مشتى الحلو", region: "tartus", description: "مصيف جبلي رائع يتميز بينابيعه العذبة في طرطوس.", lat: 34.8833, lng: 36.2167, rating: 4.7, img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80" },
-            { id: 8, name: "قلعة صافيتا", region: "tartus", description: "برج صافيتا الأثري الشامخ في محافظة طرطوس.", lat: 34.8167, lng: 36.1167, rating: 4.8, img: "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=600&q=80" }
-        ];
+        // --- Initial Destinations Storage & Firebase Sync ---
+        let destinationsData = [];
+        let adPosters = [];
 
-        // --- Ad Posters Data Storage ---
-        let adPosters = JSON.parse(localStorage.getItem('jnan_ad_posters')) || [
-            { id: 1, title: "مهرجان الساحل السياحي", img: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=600&q=80", desc: "تابعوا عروض الفنادق والمقاهي البحرية لهذا الموسم." },
-            { id: 2, title: "رحلات جزيرة أرواد البحرية", img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80", desc: "خصومات خاصة للعائلات في القوارب التقليدية." }
-        ];
+        function loadDataFromFirebase() {
+            db.ref('destinations').on('value', (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    destinationsData = Object.values(data);
+                } else {
+                    // Fallback default data if empty
+                    destinationsData = [
+                        { id: 1, name: "كسب", region: "latakia", description: "بلدة سياحية غناء تعانق الجبال وتطل على البحر في اللاذقية.", lat: 35.9325, lng: 35.9892, rating: 4.9, img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80" },
+                        { id: 2, name: "رأس البسيط", region: "latakia", description: "شبه جزيرة ساحرة ذات رمال ذهبية ومياه نقية في اللاذقية.", lat: 35.9183, lng: 35.8056, rating: 4.8, img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80" },
+                        { id: 3, name: "صلنفة", region: "latakia", description: "عروس المصايف السورية وتشتهر بغابات الصنوبر والضباب.", lat: 35.5833, lng: 36.2167, rating: 4.9, img: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&q=80" },
+                        { id: 4, name: "قلعة صلاح الدين", region: "latakia", description: "تحفة معمارية عسكرية تاريخية مسجلة في اليونسكو باللاذقية.", lat: 35.6, lng: 36.05, rating: 5.0, img: "https://images.unsplash.com/photo-1599839575945-a9e5af0c3fa5?auto=format&fit=crop&w=600&q=80" },
+                        { id: 5, name: "جزيرة أرواد", region: "tartus", description: "الجزيرة المأهولة الوحيدة في الساحل السوري في طرطوس.", lat: 34.8517, lng: 35.8569, rating: 4.9, img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80" },
+                        { id: 6, name: "قلعة المرقب (بانياس)", region: "tartus", description: "قلعة حصينة من أهم القلاع التاريخية المطلة على البحر في طرطوس.", lat: 35.15, lng: 35.95, rating: 4.9, img: "https://images.unsplash.com/photo-1599839575945-a9e5af0c3fa5?auto=format&fit=crop&w=600&q=80" },
+                        { id: 7, name: "مشتى الحلو", region: "tartus", description: "مصيف جبلي رائع يتميز بينابيعه العذبة في طرطوس.", lat: 34.8833, lng: 36.2167, rating: 4.7, img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80" },
+                        { id: 8, name: "قلعة صافيتا", region: "tartus", description: "برج صافيتا الأثري الشامخ في محافظة طرطوس.", lat: 34.8167, lng: 36.1167, rating: 4.8, img: "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=600&q=80" }
+                    ];
+                }
+                filterByRegion('all');
+                if (document.getElementById('admin-panel-box').style.display === 'block') {
+                    renderAdminDestinationsList();
+                }
+            });
 
-        let totalVisitors = localStorage.getItem('jnan_total_v') ? parseInt(localStorage.getItem('jnan_total_v')) : 170001;
+            db.ref('ad_posters').on('value', (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    adPosters = Object.values(data);
+                } else {
+                    adPosters = [
+                        { id: 1, title: "مهرجان الساحل السياحي", img: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=600&q=80", desc: "تابعوا عروض الفنادق والمقاهي البحرية لهذا الموسم." },
+                        { id: 2, title: "رحلات جزيرة أرواد البحرية", img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80", desc: "خصومات خاصة للعائلات في القوارب التقليدية." }
+                    ];
+                }
+                filterByRegion('all');
+                if (document.getElementById('admin-panel-box').style.display === 'block') {
+                    renderAdminAdsList();
+                }
+            });
+        }
+
+        let totalVisitors = 170001;
         let onlineUsers = 42;
 
         function updateCountersDisplay() {
@@ -614,8 +643,45 @@
 
         if (!sessionStorage.getItem('visited_session')) {
             totalVisitors++;
-            localStorage.setItem('jnan_total_v', totalVisitors);
             sessionStorage.setItem('visited_session', 'true');
+        }
+
+        // --- Utility to Compress and Resize Image Files ---
+        function compressImage(file, callback) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const img = new Image();
+                img.onload = function () {
+                    const canvas = document.createElement('canvas');
+                    const MAX_WIDTH = 800;
+                    const MAX_HEIGHT = 800;
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > height) {
+                        if (width > MAX_WIDTH) {
+                            height *= MAX_WIDTH / width;
+                            width = MAX_WIDTH;
+                        }
+                    } else {
+                        if (height > MAX_HEIGHT) {
+                            width *= MAX_HEIGHT / height;
+                            height = MAX_HEIGHT;
+                        }
+                    }
+
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+                    
+                    // Compress to JPEG with 0.7 quality to ensure small size for database
+                    const dataUrl = canvas.toDataURL('image/jpeg', 0.7);
+                    callback(dataUrl);
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
         }
 
         // --- Region Filtering System & Ad Insertion Every 3 Cards ---
@@ -762,54 +828,40 @@
             }
 
             const proceedSave = (imgUrl) => {
-                if (editId) {
-                    const index = destinationsData.findIndex(d => d.id == editId);
-                    if (index !== -1) {
-                        destinationsData[index].name = name;
-                        destinationsData[index].region = region;
-                        destinationsData[index].description = description;
-                        destinationsData[index].rating = rating;
-                        if (imgUrl) destinationsData[index].img = imgUrl;
-                    }
-                } else {
-                    const newDest = {
-                        id: Date.now(),
-                        name: name,
-                        region: region,
-                        description: description,
-                        lat: region === 'latakia' ? 35.52 : 34.89,
-                        lng: region === 'latakia' ? 35.79 : 35.88,
-                        rating: rating,
-                        img: imgUrl || "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"
-                    };
-                    destinationsData.push(newDest);
-                }
-                localStorage.setItem('jnan_destinations', JSON.stringify(destinationsData));
-                closeDestinationModal();
-                renderAdminDestinationsList();
-                filterByRegion('all');
-                alert('تم حفظ وتحديث بيانات الموقع بنجاح!');
+                let targetId = editId ? parseInt(editId) : Date.now();
+                const destObj = {
+                    id: targetId,
+                    name: name,
+                    region: region,
+                    description: description,
+                    lat: region === 'latakia' ? 35.52 : 34.89,
+                    lng: region === 'latakia' ? 35.79 : 35.88,
+                    rating: rating,
+                    img: imgUrl || (editId ? destinationsData.find(d => d.id == editId).img : "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80")
+                };
+
+                db.ref('destinations/' + targetId).set(destObj).then(() => {
+                    closeDestinationModal();
+                    alert('تم حفظ وتحديث بيانات الموقع بنجاح عبر Firebase!');
+                }).catch((error) => {
+                    alert('حدث خطأ أثناء الحفظ: ' + error.message);
+                });
             };
 
             if (fileInput.files && fileInput.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    proceedSave(e.target.result);
-                }
-                reader.readAsDataURL(fileInput.files[0]);
+                compressImage(fileInput.files[0], function(compressedDataUrl) {
+                    proceedSave(compressedDataUrl);
+                });
             } else {
-                const existingImg = editId ? destinationsData.find(d => d.id == editId).img : null;
-                proceedSave(existingImg);
+                proceedSave(null);
             }
         }
 
         function deleteDestination(id) {
             if (confirm('هل أنت متأكد من حذف هذا الموقع السياحي؟')) {
-                destinationsData = destinationsData.filter(d => d.id !== id);
-                localStorage.setItem('jnan_destinations', JSON.stringify(destinationsData));
-                renderAdminDestinationsList();
-                filterByRegion('all');
-                alert('تم حذف الموقع بنجاح.');
+                db.ref('destinations/' + id).remove().then(() => {
+                    alert('تم حذف الموقع بنجاح.');
+                });
             }
         }
 
@@ -830,7 +882,7 @@
                             <small style="color: var(--text-muted);">${ad.desc}</small>
                         </div>
                     </div>
-                    <button class="btn-primary" style="background: #ef4444; padding: 4px 10px; font-size: 0.8rem;" onclick="deleteAdPoster(${idx})">حذف</button>
+                    <button class="btn-primary" style="background: #ef4444; padding: 4px 10px; font-size: 0.8rem;" onclick="deleteAdPoster(${ad.id})">حذف</button>
                 </div>
             `).join('');
         }
@@ -841,33 +893,29 @@
             const title = titleInput.value.trim() || 'إعلان سياحي جديد';
             
             if (fileInput.files && fileInput.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    adPosters.push({
-                        id: Date.now(),
+                compressImage(fileInput.files[0], function(compressedDataUrl) {
+                    const adId = Date.now();
+                    const adObj = {
+                        id: adId,
                         title: title,
-                        img: e.target.result,
-                        desc: "بوستر إعلاني مضاف محلياً من الجهاز."
+                        img: compressedDataUrl,
+                        desc: "بوستر إعلاني مضاف حديثاً."
+                    };
+                    db.ref('ad_posters/' + adId).set(adObj).then(() => {
+                        titleInput.value = '';
+                        fileInput.value = '';
+                        alert('تمت إضافة البوستر الإعلاني بنجاح!');
                     });
-                    localStorage.setItem('jnan_ad_posters', JSON.stringify(adPosters));
-                    titleInput.value = '';
-                    fileInput.value = '';
-                    renderAdminAdsList();
-                    filterByRegion('all');
-                    alert('تمت إضافة البوستر الإعلاني بنجاح!');
-                }
-                reader.readAsDataURL(fileInput.files[0]);
+                });
             } else {
                 alert('يرجى اختيار صورة الإعلان من الجهاز أولاً.');
             }
         }
 
-        function deleteAdPoster(index) {
-            adPosters.splice(index, 1);
-            localStorage.setItem('jnan_ad_posters', JSON.stringify(adPosters));
-            renderAdminAdsList();
-            filterByRegion('all');
-            alert('تم حذف البوستر بنجاح.');
+        function deleteAdPoster(id) {
+            db.ref('ad_posters/' + id).remove().then(() => {
+                alert('تم حذف البوستر بنجاح.');
+            });
         }
 
         // --- Navigation & Sections ---
@@ -943,7 +991,6 @@
 
         function resetCounters() {
             totalVisitors = 170001;
-            localStorage.setItem('jnan_total_v', totalVisitors);
             updateCountersDisplay();
             alert('تمت إعادة تعيين العداد ليصبح 170,001 بنجاح.');
         }
@@ -958,7 +1005,7 @@
         }
 
         window.onload = function() {
-            filterByRegion('all');
+            loadDataFromFirebase();
             updateCountersDisplay();
         };
     </script>
