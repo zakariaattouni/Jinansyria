@@ -230,57 +230,49 @@
             border-color: var(--primary);
             transform: translateY(-3px);
         }
-        /* Ads Popup Modal */
-        #ads-popup-modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0,0,0,0.75);
-            z-index: 3000;
-            align-items: center;
-            justify-content: center;
-            padding: 1rem;
-        }
-        .ads-popup-content {
-            background: var(--bg-card);
+
+        /* تصميم البطاقة الإعلانية ضمن الشبكة */
+        .ad-card {
+            background: linear-gradient(135deg, rgba(2, 132, 199, 0.08), rgba(217, 119, 6, 0.08));
+            border: 2px dashed var(--accent);
             border-radius: var(--radius);
-            max-width: 600px;
-            width: 100%;
             overflow: hidden;
-            border: 1px solid var(--border);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-            position: relative;
-            animation: scaleUp 0.3s ease-in-out;
-        }
-        @keyframes scaleUp {
-            from { transform: scale(0.9); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-        .ads-popup-close {
-            position: absolute;
-            top: 12px;
-            left: 12px;
-            background: rgba(0,0,0,0.6);
-            color: white;
-            border: none;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            font-size: 1.1rem;
-            cursor: pointer;
+            box-shadow: var(--shadow);
             display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 10;
+            flex-direction: column;
             transition: var(--transition);
+            position: relative;
         }
-        .ads-popup-close:hover { background: rgba(0,0,0,0.85); transform: scale(1.1); }
-        .ads-popup-img { width: 100%; max-height: 400px; object-fit: cover; display: block; }
-        .ads-popup-body { padding: 1.5rem; text-align: center; }
-        .ads-popup-title { font-size: 1.4rem; font-weight: 800; margin-bottom: 0.5rem; color: var(--text-main); }
-        .ads-popup-desc { font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.2rem; }
-        
+        .ad-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px -5px rgba(0,0,0,0.1); }
+        .ad-card-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--accent);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            z-index: 2;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+        .ad-card-img { height: 200px; width: 100%; object-fit: cover; transition: opacity 0.5s ease-in-out; }
+        .ad-card-body { padding: 1.25rem; flex: 1; display: flex; flex-direction: column; }
+        .ad-card-body h3 { font-size: 1.2rem; margin-bottom: 0.4rem; font-weight: 800; color: var(--text-main); }
+        .ad-card-desc { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem; line-height: 1.5; flex: 1; }
+        .ad-card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border);
+            padding-top: 0.8rem;
+            margin-top: auto;
+            font-size: 0.8rem;
+            color: var(--accent);
+            font-weight: 700;
+        }
+
         .pulse-section {
             margin-bottom: 2rem;
             padding: 1.2rem;
@@ -602,19 +594,6 @@
         </div>
     </header>
     <main>
-        <!-- نافذة الإعلانات المنبثقة (Popup Ads) -->
-        <div id="ads-popup-modal">
-            <div class="ads-popup-content">
-                <button class="ads-popup-close" data-action="close-ads-popup"><i class="fa-solid fa-xmark"></i></button>
-                <img id="popup-ad-img" src="" class="ads-popup-img" alt="إعلان">
-                <div class="ads-popup-body">
-                    <h3 id="popup-ad-title" class="ads-popup-title"></h3>
-                    <p id="popup-ad-desc" class="ads-popup-desc"></p>
-                    <button class="btn-primary" data-action="close-ads-popup" style="width: 100%;">حسناً، فهمت</button>
-                </div>
-            </div>
-        </div>
-
         <section id="home" class="section active">
             <div class="hero">
                 <h1>جنان الساحل السوري<br>اللاذقية وطرطوس</h1>
@@ -655,17 +634,17 @@
             <div id="admin-panel-box" class="admin-panel" style="display:none;">
                 <h2 style="margin-bottom:1.5rem;"><i class="fa-solid fa-gauge-high"></i> لوحة التحكم</h2>
                 
-                <!-- إدارة الإعلانات والنوافذ المصورة -->
+                <!-- إدارة الإعلانات -->
                 <div style="background:var(--bg-main); padding:1.2rem; border-radius:8px; border:1px solid var(--border); margin-bottom:1.5rem;">
-                    <h3 style="margin-bottom:0.5rem; font-size:1.1rem;"><i class="fa-solid fa-rectangle-ad" style="color:var(--primary);"></i> إدارة نافذة الإعلانات والصور</h3>
-                    <div class="admin-note">إضافة نافذة إعلانية منبثقة تعرض صوراً وتفاصيل للزوار عند الدخول.</div>
+                    <h3 style="margin-bottom:0.5rem; font-size:1.1rem;"><i class="fa-solid fa-rectangle-ad" style="color:var(--primary);"></i> إدارة الإعلانات (تظهر كل 4 بطاقات مواقع وفي صفحة الخريطة)</h3>
+                    <div class="admin-note">الإعلانات تتغير تلقائياً كل 8 ثوانٍ.</div>
                     <input type="hidden" id="ad-edit-id">
                     <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:1rem;">
                         <input type="text" id="ad-title-input" class="admin-input" placeholder="عنوان الإعلان">
                         <textarea id="ad-desc-input" class="admin-textarea" rows="2" placeholder="وصف الإعلان أو العرض..."></textarea>
-                        <input type="text" id="ad-img-input" class="admin-input" placeholder="رابط الصورة المرفقة للإعلان">
+                        <input type="text" id="ad-img-input" class="admin-input" placeholder="رابط الصورة للإعلان">
                         <div style="display:flex; gap:10px; flex-wrap:wrap;">
-                            <button class="btn-primary" id="ad-save-btn" data-action="save-ad"><i class="fa-solid fa-plus"></i> نشر الإعلان</button>
+                            <button class="btn-primary" id="ad-save-btn" data-action="save-ad"><i class="fa-solid fa-plus"></i> إضافة إعلان</button>
                             <button class="btn-primary" id="ad-cancel-btn" style="display:none; background:#64748b;" data-action="reset-ad-form"><i class="fa-solid fa-xmark"></i> إلغاء</button>
                         </div>
                     </div>
@@ -770,6 +749,8 @@
         var destinations = [];
         var pulseEvents = [];
         var adsList = [];
+        var currentAdIndex = 0;
+        var adInterval = null;
         var homeExpanded = false;
         var currentRegion = 'all';
         var totalVisitors = 170001;
@@ -793,7 +774,8 @@
             4: { id: 4, date: "نهاية الأسبوع", title: "مهرجان الحمضيات والتفاح", desc: "احتفال سنوي بمواسم القطاف في ريف اللاذقية مع عروض تراثية. يشمل المهرجان مسابقات لأجود أنواع الفواكه، معارض للمنتجات الريفية، وعروض فلكلورية تعكس التراث الساحلي الأصيل." }
         };
         var defaultAds = {
-            1: { id: 1, title: "مرحباً بكم في جنان الساحل", desc: "استكشف أروع الأماكن السياحية في اللاذقية وطرطوس واحصل على تحديثات الطقس والفعاليات الحية.", img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80" }
+            1: { id: 1, title: "رحلات سياحية مميزة", desc: "احجز رحلتك القادمة إلى كسب وصلنفة بأسعار خاصة للعائلات.", img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80" },
+            2: { id: 2, title: "فنادق ومنتجعات الساحل", desc: "استمتع بإقامة فاخرة مطلة على شواطئ البحر الأبيض المتوسط.", img: "https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&w=600&q=80" }
         };
 
         // ===== WEATHER FUNCTIONS =====
@@ -912,22 +894,24 @@
             db.ref('pulse_events').once('value', function(snap) {
                 if (!snap.exists()) { db.ref('pulse_events').set(defaultPulse); }
             });
-            db.ref('ads_popup').once('value', function(snap) {
-                if (!snap.exists()) { db.ref('ads_popup').set(defaultAds); }
+            db.ref('ads_list').once('value', function(snap) {
+                if (!snap.exists()) { db.ref('ads_list').set(defaultAds); }
             });
         }
-        // ===== RENDER FUNCTIONS =====
+
+        // ===== RENDER FUNCTIONS WITH ADS INSERTION EVERY 4 CARDS =====
         function renderAll() {
             var filtered = destinations;
             if (currentRegion !== 'all') {
                 filtered = destinations.filter(function(d) { return d.region === currentRegion; });
             }
-            renderGrid('home-destinations-grid', filtered, true);
-            renderGrid('all-destinations-grid', filtered, false);
+            renderGridWithAds('home-destinations-grid', filtered, true);
+            renderGridWithAds('all-destinations-grid', filtered, false);
             renderPulse();
             renderAdminLists();
         }
-        function renderGrid(containerId, data, isHome) {
+
+        function renderGridWithAds(containerId, data, isHome) {
             var container = document.getElementById(containerId);
             if (!container) return;
             var displayData = data;
@@ -938,32 +922,119 @@
                 var wrap = document.getElementById('home-show-more-wrap');
                 if (wrap) wrap.style.display = data.length > 4 ? 'block' : 'none';
             }
+
             var html = '';
-            displayData.forEach(function(dest) {
+            var count = 0;
+            displayData.forEach(function(dest, index) {
                 var img = dest.img || 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80';
                 html += '<div class="dest-card">';
                 html += '<img src="' + img + '" class="dest-img" alt="' + dest.name + '">';
                 html += '<div class="dest-body">';
                 html += '<span class="dest-badge">' + (dest.region === 'latakia' ? 'محافظة اللاذقية' : 'محافظة طرطوس') + '</span>';
                 html += '<h3>' + dest.name + '</h3>';
-                
-                // Weather Widget
-                html += '<div class="weather-widget weather-loading" id="weather-' + dest.id + '"><i class="fa-solid fa-spinner"></i> جاري جلب حالة الطقس...</div>';
-                
+                html += '<div class="weather-widget weather-loading" id="weather-' + containerId + '-' + dest.id + '"><i class="fa-solid fa-spinner"></i> جاري جلب حالة الطقس...</div>';
                 html += '<p class="dest-desc">' + (dest.description || '') + '</p>';
                 html += '<button class="toggle-desc-btn" data-action="toggle-desc"><i class="fa-solid fa-chevron-down"></i> اقرأ المزيد</button>';
                 html += '<div class="dest-footer">';
                 html += '<div class="rating"><i class="fa-solid fa-star"></i> ' + (dest.rating || 4.5) + '</div>';
                 html += '<button class="btn-primary" data-action="explore" data-name="' + dest.name + '">استكشف</button>';
                 html += '</div></div></div>';
+                count++;
+
+                // إدراج بطاقة إعلانية بعد كل 4 بطاقات مواقع
+                if (count % 4 === 0 && adsList.length > 0) {
+                    html += getAdCardHtml(containerId + '-ad-' + count);
+                }
             });
+
             container.innerHTML = html || '<p style="color:var(--text-muted);">لا توجد مواقع لعرضها</p>';
+            
+            // تحديث الطقس لكل بطاقة
             displayData.forEach(function(dest) {
                 if (dest.lat && dest.lng) {
-                    updateWeatherWidget(dest.id, dest.lat, dest.lng);
+                    updateWeatherWidgetCustom(containerId + '-' + dest.id, dest.lat, dest.lng);
                 }
             });
         }
+
+        function getAdCardHtml(elementId) {
+            if (!adsList.length) return '';
+            var ad = adsList[currentAdIndex % adsList.length];
+            return '<div class="ad-card" id="' + elementId + '">' +
+                   '<span class="ad-card-badge"><i class="fa-solid fa-bullhorn"></i> إعلان مميز</span>' +
+                   '<img src="' + (ad.img || '') + '" class="ad-card-img" alt="إعلان">' +
+                   '<div class="ad-card-body">' +
+                   '<h3>' + (ad.title || '') + '</h3>' +
+                   '<p class="ad-card-desc">' + (ad.desc || '') + '</p>' +
+                   '<div class="ad-card-footer"><span>تعلن جنان الساحل</span><i class="fa-solid fa-ad"></i></div>' +
+                   '</div></div>';
+        }
+
+        // تحديث جميع الإعلانات في الصفحة كل 8 ثوانٍ دون إعادة تحميل كاملة
+        function rotateAds() {
+            if (!adsList.length) return;
+            currentAdIndex = (currentAdIndex + 1) % adsList.length;
+            var adCards = document.querySelectorAll('.ad-card');
+            var currentAd = adsList[currentAdIndex];
+            adCards.forEach(function(card) {
+                var img = card.querySelector('.ad-card-img');
+                var title = card.querySelector('h3');
+                var desc = card.querySelector('.ad-card-desc');
+                if (img) img.src = currentAd.img || '';
+                if (title) title.innerText = currentAd.title || '';
+                if (desc) desc.innerText = currentAd.desc || '';
+            });
+        }
+
+        // تشغيل مؤقت تغيير الإعلانات كل 8 ثوانٍ
+        if (adInterval) clearInterval(adInterval);
+        adInterval = setInterval(rotateAds, 8000);
+
+        function updateWeatherWidgetCustom(targetId, lat, lng) {
+            var widget = document.getElementById('weather-' + targetId);
+            if (!widget) return;
+            fetchWeather(lat, lng, function(weather) {
+                if (!weather) {
+                    widget.innerHTML = '<div class="weather-loading"><i class="fa-solid fa-circle-exclamation"></i> تعذر جلب حالة الطقس</div>';
+                    return;
+                }
+                var info = getWeatherInfo(weather.weather_code);
+                var uvInfo = getUVInfo(weather.uv_index);
+                var windSpeed = Math.round(weather.wind_speed_10m);
+                widget.className = 'weather-widget';
+                widget.innerHTML =
+                    '<div class="weather-icon-wrap" style="color: ' + info.color + ';">' +
+                        '<i class="fa-solid ' + info.icon + '"></i>' +
+                    '</div>' +
+                    '<div class="weather-content">' +
+                        '<div class="weather-top">' +
+                            '<div class="weather-temp-block">' +
+                                '<span class="weather-temp">' + Math.round(weather.temperature_2m) + '°</span>' +
+                                '<span class="weather-desc-text">' + info.text + '</span>' +
+                            '</div>' +
+                            '<span class="uv-badge" style="background: ' + uvInfo.color + ';">' +
+                                '<i class="fa-solid ' + uvInfo.icon + '"></i>' +
+                                ' UV ' + uvInfo.value + ' · ' + uvInfo.level +
+                            '</span>' +
+                        '</div>' +
+                        '<div class="weather-meta">' +
+                            '<span><i class="fa-solid fa-droplet" style="color:#3b82f6;"></i> رطوبة ' + weather.relative_humidity_2m + '%</span>' +
+                            '<span><i class="fa-solid fa-wind" style="color:#64748b;"></i> رياح ' + windSpeed + ' كم/س</span>' +
+                        '</div>' +
+                        '<div class="weather-tips">' +
+                            '<div class="tip-row">' +
+                                '<i class="fa-solid fa-location-dot tip-icon"></i>' +
+                                '<div><strong>نصيحة الموقع:</strong> ' + info.tip + '</div>' +
+                            '</div>' +
+                            '<div class="tip-row">' +
+                                '<i class="fa-solid fa-sun tip-icon" style="color: ' + uvInfo.color + ';"></i>' +
+                                '<div><strong>الحماية من الأشعة:</strong> ' + uvInfo.tip + '</div>' +
+                            '</div>' +
+                        '</div>' +
+                    '</div>';
+            });
+        }
+
         function renderPulse() {
             var container = document.getElementById('pulse-scroll-container');
             if (!container) return;
@@ -982,6 +1053,7 @@
             });
             container.innerHTML = html;
         }
+
         function renderAdminLists() {
             renderAdminDestinations();
             renderAdminPulse();
@@ -1021,7 +1093,7 @@
         function renderAdminAds() {
             var container = document.getElementById('admin-ads-list');
             if (!container) return;
-            if (!adsList.length) { container.innerHTML = '<p style="color:var(--text-muted);">لا توجد إعلانات منبثقة</p>'; return; }
+            if (!adsList.length) { container.innerHTML = '<p style="color:var(--text-muted);">لا توجد إعلانات</p>'; return; }
             var html = '';
             adsList.forEach(function(ad) {
                 html += '<div class="admin-item-row">';
@@ -1034,19 +1106,6 @@
             container.innerHTML = html;
         }
 
-        // ===== POPUP ADS HANDLER =====
-        function checkAndShowAd() {
-            if (adsList && adsList.length > 0) {
-                var latestAd = adsList[adsList.length - 1]; // عرض أحدث إعلان
-                if (latestAd && latestAd.img) {
-                    document.getElementById('popup-ad-img').src = latestAd.img;
-                    document.getElementById('popup-ad-title').innerText = latestAd.title || '';
-                    document.getElementById('popup-ad-desc').innerText = latestAd.desc || '';
-                    document.getElementById('ads-popup-modal').style.display = 'flex';
-                }
-            }
-        }
-
         // ===== CRUD - ADS =====
         function saveAd() {
             if (!db) { alert('❌ قاعدة البيانات غير متصلة'); return; }
@@ -1057,17 +1116,17 @@
             if (!title || !img) { alert('يرجى إدخال عنوان ورابط الصورة للإعلان'); return; }
             var id = editId ? parseInt(editId) : Date.now();
             var obj = { id: id, title: title, desc: desc, img: img, createdAt: Date.now() };
-            db.ref('ads_popup/' + id).set(obj)
+            db.ref('ads_list/' + id).set(obj)
                 .then(function() {
                     resetAdForm();
-                    alert('✅ تم نشر الإعلان بنجاح');
+                    alert('✅ تم حفظ الإعلان');
                 })
                 .catch(function(e) { alert('❌ خطأ: ' + e.message); });
         }
         function deleteAd(id) {
             if (!db) { alert('❌ قاعدة البيانات غير متصلة'); return; }
             if (!confirm('هل أنت متأكد من الحذف؟')) return;
-            db.ref('ads_popup/' + id).remove()
+            db.ref('ads_list/' + id).remove()
                 .then(function() {
                     if (document.getElementById('ad-edit-id').value == id) resetAdForm();
                     alert('✅ تم الحذف');
@@ -1089,7 +1148,7 @@
             document.getElementById('ad-title-input').value = '';
             document.getElementById('ad-desc-input').value = '';
             document.getElementById('ad-img-input').value = '';
-            document.getElementById('ad-save-btn').innerHTML = '<i class="fa-solid fa-plus"></i> نشر الإعلان';
+            document.getElementById('ad-save-btn').innerHTML = '<i class="fa-solid fa-plus"></i> إضافة إعلان';
             document.getElementById('ad-cancel-btn').style.display = 'none';
         }
 
@@ -1207,18 +1266,16 @@
                 pulseEvents = data ? Object.values(data) : [];
                 renderAll();
             });
-            db.ref('ads_popup').on('value', function(snap) {
+            db.ref('ads_list').on('value', function(snap) {
                 var data = snap.val();
                 adsList = data ? Object.values(data) : [];
-                renderAdminAds();
-                checkAndShowAd();
+                renderAll();
             });
         } else {
             destinations = Object.values(defaultDestinations);
             pulseEvents = Object.values(defaultPulse);
             adsList = Object.values(defaultAds);
             renderAll();
-            checkAndShowAd();
         }
         // ===== UI EVENTS =====
         document.addEventListener('click', function(e) {
@@ -1268,9 +1325,6 @@
                 case 'toggle-show-more':
                     homeExpanded = !homeExpanded;
                     renderAll();
-                    break;
-                case 'close-ads-popup':
-                    document.getElementById('ads-popup-modal').style.display = 'none';
                     break;
                 case 'admin-login':
                     var pass = document.getElementById('admin-pass-input').value;
@@ -1343,7 +1397,7 @@
             sessionStorage.setItem('visited', 'true');
         }
         updateCounters();
-        console.log('✅ جنان الساحل يعمل مع نظام الإعلانات وتحديثات الطقس!');
+        console.log('✅ جنان الساحل يعمل مع نظام الإعلانات المتغيرة وشبكة البطاقات!');
     </script>
 </body>
 </html>
