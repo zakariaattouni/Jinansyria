@@ -47,8 +47,7 @@
             flex-direction: column;
             transition: var(--transition);
         }
-        header {            background: linear-gradient(135deg, rgba(2, 132, 199, 0.98), rgba(5, 150, 105, 0.98));
-            color: white;
+        header {            background: linear-gradient(135deg, rgba(2, 132, 199, 0.98), rgba(5, 150, 105, 0.98));            color: white;
             position: sticky;
             top: 0;
             z-index: 1000;
@@ -97,8 +96,7 @@
             padding: 0.35rem 0.6rem;
             border-radius: 6px;
             white-space: nowrap;        }
-        .nav-links a:hover, .nav-links a.active {
-            background: rgba(255, 255, 255, 0.25);
+        .nav-links a:hover, .nav-links a.active {            background: rgba(255, 255, 255, 0.25);
         }
         .nav-actions {
             display: flex;
@@ -147,8 +145,7 @@
             justify-content: center;
             gap: 2rem;            flex-wrap: wrap;
             align-items: center;
-        }
-        .live-stat-item {
+        }        .live-stat-item {
             display: flex;
             align-items: center;
             gap: 10px;
@@ -197,8 +194,7 @@
         }        .section { display: none; }
         .section.active { display: block; animation: fadeIn 0.4s ease-in-out; }
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; transform: translateY(10px); }            to { opacity: 1; transform: translateY(0); }
         }
         .hero {
             background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&w=1600&q=80') center/cover;
@@ -247,8 +243,7 @@
             gap: 10px;
         }
 
-        /* === Compact Pulse Section (Horizontal Scroll) === */
-        .pulse-section {
+        /* === Compact Pulse Section (Accordion Style) === */        .pulse-section {
             margin-bottom: 2rem;
             padding: 1.2rem;
             background: linear-gradient(135deg, rgba(2, 132, 199, 0.05), rgba(5, 150, 105, 0.05));
@@ -275,11 +270,20 @@
             border-radius: 12px;
             border-right: 4px solid var(--accent);
             box-shadow: var(--shadow);
-            min-width: 260px;
+            min-width: 280px;
             flex-shrink: 0;
             transition: var(--transition);
+            cursor: pointer;
+            user-select: none;
         }
-        .pulse-card:hover { transform: translateY(-3px); }
+        .pulse-card:hover { 
+            transform: translateY(-3px); 
+            box-shadow: 0 15px 30px -5px rgba(0,0,0,0.1);
+        }
+        .pulse-card.open {
+            border-right-color: var(--primary);
+            background: linear-gradient(135deg, var(--bg-card), rgba(2, 132, 199, 0.03));
+        }
         .pulse-date {
             font-size: 0.75rem;
             color: var(--accent);
@@ -288,14 +292,46 @@
             display: block;
         }
         .pulse-title {
-            font-size: 0.95rem;
-            font-weight: 800;
+            font-size: 1rem;            font-weight: 800;
             margin-bottom: 0.3rem;
             color: var(--text-main);
-        }        .pulse-desc {
-            font-size: 0.8rem;
-            color: var(--text-muted);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
             line-height: 1.4;
+        }
+        .pulse-title::after {
+            content: '\f078';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            font-size: 0.8rem;
+            color: var(--accent);
+            transition: transform 0.35s ease;
+            flex-shrink: 0;
+        }
+        .pulse-card.open .pulse-title::after {
+            transform: rotate(180deg);
+            color: var(--primary);
+        }
+        .pulse-desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: max-height 0.45s ease, opacity 0.35s ease, margin-top 0.35s ease;
+            margin-top: 0;
+            border-top: 1px solid transparent;
+            padding-top: 0;
+        }
+        .pulse-card.open .pulse-desc {
+            max-height: 250px;
+            opacity: 1;
+            margin-top: 0.7rem;
+            border-top: 1px solid var(--border);
+            padding-top: 0.7rem;
         }
 
         .dest-grid {
@@ -305,8 +341,7 @@
             margin-bottom: 1.5rem;
         }
         .dest-card, .ad-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
+            background: var(--bg-card);            border: 1px solid var(--border);
             border-radius: var(--radius);
             overflow: hidden;
             box-shadow: var(--shadow);
@@ -355,8 +390,7 @@
         }
         .dest-desc.expanded {
             max-height: 500px;
-        }
-        .dest-desc::after {
+        }        .dest-desc::after {
             content: '';
             position: absolute;
             bottom: 0;
@@ -405,8 +439,7 @@
             opacity: 1;
         }
         .ad-carousel-dots {
-            position: absolute;
-            bottom: 10px;
+            position: absolute;            bottom: 10px;
             left: 50%;
             transform: translateX(-50%);
             display: flex;
@@ -455,8 +488,7 @@
             border-radius: 50px;
             font-size: 0.8rem;
             font-weight: 700;
-            align-self: flex-start;
-            margin-bottom: 0.6rem;
+            align-self: flex-start;            margin-bottom: 0.6rem;
         }
         .dest-body h3, .ad-body h3 { font-size: 1.2rem; margin-bottom: 0.4rem; font-weight: 800; }
         .dest-body p, .ad-body p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.2rem; flex: 1; line-height: 1.5; }
@@ -505,8 +537,7 @@
         .btn-show-more:hover {
             background: var(--primary);
             color: white;
-            transform: translateY(-2px);
-        }
+            transform: translateY(-2px);        }
 
         #map { height: 500px; width: 100%; border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--border); }
         .map-layout { display: grid; grid-template-columns: 320px 1fr; gap: 1.5rem; }
@@ -555,8 +586,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: var(--bg-main);
-            border: 1px solid var(--border);
+            background: var(--bg-main);            border: 1px solid var(--border);
             padding: 10px;
             border-radius: 8px;
             margin-bottom: 8px;
@@ -605,8 +635,7 @@
                 <li><a onclick="switchSection('home')" class="active" id="link-home">الرئيسية</a></li>
                 <li><a onclick="switchSection('destinations')" id="link-destinations">المناطق</a></li>
                 <li><a onclick="switchSection('map-section')" id="link-map-section">الخريطة</a></li>
-                <li><a onclick="switchSection('ai-guide')" id="link-ai-guide">المرشد الذكي</a></li>
-                <li><a onclick="switchSection('admin')" id="link-admin">غرفة الإدارة</a></li>
+                <li><a onclick="switchSection('ai-guide')" id="link-ai-guide">المرشد الذكي</a></li>                <li><a onclick="switchSection('admin')" id="link-admin">غرفة الإدارة</a></li>
             </ul>
             <div class="nav-actions">
                 <button class="btn-icon" onclick="toggleDarkMode()" title="الوضع الليلي"><i class="fa-solid fa-moon" id="theme-icon"></i></button>
@@ -640,26 +669,25 @@
                 <button class="region-btn" onclick="filterByRegion('tartus')"><i class="fa-solid fa-water"></i> محافظة طرطوس وأرواد</button>
             </div>
 
-            <!-- Compact Pulse Section -->
+            <!-- Compact Pulse Section (Accordion) -->
             <div class="pulse-section">
                 <h2 class="section-title"><i class="fa-solid fa-heart-pulse" style="color: var(--accent);"></i> نبض الساحل: فعاليات ونشاطات</h2>
                 <div class="pulse-scroll">
-                    <div class="pulse-card">
+                    <div class="pulse-card" onclick="togglePulseCard(this)">
                         <span class="pulse-date"><i class="fa-regular fa-calendar-check"></i> كل جمعة</span>
                         <div class="pulse-title">سوق المينا البحري الشعبي</div>
                         <div class="pulse-desc">تجمع أسبوعي للحرف اليدوية والمأكولات البحرية التقليدية على كورنيش طرطوس.</div>
                     </div>
-                    <div class="pulse-card">
+                    <div class="pulse-card" onclick="togglePulseCard(this)">
                         <span class="pulse-date"><i class="fa-regular fa-calendar-check"></i> موسم صيفي</span>
                         <div class="pulse-title">ليالي قلعة صلاح الدين</div>
                         <div class="pulse-desc">عروض موسيقية حيوية وأمسيات شعرية ضمن أسوار القلعة التاريخية في اللاذقية.</div>
                     </div>
-                    <div class="pulse-card">
-                        <span class="pulse-date"><i class="fa-regular fa-calendar-check"></i> يومي</span>
-                        <div class="pulse-title">رحلات الغوص والاستكشاف</div>
+                    <div class="pulse-card" onclick="togglePulseCard(this)">
+                        <span class="pulse-date"><i class="fa-regular fa-calendar-check"></i> يومي</span>                        <div class="pulse-title">رحلات الغوص والاستكشاف</div>
                         <div class="pulse-desc">نادي الغوص السوري ينظم رحلات يومية لاكتشاف الشعاب المرجانية وحطام السفن.</div>
                     </div>
-                    <div class="pulse-card">
+                    <div class="pulse-card" onclick="togglePulseCard(this)">
                         <span class="pulse-date"><i class="fa-regular fa-calendar-check"></i> نهاية الأسبوع</span>
                         <div class="pulse-title">مهرجان الحمضيات والتفاح</div>
                         <div class="pulse-desc">احتفال سنوي بمواسم القطاف في ريف اللاذقية مع عروض تراثية.</div>
@@ -705,8 +733,7 @@
             <h2 class="section-title"><i class="fa-solid fa-robot"></i> مرشد الساحل الذكي (Gemini AI)</h2>
             <div class="ai-container">
                 <div class="chat-box">
-                    <h3 style="margin-bottom: 0.8rem; font-weight: 800; font-size: 1rem;"><i class="fa-solid fa-comments"></i> المحادثة الفورية الذكية</h3>
-                    <div class="chat-messages" id="chat-messages">
+                    <h3 style="margin-bottom: 0.8rem; font-weight: 800; font-size: 1rem;"><i class="fa-solid fa-comments"></i> المحادثة الفورية الذكية</h3>                    <div class="chat-messages" id="chat-messages">
                         <div class="message ai">أهلاً بك! اسألني عن أي معلم في اللاذقية أو طرطوس، وسأوفر لك تفاصيل دقيقة فوراً.</div>
                     </div>
                     <div class="chat-input-area">
@@ -755,8 +782,7 @@
                     <button class="btn-primary" style="background: var(--accent);" onclick="lockAdminPanel()"><i class="fa-solid fa-lock"></i> إغلاق غرفة الإدارة</button>
                 </div>
             </div>
-        </section>
-    </main>
+        </section>    </main>
     <!-- Destination Add/Edit Modal Form -->
     <div id="dest-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:2000; align-items:center; justify-content:center;">
         <div style="background:var(--bg-card); padding:2rem; border-radius:var(--radius); max-width:500px; width:90%; border:1px solid var(--border); box-shadow:var(--shadow); max-height:90vh; overflow-y:auto;">
@@ -805,8 +831,7 @@
         // --- Firebase Initialization ---
         const firebaseConfig = {
           apiKey: "AIzaSyCpAzIfRmO_jQzf7uf4uPDLkRqI9DaPhjE",
-          authDomain: "jinansyr-28efc.firebaseapp.com",
-          databaseURL: "https://jinansyr-28efc-default-rtdb.firebaseio.com",
+          authDomain: "jinansyr-28efc.firebaseapp.com",          databaseURL: "https://jinansyr-28efc-default-rtdb.firebaseio.com",
           projectId: "jinansyr-28efc",
           storageBucket: "jinansyr-28efc.firebasestorage.app",
           messagingSenderId: "662247928226",
@@ -855,8 +880,7 @@
                 if (document.getElementById('admin-panel-box').style.display === 'block') {
                     renderAdminDestinationsList();
                 }
-            });
-            db.ref('ad_posters').on('value', (snapshot) => {
+            });            db.ref('ad_posters').on('value', (snapshot) => {
                 const data = snapshot.val();
                 adPosters = data ? Object.values(data) : [];
                 renderAllGrids();
@@ -905,8 +929,7 @@
                         }
                     } else {
                         if (height > MAX_HEIGHT) {
-                            width *= MAX_HEIGHT / height;
-                            height = MAX_HEIGHT;
+                            width *= MAX_HEIGHT / height;                            height = MAX_HEIGHT;
                         }
                     }
                     canvas.width = width;
@@ -942,6 +965,12 @@
             renderAllGrids();
         }
 
+        // === Toggle Pulse Card Accordion ===
+        function togglePulseCard(cardElement) {
+            if (!cardElement) return;
+            cardElement.classList.toggle('open');
+        }
+
         // === Toggle Description Expand/Collapse ===
         function toggleDescription(el) {
             el.classList.toggle('expanded');
@@ -949,8 +978,7 @@
             if (el.classList.contains('expanded')) {
                 btn.innerHTML = '<i class="fa-solid fa-chevron-up"></i> إخفاء التفاصيل';
             } else {
-                btn.innerHTML = '<i class="fa-solid fa-chevron-down"></i> اقرأ المزيد';
-            }
+                btn.innerHTML = '<i class="fa-solid fa-chevron-down"></i> اقرأ المزيد';            }
         }
 
         // --- Ad Carousel Rotation System ---
@@ -999,8 +1027,7 @@
             if (isHome) {
                 const wrap = document.getElementById('home-show-more-wrap');
                 if (wrap) {
-                    wrap.style.display = data.length > 4 ? 'block' : 'none';
-                }
+                    wrap.style.display = data.length > 4 ? 'block' : 'none';                }
             }
 
             let html = '';
@@ -1049,8 +1076,7 @@
                     html += slidesHtml;
                     html += '<div class="ad-carousel-dots">' + dotsHtml + '</div>';
                     html += '</div>';
-                    html += '<div class="ad-body">';
-                    html += '<span class="ad-badge"><i class="fa-solid fa-rectangle-ad"></i> إعلان ممول</span>';
+                    html += '<div class="ad-body">';                    html += '<span class="ad-badge"><i class="fa-solid fa-rectangle-ad"></i> إعلان ممول</span>';
                     html += '<h3>' + ad.title + '</h3>';
                     html += '<p>' + ad.desc + '</p>';
                     html += '<div class="dest-footer">';
@@ -1099,8 +1125,7 @@
                             <h4 style="font-size: 0.95rem;">${dest.name} <span style="font-size: 0.75rem; color: var(--primary);">(${dest.region === 'latakia' ? 'اللاذقية' : 'طرطوس'})</span></h4>
                             <small style="color: var(--text-muted);">${dest.description.substring(0, 40)}...</small>
                         </div>
-                    </div>
-                    <div style="display: flex; gap: 6px;">
+                    </div>                    <div style="display: flex; gap: 6px;">
                         <button class="btn-primary" style="background: var(--secondary); padding: 4px 10px; font-size: 0.8rem;" onclick="openEditDestinationModal(${dest.id})">تحرير</button>
                         <button class="btn-primary" style="background: #ef4444; padding: 4px 10px; font-size: 0.8rem;" onclick="deleteDestination(${dest.id})">حذف</button>
                     </div>
@@ -1149,8 +1174,7 @@
                 const destObj = {
                     id: targetId,
                     name: name,
-                    region: region,
-                    description: description,
+                    region: region,                    description: description,
                     lat: region === 'latakia' ? 35.52 : 34.89,
                     lng: region === 'latakia' ? 35.79 : 35.88,
                     rating: rating,
@@ -1199,8 +1223,7 @@
                     <button class="btn-primary" style="background: #ef4444; padding: 4px 10px; font-size: 0.8rem;" onclick="deleteAdPoster(${ad.id})">حذف</button>
                 </div>
             `}).join('');
-        }
-        function addNewAdPoster() {
+        }        function addNewAdPoster() {
             const fileInput = document.getElementById('ad-file-input');
             const titleInput = document.getElementById('ad-title-input');
             const title = titleInput.value.trim() || 'إعلان سياحي جديد';
@@ -1249,8 +1272,7 @@
             if (link) link.classList.add('active');
             
             const navLinks = document.getElementById('navLinks');
-            if (navLinks) navLinks.classList.remove('show');
-            
+            if (navLinks) navLinks.classList.remove('show');            
             window.scrollTo({ top: 0, behavior: 'smooth' });
             if (sectionId === 'map-section' && !window.mapInitialized) {
                 initMap();
@@ -1299,8 +1321,7 @@
             const planResult = document.getElementById('plan-result');
             if (planResult) {
                 planResult.innerHTML = "<b>برنامج سياحي مقترح:</b><br>• اليوم الأول: اللاذقية وشاطئ البسيط.<br>• اليوم الثاني: صلنفة وغاباتها.<br>• اليوم الثالث: طرطوس وجزيرة أرواد.";
-            }
-        }
+            }        }
         function resetCounters() {
             totalVisitors = 170001;
             updateCountersDisplay();
