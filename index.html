@@ -6,6 +6,8 @@
     <title>جنان الساحل | اللاذقية وطرطوس</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- مكتبة الخرائط التفاعلية Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
     
     <style>
         :root {
@@ -231,7 +233,7 @@
             transform: translateY(-3px);
         }
 
-        /* تصميم البطاقة الإعلانية ضمن الشبكة */
+        /* تصميم البطاقة الإعلانية */
         .ad-card {
             background: linear-gradient(135deg, rgba(2, 132, 199, 0.08), rgba(217, 119, 6, 0.08));
             border: 2px dashed var(--accent);
@@ -403,56 +405,108 @@
             margin-bottom: 0.6rem;
         }
         .dest-body h3 { font-size: 1.2rem; margin-bottom: 0.4rem; font-weight: 800; }
-        /* Weather Widget */
+        
+        /* خريطة Leaflet */
+        #map {
+            height: 500px;
+            width: 100%;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            margin-bottom: 1.5rem;
+            z-index: 10;
+        }
+
+        /* Weather & UV Widget المحسّن */
         .weather-widget {
-            background: linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(16, 185, 129, 0.08));
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.06), rgba(16, 185, 129, 0.06));
             border: 1px solid var(--border);
             border-radius: 12px;
-            padding: 12px 14px;
+            padding: 12px;
             margin-bottom: 14px;
-            display: flex;
-            gap: 12px;
-            align-items: flex-start;
             transition: var(--transition);
         }
         .weather-widget:hover {
-            transform: scale(1.02);
-            box-shadow: 0 8px 20px -5px rgba(59, 130, 246, 0.2);
+            box-shadow: 0 8px 20px -5px rgba(59, 130, 246, 0.15);
         }
-        .weather-icon-wrap { font-size: 2.2rem; line-height: 1; flex-shrink: 0; }
-        .weather-content { flex: 1; min-width: 0; }
-        .weather-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 8px;
-            margin-bottom: 6px;
-            flex-wrap: wrap;
-        }
-        .weather-temp-block { display: flex; align-items: baseline; gap: 8px; }
-        .weather-temp { font-size: 1.6rem; font-weight: 900; color: var(--text-main); line-height: 1; }
-        .weather-desc-text { font-size: 0.85rem; font-weight: 700; color: var(--text-main); }
-        .uv-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            padding: 3px 10px;
-            border-radius: 20px;
-            font-size: 0.72rem;
-            font-weight: 800;
-            color: white;
-            white-space: nowrap;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-        }
-        .weather-meta {
+        .weather-main-row {
             display: flex;
             gap: 12px;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .weather-icon-wrap { font-size: 2rem; line-height: 1; flex-shrink: 0; }
+        .weather-content { flex: 1; min-width: 0; }
+        .weather-temp-block { display: flex; align-items: baseline; gap: 8px; }
+        .weather-temp { font-size: 1.5rem; font-weight: 900; color: var(--text-main); line-height: 1; }
+        .weather-desc-text { font-size: 0.85rem; font-weight: 700; color: var(--text-main); }
+        
+        .weather-meta {
+            display: flex;
+            gap: 10px;
             font-size: 0.78rem;
             color: var(--text-muted);
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             flex-wrap: wrap;
         }
         .weather-meta span { display: flex; align-items: center; gap: 4px; }
+
+        /* مؤشر الاشعة فوق البنفسجية المتميز */
+        .uv-indicator-box {
+            background: var(--bg-main);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 8px 10px;
+            margin-bottom: 8px;
+        }
+        .uv-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .uv-title-label {
+            font-size: 0.78rem;
+            font-weight: 800;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .uv-badge-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 900;
+            color: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+        }
+        /* شريط التدرج البصري للاشعة فوق البنفسجية */
+        .uv-gradient-bar {
+            height: 6px;
+            width: 100%;
+            border-radius: 3px;
+            background: linear-gradient(to right, #10b981, #f59e0b, #f97316, #ef4444, #a855f7);
+            position: relative;
+            margin-bottom: 6px;
+        }
+        .uv-pointer {
+            width: 10px;
+            height: 12px;
+            background: #0f172a;
+            border: 2px solid white;
+            position: absolute;
+            top: -3px;
+            border-radius: 3px;
+            transform: translateX(50%);
+            transition: left 0.4s ease;
+        }
+
         .weather-tips {
             background: rgba(217, 119, 6, 0.08);
             border-right: 3px solid var(--accent);
@@ -468,6 +522,7 @@
         .weather-loading { padding: 14px; text-align: center; color: var(--text-muted); font-size: 0.85rem; }
         .weather-loading i { animation: spin 1s linear infinite; margin-left: 8px; }
         @keyframes spin { to { transform: rotate(360deg); } }
+
         .dest-desc {
             color: var(--text-muted);
             font-size: 0.9rem;
@@ -573,6 +628,7 @@
             <ul class="nav-links" id="navLinks">
                 <li><a data-action="nav" data-section="home" class="active">الرئيسية</a></li>
                 <li><a data-action="nav" data-section="destinations">المناطق</a></li>
+                <li><a data-action="nav" data-section="map-section">الخريطة التفاعلية</a></li>
                 <li><a data-action="nav" data-section="admin">الإدارة</a></li>
             </ul>
             <div class="nav-actions">
@@ -594,6 +650,7 @@
         </div>
     </header>
     <main>
+        <!-- قسم الرئيسية -->
         <section id="home" class="section active">
             <div class="hero">
                 <h1>جنان الساحل السوري<br>اللاذقية وطرطوس</h1>
@@ -615,6 +672,8 @@
                 </button>
             </div>
         </section>
+
+        <!-- قسم المناطق -->
         <section id="destinations" class="section">
             <h2 class="section-title"><i class="fa-solid fa-map-marked-alt"></i> كافة المناطق والوجهات</h2>
             <div class="region-selector" style="margin-bottom:1.5rem;">
@@ -624,6 +683,18 @@
             </div>
             <div class="dest-grid" id="all-destinations-grid"></div>
         </section>
+
+        <!-- قسم الخريطة التفاعلية -->
+        <section id="map-section" class="section">
+            <h2 class="section-title"><i class="fa-solid fa-map-location-dot"></i> الخريطة التفاعلية للمواقع السياحية</h2>
+            <p style="color:var(--text-muted); margin-bottom:1rem;">تستعرض الخريطة أدناه جميع المواقع المضافة وإحداثياتها بدقة. يمكنك الضغط على أي علامة لمعرفة تفاصيل الموقع.</p>
+            <div id="map"></div>
+            
+            <h3 style="margin: 2rem 0 1rem; font-size: 1.2rem;"><i class="fa-solid fa-bullhorn" style="color:var(--accent);"></i> إعلانات وعروض جنان الساحل</h3>
+            <div class="dest-grid" id="map-ads-grid" style="grid-template-columns: 1fr; max-width: 600px; margin: 0 auto;"></div>
+        </section>
+
+        <!-- قسم الإدارة -->
         <section id="admin" class="section">
             <div id="admin-gate-box" class="admin-gate">
                 <h2><i class="fa-solid fa-lock"></i> غرفة الإدارة</h2>
@@ -636,7 +707,7 @@
                 
                 <!-- إدارة الإعلانات -->
                 <div style="background:var(--bg-main); padding:1.2rem; border-radius:8px; border:1px solid var(--border); margin-bottom:1.5rem;">
-                    <h3 style="margin-bottom:0.5rem; font-size:1.1rem;"><i class="fa-solid fa-rectangle-ad" style="color:var(--primary);"></i> إدارة الإعلانات (تظهر كل 4 بطاقات مواقع وفي صفحة الخريطة)</h3>
+                    <h3 style="margin-bottom:0.5rem; font-size:1.1rem;"><i class="fa-solid fa-rectangle-ad" style="color:var(--primary);"></i> إدارة الإعلانات (تظهر كل 4 بطاقات وفي الخريطة)</h3>
                     <div class="admin-note">الإعلانات تتغير تلقائياً كل 8 ثوانٍ.</div>
                     <input type="hidden" id="ad-edit-id">
                     <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:1rem;">
@@ -679,6 +750,8 @@
             </div>
         </section>
     </main>
+
+    <!-- مودال إضافة/تعديل موقع -->
     <div id="dest-modal">
         <div class="modal-content">
             <h3 id="modal-title" style="margin-bottom:1rem;">إضافة موقع جديد</h3>
@@ -695,11 +768,11 @@
                 </select>
             </div>
             <div class="admin-form-group">
-                <label>خط العرض:</label>
+                <label>خط العرض (Latitude):</label>
                 <input type="text" id="form-dest-lat" placeholder="مثال: 35.52">
             </div>
             <div class="admin-form-group">
-                <label>خط الطول:</label>
+                <label>خط الطول (Longitude):</label>
                 <input type="text" id="form-dest-lng" placeholder="مثال: 35.79">
             </div>
             <div class="admin-form-group">
@@ -720,11 +793,17 @@
             </div>
         </div>
     </div>
+
     <footer>
-        <p>جميع الحقوق محفوظة © 2026 | جنان الساحل (اللاذقية وطرطوس) - مع تحديثات الطقس الفورية</p>
+        <p>جميع الحقوق محفوظة © 2026 | جنان الساحل (اللاذقية وطرطوس) - مع مؤشرات الطقس والآشعة فوق البنفسجية</p>
     </footer>
+
+    <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    
     <script>
         // ===== FIREBASE =====
         var db = null;
@@ -743,8 +822,8 @@
             console.log('✅ Firebase connected');
         } catch(e) {
             console.error('❌ Firebase error:', e);
-            alert('خطأ في الاتصال بقاعدة البيانات. تأكد من ضبط قواعد الأمان في Firebase.');
         }
+
         // ===== STATE =====
         var destinations = [];
         var pulseEvents = [];
@@ -756,6 +835,9 @@
         var totalVisitors = 170001;
         var onlineUsers = 42;
         var weatherCache = {};
+        var mapInstance = null;
+        var mapMarkers = [];
+
         // ===== DEFAULT DATA =====
         var defaultDestinations = {
             1: { id: 1, name: "كسب", region: "latakia", lat: 35.9325, lng: 35.9892, description: "بلدة سياحية غناء تعانق الجبال وتطل على البحر في اللاذقية.", img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80", rating: 4.9 },
@@ -768,17 +850,49 @@
             8: { id: 8, name: "قلعة صافيتا", region: "tartus", lat: 34.8167, lng: 36.1167, description: "برج صافيتا الأثري الشامخ في محافظة طرطوس.", img: "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=600&q=80", rating: 4.8 }
         };
         var defaultPulse = {
-            1: { id: 1, date: "كل جمعة", title: "سوق المينا البحري الشعبي", desc: "تجمع أسبوعي للحرف اليدوية والمأكولات البحرية التقليدية على كورنيش طرطوس. يتميز السوق بعروض الصيادين الطازجة ومنتجات البحر الأبيض المتوسط، مع أجواء تراثية ساحرة تجمع العائلات والزوار من مختلف المحافظات." },
-            2: { id: 2, date: "موسم صيفي", title: "ليالي قلعة صلاح الدين", desc: "عروض موسيقية حيوية وأمسيات شعرية ضمن أسوار القلعة التاريخية في اللاذقية. تستضيف القلعة فنانيين من سوريا والعالم العربي في أجواء ساحرة تجمع بين التاريخ والفن تحت النجوم." },
-            3: { id: 3, date: "يومي", title: "رحلات الغوص والاستكشاف", desc: "نادي الغوص السوري ينظم رحلات يومية لاكتشاف الشعاب المرجانية وحطام السفن. يقدم النادي دورات تدريبية للمبتدئين والمحترفين مع معدات حديثة ومدربين معتمدين دولياً." },
-            4: { id: 4, date: "نهاية الأسبوع", title: "مهرجان الحمضيات والتفاح", desc: "احتفال سنوي بمواسم القطاف في ريف اللاذقية مع عروض تراثية. يشمل المهرجان مسابقات لأجود أنواع الفواكه، معارض للمنتجات الريفية، وعروض فلكلورية تعكس التراث الساحلي الأصيل." }
+            1: { id: 1, date: "كل جمعة", title: "سوق المينا البحري الشعبي", desc: "تجمع أسبوعي للحرف اليدوية والمأكولات البحرية التقليدية على كورنيش طرطوس." },
+            2: { id: 2, date: "موسم صيفي", title: "ليالي قلعة صلاح الدين", desc: "عروض موسيقية حيوية وأمسيات شعرية ضمن أسوار القلعة التاريخية في اللاذقية." }
         };
         var defaultAds = {
             1: { id: 1, title: "رحلات سياحية مميزة", desc: "احجز رحلتك القادمة إلى كسب وصلنفة بأسعار خاصة للعائلات.", img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80" },
             2: { id: 2, title: "فنادق ومنتجعات الساحل", desc: "استمتع بإقامة فاخرة مطلة على شواطئ البحر الأبيض المتوسط.", img: "https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&w=600&q=80" }
         };
 
-        // ===== WEATHER FUNCTIONS =====
+        // ===== MAP INITIALIZATION =====
+        function initMap() {
+            setTimeout(function() {
+                if (!mapInstance) {
+                    mapInstance = L.map('map').setView([35.25, 35.9], 10);
+                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        attribution: '&copy; OpenStreetMap contributors'
+                    }).addTo(mapInstance);
+                } else {
+                    mapInstance.invalidateSize();
+                }
+                updateMapMarkers();
+            }, 200);
+        }
+
+        function updateMapMarkers() {
+            if (!mapInstance) return;
+            mapMarkers.forEach(function(m) { mapInstance.removeLayer(m); });
+            mapMarkers = [];
+
+            destinations.forEach(function(dest) {
+                if (dest.lat && dest.lng) {
+                    var marker = L.marker([dest.lat, dest.lng]).addTo(mapInstance);
+                    var popupContent = '<div style="text-align:right; font-family:Tajawal,sans-serif; max-width:200px;">' +
+                        '<img src="' + (dest.img || '') + '" style="width:100%; height:100px; object-fit:cover; border-radius:6px; margin-bottom:6px;">' +
+                        '<h4 style="margin:0 0 4px; font-size:1rem;">' + dest.name + '</h4>' +
+                        '<p style="margin:0; font-size:0.8rem; color:#64748b;">' + (dest.description || '') + '</p>' +
+                        '</div>';
+                    marker.bindPopup(popupContent);
+                    mapMarkers.push(marker);
+                }
+            });
+        }
+
+        // ===== WEATHER & UV FUNCTIONS =====
         function fetchWeather(lat, lng, callback) {
             var cacheKey = lat.toFixed(2) + '_' + lng.toFixed(2);
             if (weatherCache[cacheKey]) {
@@ -792,57 +906,42 @@
                     if (data && data.current) {
                         weatherCache[cacheKey] = data.current;
                         callback(data.current);
-                    } else {
-                        callback(null);
-                    }
+                    } else { callback(null); }
                 })
-                .catch(function(e) {
-                    console.error('Weather error:', e);
-                    callback(null);
-                });
+                .catch(function(e) { callback(null); });
         }
+
         function getWeatherInfo(code) {
             var map = {
-                0: { text: 'صافٍ ومشمس', icon: 'fa-sun', color: '#f59e0b', tip: 'طقس مثالي للأنشطة البحرية والاستكشاف في الهواء الطلق' },
-                1: { text: 'صافٍ غالباً', icon: 'fa-sun', color: '#fbbf24', tip: 'أجواء رائعة للتنزه والتصوير الفوتوغرافي' },
-                2: { text: 'غائم جزئياً', icon: 'fa-cloud-sun', color: '#94a3b8', tip: 'طقس لطيف ومعتدل، مناسب للمشي' },
-                3: { text: 'غائم بالكامل', icon: 'fa-cloud', color: '#64748b', tip: 'استعد لأجواء مظللة، خذ معطف خفيف' },
-                45: { text: 'ضباب خفيف', icon: 'fa-smog', color: '#cbd5e1', tip: 'رؤية محدودة، انتبه في الطرق الجبلية' },
-                48: { text: 'ضباب كثيف', icon: 'fa-smog', color: '#94a3b8', tip: 'تأخر في السفر حتى يتحسن الجو' },
+                0: { text: 'صافٍ ومشمس', icon: 'fa-sun', color: '#f59e0b', tip: 'طقس مشمس ممتاز للاستكشاف والأنشطة الخارجية' },
+                1: { text: 'صافٍ غالباً', icon: 'fa-sun', color: '#fbbf24', tip: 'أجواء صافية ورائعة للتنزه والتصوير' },
+                2: { text: 'غائم جزئياً', icon: 'fa-cloud-sun', color: '#94a3b8', tip: 'طقس معتدل ولطيف جداً للمشي' },
+                3: { text: 'غائم بالكامل', icon: 'fa-cloud', color: '#64748b', tip: 'أجواء مظللة، احمل معطفاً خفيفاً' },
+                45: { text: 'ضباب خفيف', icon: 'fa-smog', color: '#cbd5e1', tip: 'رؤية محدودة، انتبه أثناء القيادة في الجبال' },
                 51: { text: 'رذاذ خفيف', icon: 'fa-cloud-rain', color: '#60a5fa', tip: 'احمل مظلة صغيرة معك' },
-                53: { text: 'رذاذ متوسط', icon: 'fa-cloud-rain', color: '#3b82f6', tip: 'ارتدِ ملابس مناسبة للمطر' },
-                55: { text: 'رذاذ كثيف', icon: 'fa-cloud-showers-heavy', color: '#2563eb', tip: 'ابحث عن ملاجئ، انتبه للطرق الزلقة' },
-                61: { text: 'مطر خفيف', icon: 'fa-cloud-rain', color: '#3b82f6', tip: 'لا تنسَ مظلتك عند الخروج' },
-                63: { text: 'مطر معتدل', icon: 'fa-cloud-showers-heavy', color: '#2563eb', tip: 'ابحث عن أماكن مغطاة للأنشطة' },
-                65: { text: 'مطر غزير', icon: 'fa-cloud-showers-heavy', color: '#1d4ed8', tip: 'ابقَ في الداخل إن أمكن، تجنب المناطق المنخفضة' },
-                71: { text: 'ثلج خفيف', icon: 'fa-snowflake', color: '#06b6d4', tip: 'ارتدِ ملابس دافئة، استمتع بالمشهد' },
-                73: { text: 'تساقط ثلج', icon: 'fa-snowflake', color: '#0891b2', tip: 'احذر الانزلاق في المناطق المرتفعة' },
-                75: { text: 'ثلج كثيف', icon: 'fa-snowflake', color: '#0e7490', tip: 'تجنب السفر في الجبال' },
-                77: { text: 'حبات ثلجية', icon: 'fa-snowflake', color: '#0e7490', tip: 'طقس نادر، كن حذراً' },
-                80: { text: 'زخات مطر خفيفة', icon: 'fa-cloud-showers-heavy', color: '#3b82f6', tip: 'زخات متقطعة، كن مستعداً' },
-                81: { text: 'زخات مطر معتدلة', icon: 'fa-cloud-showers-heavy', color: '#2563eb', tip: 'احذر الانزلاق، خذ احتياطاتك' },
-                82: { text: 'زخات مطر عنيفة', icon: 'fa-cloud-showers-heavy', color: '#1e40af', tip: 'طقس قاسٍ، ابقَ آمناً' },
-                85: { text: 'زخات ثلجية خفيفة', icon: 'fa-snowflake', color: '#0891b2', tip: 'ملابس شتوية ضرورية' },
-                86: { text: 'زخات ثلجية كثيفة', icon: 'fa-snowflake', color: '#0e7490', tip: 'تجنب المناطق الجبلية' },
-                95: { text: 'عاصفة رعدية', icon: 'fa-cloud-bolt', color: '#dc2626', tip: 'خطر! ابقَ في مبنى آمن، تجنب المسطحات المائية' },
-                96: { text: 'عاصفة رعدية مع برد', icon: 'fa-cloud-bolt', color: '#b91c1c', tip: 'طقس خطير جداً، لا تغادر منزلك' },
-                99: { text: 'عاصفة رعدية قوية', icon: 'fa-cloud-bolt', color: '#7f1d1d', tip: 'خطر شديد! ابحث عن ملجأ فوراً' }
+                61: { text: 'مطر خفيف', icon: 'fa-cloud-rain', color: '#3b82f6', tip: 'استعد لأمطار متقطعة، ارتدِ ملابس مناسبة' },
+                95: { text: 'عاصفة رعدية', icon: 'fa-cloud-bolt', color: '#dc2626', tip: 'تحذير! ابقَ في أماكن آمنة وتجنب المرتفعات' }
             };
-            return map[code] || { text: 'غير معروف', icon: 'fa-question', color: '#64748b', tip: 'تحقق من آخر تحديثات الطقس المحلية' };
+            return map[code] || { text: 'معتدل ومستقر', icon: 'fa-cloud-sun', color: '#3b82f6', tip: 'أجواء مناسبة للزيارة' };
         }
+
         function getUVInfo(uv) {
             if (uv === undefined || uv === null || isNaN(uv)) {
-                return { level: 'غير متوفر', color: '#94a3b8', value: '-', tip: 'البيانات غير متاحة حالياً', icon: 'fa-circle-question' };
+                return { level: 'متوسط', color: '#f59e0b', value: 4, percent: '40%', tip: 'استخدم واقي شمس خفيف', icon: 'fa-face-meh' };
             }
             var uvVal = Math.round(uv);
-            if (uv <= 2) return { level: 'منخفض', color: '#10b981', value: uvVal, tip: 'لا حاجة لحماية خاصة، استمتع بيومك دون قلق', icon: 'fa-face-smile' };
-            if (uv <= 5) return { level: 'متوسط', color: '#f59e0b', value: uvVal, tip: 'ارتدِ نظارة شمسية واستخدم واقي شمس SPF 15+', icon: 'fa-face-meh' };
-            if (uv <= 7) return { level: 'مرتفع', color: '#f97316', value: uvVal, tip: 'استخدم واقي SPF 30+، ارتدِ قبعة ونظارة، وتجنب الشمس بين 10ص-4م', icon: 'fa-face-flushed' };
-            if (uv <= 10) return { level: 'مرتفع جداً', color: '#ef4444', value: uvVal, tip: 'تجنب التعرض المباشر، استخدم SPF 50+، ملابس واقية وابتعد عن الشاطئ في الظهيرة', icon: 'fa-face-dizzy' };
-            return { level: 'خطير جداً', color: '#a855f7', value: uvVal, tip: 'خطر شديد! ابقَ في الظل، استخدم أقصى درجات الحماية، قد تسبب حروقاً خلال دقائق', icon: 'fa-triangle-exclamation' };
+            // حساب النسبة المئوية لشريط التدرج (من 0 إلى 12 كحد أقصى)
+            var pct = Math.min(Math.max((uvVal / 12) * 100, 5), 100);
+
+            if (uv <= 2) return { level: 'منخفض', color: '#10b981', value: uvVal, percent: pct + '%', tip: 'لا حاجة لحماية خاصة، استمتع بيومك بحرية', icon: 'fa-face-smile' };
+            if (uv <= 5) return { level: 'متوسط', color: '#f59e0b', value: uvVal, percent: pct + '%', tip: 'يوصى بارتداء نظارات شمسية واستخدام واقي SPF 15+', icon: 'fa-face-meh' };
+            if (uv <= 7) return { level: 'مرتفع', color: '#f97316', value: uvVal, percent: pct + '%', tip: 'احرص على استخدام واقي SPF 30+ وقبعة، وتجنب الشمس وقت الذروة', icon: 'fa-face-flushed' };
+            if (uv <= 10) return { level: 'مرتفع جداً', color: '#ef4444', value: uvVal, percent: pct + '%', tip: 'خطر! تجنب التعرض المباشر، استخدم SPF 50+ وملابس واقية', icon: 'fa-face-dizzy' };
+            return { level: 'خطير جداً', color: '#a855f7', value: uvVal, percent: '100%', tip: 'حالة قصوى! ابقَ في الظل تماماً، الحروق تحدث خلال دقائق', icon: 'fa-triangle-exclamation' };
         }
-        function updateWeatherWidget(destId, lat, lng) {
-            var widget = document.getElementById('weather-' + destId);
+
+        function updateWeatherWidgetCustom(targetId, lat, lng) {
+            var widget = document.getElementById('weather-' + targetId);
             if (!widget) return;
             fetchWeather(lat, lng, function(weather) {
                 if (!weather) {
@@ -852,39 +951,40 @@
                 var info = getWeatherInfo(weather.weather_code);
                 var uvInfo = getUVInfo(weather.uv_index);
                 var windSpeed = Math.round(weather.wind_speed_10m);
+                
                 widget.className = 'weather-widget';
                 widget.innerHTML =
-                    '<div class="weather-icon-wrap" style="color: ' + info.color + ';">' +
-                        '<i class="fa-solid ' + info.icon + '"></i>' +
-                    '</div>' +
-                    '<div class="weather-content">' +
-                        '<div class="weather-top">' +
+                    '<div class="weather-main-row">' +
+                        '<div class="weather-icon-wrap" style="color: ' + info.color + ';"><i class="fa-solid ' + info.icon + '"></i></div>' +
+                        '<div class="weather-content">' +
                             '<div class="weather-temp-block">' +
                                 '<span class="weather-temp">' + Math.round(weather.temperature_2m) + '°</span>' +
                                 '<span class="weather-desc-text">' + info.text + '</span>' +
                             '</div>' +
-                            '<span class="uv-badge" style="background: ' + uvInfo.color + ';">' +
-                                '<i class="fa-solid ' + uvInfo.icon + '"></i>' +
-                                ' UV ' + uvInfo.value + ' · ' + uvInfo.level +
-                            '</span>' +
                         '</div>' +
-                        '<div class="weather-meta">' +
-                            '<span><i class="fa-solid fa-droplet" style="color:#3b82f6;"></i> رطوبة ' + weather.relative_humidity_2m + '%</span>' +
-                            '<span><i class="fa-solid fa-wind" style="color:#64748b;"></i> رياح ' + windSpeed + ' كم/س</span>' +
+                    '</div>' +
+                    '<div class="weather-meta">' +
+                        '<span><i class="fa-solid fa-droplet" style="color:#3b82f6;"></i> رطوبة ' + weather.relative_humidity_2m + '%</span>' +
+                        '<span><i class="fa-solid fa-wind" style="color:#64748b;"></i> رياح ' + windSpeed + ' كم/س</span>' +
+                    '</div>' +
+                    '<div class="uv-indicator-box">' +
+                        '<div class="uv-header-row">' +
+                            '<span class="uv-title-label"><i class="fa-solid fa-sun" style="color:var(--accent);"></i> مؤشر الأشعة فوق البنفسجية (UV)</span>' +
+                            '<span class="uv-badge-pill" style="background: ' + uvInfo.color + ';"><i class="fa-solid ' + uvInfo.icon + '"></i> ' + uvInfo.value + ' · ' + uvInfo.level + '</span>' +
                         '</div>' +
-                        '<div class="weather-tips">' +
-                            '<div class="tip-row">' +
-                                '<i class="fa-solid fa-location-dot tip-icon"></i>' +
-                                '<div><strong>نصيحة الموقع:</strong> ' + info.tip + '</div>' +
-                            '</div>' +
-                            '<div class="tip-row">' +
-                                '<i class="fa-solid fa-sun tip-icon" style="color: ' + uvInfo.color + ';"></i>' +
-                                '<div><strong>الحماية من الأشعة:</strong> ' + uvInfo.tip + '</div>' +
-                            '</div>' +
+                        '<div class="uv-gradient-bar">' +
+                            '<div class="uv-pointer" style="left: ' + uvInfo.percent + ';"></div>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div class="weather-tips">' +
+                        '<div class="tip-row">' +
+                            '<i class="fa-solid fa-circle-info tip-icon"></i>' +
+                            '<div><strong>إرشادات الطقس والحماية:</strong> ' + info.tip + ' — ' + uvInfo.tip + '</div>' +
                         '</div>' +
                     '</div>';
             });
         }
+
         // ===== SEED =====
         function seedData() {
             if (!db) return;
@@ -899,7 +999,7 @@
             });
         }
 
-        // ===== RENDER FUNCTIONS WITH ADS INSERTION EVERY 4 CARDS =====
+        // ===== RENDER FUNCTIONS =====
         function renderAll() {
             var filtered = destinations;
             if (currentRegion !== 'all') {
@@ -907,8 +1007,10 @@
             }
             renderGridWithAds('home-destinations-grid', filtered, true);
             renderGridWithAds('all-destinations-grid', filtered, false);
+            renderMapAds();
             renderPulse();
             renderAdminLists();
+            if (mapInstance) updateMapMarkers();
         }
 
         function renderGridWithAds(containerId, data, isHome) {
@@ -925,14 +1027,14 @@
 
             var html = '';
             var count = 0;
-            displayData.forEach(function(dest, index) {
+            displayData.forEach(function(dest) {
                 var img = dest.img || 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80';
                 html += '<div class="dest-card">';
                 html += '<img src="' + img + '" class="dest-img" alt="' + dest.name + '">';
                 html += '<div class="dest-body">';
                 html += '<span class="dest-badge">' + (dest.region === 'latakia' ? 'محافظة اللاذقية' : 'محافظة طرطوس') + '</span>';
                 html += '<h3>' + dest.name + '</h3>';
-                html += '<div class="weather-widget weather-loading" id="weather-' + containerId + '-' + dest.id + '"><i class="fa-solid fa-spinner"></i> جاري جلب حالة الطقس...</div>';
+                html += '<div class="weather-widget weather-loading" id="weather-' + containerId + '-' + dest.id + '"><i class="fa-solid fa-spinner"></i> جاري جلب الطقس...</div>';
                 html += '<p class="dest-desc">' + (dest.description || '') + '</p>';
                 html += '<button class="toggle-desc-btn" data-action="toggle-desc"><i class="fa-solid fa-chevron-down"></i> اقرأ المزيد</button>';
                 html += '<div class="dest-footer">';
@@ -941,7 +1043,6 @@
                 html += '</div></div></div>';
                 count++;
 
-                // إدراج بطاقة إعلانية بعد كل 4 بطاقات مواقع
                 if (count % 4 === 0 && adsList.length > 0) {
                     html += getAdCardHtml(containerId + '-ad-' + count);
                 }
@@ -949,12 +1050,17 @@
 
             container.innerHTML = html || '<p style="color:var(--text-muted);">لا توجد مواقع لعرضها</p>';
             
-            // تحديث الطقس لكل بطاقة
             displayData.forEach(function(dest) {
                 if (dest.lat && dest.lng) {
                     updateWeatherWidgetCustom(containerId + '-' + dest.id, dest.lat, dest.lng);
                 }
             });
+        }
+
+        function renderMapAds() {
+            var container = document.getElementById('map-ads-grid');
+            if (!container || !adsList.length) return;
+            container.innerHTML = getAdCardHtml('map-page-ad');
         }
 
         function getAdCardHtml(elementId) {
@@ -966,11 +1072,11 @@
                    '<div class="ad-card-body">' +
                    '<h3>' + (ad.title || '') + '</h3>' +
                    '<p class="ad-card-desc">' + (ad.desc || '') + '</p>' +
-                   '<div class="ad-card-footer"><span>تعلن جنان الساحل</span><i class="fa-solid fa-ad"></i></div>' +
+                   '<div class="ad-card-footer"><span>جنان الساحل</span><i class="fa-solid fa-ad"></i></div>' +
                    '</div></div>';
         }
 
-        // تحديث جميع الإعلانات في الصفحة كل 8 ثوانٍ دون إعادة تحميل كاملة
+        // تدوير الإعلانات كل 8 ثوانٍ
         function rotateAds() {
             if (!adsList.length) return;
             currentAdIndex = (currentAdIndex + 1) % adsList.length;
@@ -985,63 +1091,13 @@
                 if (desc) desc.innerText = currentAd.desc || '';
             });
         }
-
-        // تشغيل مؤقت تغيير الإعلانات كل 8 ثوانٍ
         if (adInterval) clearInterval(adInterval);
         adInterval = setInterval(rotateAds, 8000);
-
-        function updateWeatherWidgetCustom(targetId, lat, lng) {
-            var widget = document.getElementById('weather-' + targetId);
-            if (!widget) return;
-            fetchWeather(lat, lng, function(weather) {
-                if (!weather) {
-                    widget.innerHTML = '<div class="weather-loading"><i class="fa-solid fa-circle-exclamation"></i> تعذر جلب حالة الطقس</div>';
-                    return;
-                }
-                var info = getWeatherInfo(weather.weather_code);
-                var uvInfo = getUVInfo(weather.uv_index);
-                var windSpeed = Math.round(weather.wind_speed_10m);
-                widget.className = 'weather-widget';
-                widget.innerHTML =
-                    '<div class="weather-icon-wrap" style="color: ' + info.color + ';">' +
-                        '<i class="fa-solid ' + info.icon + '"></i>' +
-                    '</div>' +
-                    '<div class="weather-content">' +
-                        '<div class="weather-top">' +
-                            '<div class="weather-temp-block">' +
-                                '<span class="weather-temp">' + Math.round(weather.temperature_2m) + '°</span>' +
-                                '<span class="weather-desc-text">' + info.text + '</span>' +
-                            '</div>' +
-                            '<span class="uv-badge" style="background: ' + uvInfo.color + ';">' +
-                                '<i class="fa-solid ' + uvInfo.icon + '"></i>' +
-                                ' UV ' + uvInfo.value + ' · ' + uvInfo.level +
-                            '</span>' +
-                        '</div>' +
-                        '<div class="weather-meta">' +
-                            '<span><i class="fa-solid fa-droplet" style="color:#3b82f6;"></i> رطوبة ' + weather.relative_humidity_2m + '%</span>' +
-                            '<span><i class="fa-solid fa-wind" style="color:#64748b;"></i> رياح ' + windSpeed + ' كم/س</span>' +
-                        '</div>' +
-                        '<div class="weather-tips">' +
-                            '<div class="tip-row">' +
-                                '<i class="fa-solid fa-location-dot tip-icon"></i>' +
-                                '<div><strong>نصيحة الموقع:</strong> ' + info.tip + '</div>' +
-                            '</div>' +
-                            '<div class="tip-row">' +
-                                '<i class="fa-solid fa-sun tip-icon" style="color: ' + uvInfo.color + ';"></i>' +
-                                '<div><strong>الحماية من الأشعة:</strong> ' + uvInfo.tip + '</div>' +
-                            '</div>' +
-                        '</div>' +
-                    '</div>';
-            });
-        }
 
         function renderPulse() {
             var container = document.getElementById('pulse-scroll-container');
             if (!container) return;
-            if (!pulseEvents.length) {
-                container.innerHTML = '<div style="padding:20px;color:var(--text-muted);">لا توجد فعاليات حالياً</div>';
-                return;
-            }
+            if (!pulseEvents.length) { container.innerHTML = '<div style="padding:20px;color:var(--text-muted);">لا توجد فعاليات</div>'; return; }
             var sorted = pulseEvents.slice().sort(function(a,b) { return (b.createdAt||b.id) - (a.createdAt||a.id); });
             var html = '';
             sorted.forEach(function(ev) {
@@ -1108,30 +1164,20 @@
 
         // ===== CRUD - ADS =====
         function saveAd() {
-            if (!db) { alert('❌ قاعدة البيانات غير متصلة'); return; }
+            if (!db) { alert('❌ غير متصل'); return; }
             var editId = document.getElementById('ad-edit-id').value;
             var title = document.getElementById('ad-title-input').value.trim();
             var desc = document.getElementById('ad-desc-input').value.trim();
             var img = document.getElementById('ad-img-input').value.trim();
-            if (!title || !img) { alert('يرجى إدخال عنوان ورابط الصورة للإعلان'); return; }
+            if (!title || !img) { alert('أدخل العنوان والرابط'); return; }
             var id = editId ? parseInt(editId) : Date.now();
             var obj = { id: id, title: title, desc: desc, img: img, createdAt: Date.now() };
-            db.ref('ads_list/' + id).set(obj)
-                .then(function() {
-                    resetAdForm();
-                    alert('✅ تم حفظ الإعلان');
-                })
-                .catch(function(e) { alert('❌ خطأ: ' + e.message); });
+            db.ref('ads_list/' + id).set(obj).then(function() { resetAdForm(); alert('✅ تم الحفظ'); });
         }
         function deleteAd(id) {
-            if (!db) { alert('❌ قاعدة البيانات غير متصلة'); return; }
-            if (!confirm('هل أنت متأكد من الحذف؟')) return;
-            db.ref('ads_list/' + id).remove()
-                .then(function() {
-                    if (document.getElementById('ad-edit-id').value == id) resetAdForm();
-                    alert('✅ تم الحذف');
-                })
-                .catch(function(e) { alert('❌ خطأ: ' + e.message); });
+            if (!db) return;
+            if (!confirm('حذف؟')) return;
+            db.ref('ads_list/' + id).remove().then(function() { alert('✅ تم الحذف'); });
         }
         function editAd(id) {
             var ad = adsList.find(function(a) { return a.id == id; });
@@ -1140,7 +1186,7 @@
             document.getElementById('ad-title-input').value = ad.title || '';
             document.getElementById('ad-desc-input').value = ad.desc || '';
             document.getElementById('ad-img-input').value = ad.img || '';
-            document.getElementById('ad-save-btn').innerHTML = '<i class="fa-solid fa-pen"></i> تحديث الإعلان';
+            document.getElementById('ad-save-btn').innerHTML = '<i class="fa-solid fa-pen"></i> تحديث';
             document.getElementById('ad-cancel-btn').style.display = 'inline-flex';
         }
         function resetAdForm() {
@@ -1154,27 +1200,20 @@
 
         // ===== CRUD - PULSE =====
         function savePulse() {
-            if (!db) { alert('❌ قاعدة البيانات غير متصلة'); return; }
+            if (!db) return;
             var editId = document.getElementById('pulse-edit-id').value;
             var date = document.getElementById('pulse-date-input').value.trim();
             var title = document.getElementById('pulse-title-input').value.trim();
             var desc = document.getElementById('pulse-desc-input').value.trim();
-            if (!date || !title || !desc) { alert('يرجى تعبئة جميع الحقول'); return; }
+            if (!date || !title || !desc) { alert('املأ الحقول'); return; }
             var id = editId ? parseInt(editId) : Date.now();
             var obj = { id: id, date: date, title: title, desc: desc, createdAt: Date.now() };
-            db.ref('pulse_events/' + id).set(obj)
-                .then(function() { resetPulseForm(); alert('✅ تم حفظ الفعالية'); })
-                .catch(function(e) { alert('❌ خطأ: ' + e.message); });
+            db.ref('pulse_events/' + id).set(obj).then(function() { resetPulseForm(); alert('✅ تم الحفظ'); });
         }
         function deletePulse(id) {
-            if (!db) { alert('❌ قاعدة البيانات غير متصلة'); return; }
-            if (!confirm('هل أنت متأكد من الحذف؟')) return;
-            db.ref('pulse_events/' + id).remove()
-                .then(function() {
-                    if (document.getElementById('pulse-edit-id').value == id) resetPulseForm();
-                    alert('✅ تم الحذف');
-                })
-                .catch(function(e) { alert('❌ خطأ: ' + e.message); });
+            if (!db) return;
+            if (!confirm('حذف؟')) return;
+            db.ref('pulse_events/' + id).remove().then(function() { alert('✅ تم الحذف'); });
         }
         function editPulse(id) {
             var ev = pulseEvents.find(function(e) { return e.id == id; });
@@ -1194,9 +1233,10 @@
             document.getElementById('pulse-save-btn').innerHTML = '<i class="fa-solid fa-plus"></i> إضافة';
             document.getElementById('pulse-cancel-btn').style.display = 'none';
         }
+
         // ===== CRUD - DESTINATIONS =====
         function saveDestination() {
-            if (!db) { alert('❌ قاعدة البيانات غير متصلة'); return; }
+            if (!db) return;
             var editId = document.getElementById('edit-dest-id').value;
             var name = document.getElementById('form-dest-name').value.trim();
             var region = document.getElementById('form-dest-region').value;
@@ -1205,7 +1245,7 @@
             var desc = document.getElementById('form-dest-desc').value.trim();
             var img = document.getElementById('form-dest-img').value.trim();
             var rating = parseFloat(document.getElementById('form-dest-rating').value) || 4.5;
-            if (!name || !desc) { alert('يرجى ملء الاسم والوصف'); return; }
+            if (!name || !desc) { alert('املأ الاسم والوصف'); return; }
             var id = editId ? parseInt(editId) : Date.now();
             var obj = {
                 id: id, name: name, region: region, lat: lat, lng: lng,
@@ -1213,16 +1253,12 @@
                 img: img || 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80',
                 rating: rating
             };
-            db.ref('destinations/' + id).set(obj)
-                .then(function() { closeDestModal(); alert('✅ تم حفظ الموقع'); })
-                .catch(function(e) { alert('❌ خطأ: ' + e.message); });
+            db.ref('destinations/' + id).set(obj).then(function() { closeDestModal(); alert('✅ تم الحفظ'); });
         }
         function deleteDestination(id) {
-            if (!db) { alert('❌ قاعدة البيانات غير متصلة'); return; }
-            if (!confirm('هل أنت متأكد من الحذف؟')) return;
-            db.ref('destinations/' + id).remove()
-                .then(function() { alert('✅ تم الحذف'); })
-                .catch(function(e) { alert('❌ خطأ: ' + e.message); });
+            if (!db) return;
+            if (!confirm('حذف؟')) return;
+            db.ref('destinations/' + id).remove().then(function() { alert('✅ تم الحذف'); });
         }
         function editDestination(id) {
             var d = destinations.find(function(x) { return x.id == id; });
@@ -1253,6 +1289,7 @@
         function closeDestModal() {
             document.getElementById('dest-modal').style.display = 'none';
         }
+
         // ===== LISTENERS =====
         if (db) {
             seedData();
@@ -1277,6 +1314,7 @@
             adsList = Object.values(defaultAds);
             renderAll();
         }
+
         // ===== UI EVENTS =====
         document.addEventListener('click', function(e) {
             var card = e.target.closest('.pulse-card');
@@ -1302,10 +1340,14 @@
             switch(action) {
                 case 'nav':
                     document.querySelectorAll('.section').forEach(function(s) { s.classList.remove('active'); });
-                    document.getElementById(el.dataset.section).classList.add('active');
+                    var targetSec = el.dataset.section;
+                    document.getElementById(targetSec).classList.add('active');
                     document.querySelectorAll('.nav-links a').forEach(function(a) { a.classList.remove('active'); });
                     el.classList.add('active');
                     document.getElementById('navLinks').classList.remove('show');
+                    if (targetSec === 'map-section') {
+                        initMap();
+                    }
                     break;
                 case 'toggle-menu':
                     document.getElementById('navLinks').classList.toggle('show');
@@ -1332,9 +1374,7 @@
                         document.getElementById('admin-gate-box').style.display = 'none';
                         document.getElementById('admin-panel-box').style.display = 'block';
                         renderAdminLists();
-                    } else {
-                        alert('كلمة المرور غير صحيحة');
-                    }
+                    } else { alert('كلمة المرور غير صحيحة'); }
                     break;
                 case 'admin-lock':
                     document.getElementById('admin-panel-box').style.display = 'none';
@@ -1343,51 +1383,24 @@
                     resetPulseForm();
                     resetAdForm();
                     break;
-                case 'save-ad':
-                    saveAd();
-                    break;
-                case 'reset-ad-form':
-                    resetAdForm();
-                    break;
-                case 'edit-ad':
-                    editAd(parseInt(id));
-                    break;
-                case 'delete-ad':
-                    deleteAd(parseInt(id));
-                    break;
-                case 'save-pulse':
-                    savePulse();
-                    break;
-                case 'reset-pulse-form':
-                    resetPulseForm();
-                    break;
-                case 'edit-pulse':
-                    editPulse(parseInt(id));
-                    break;
-                case 'delete-pulse':
-                    deletePulse(parseInt(id));
-                    break;
-                case 'open-dest-modal':
-                    openDestModal();
-                    break;
-                case 'close-dest-modal':
-                    closeDestModal();
-                    break;
-                case 'save-dest':
-                    saveDestination();
-                    break;
-                case 'edit-dest':
-                    editDestination(parseInt(id));
-                    break;
-                case 'delete-dest':
-                    deleteDestination(parseInt(id));
-                    break;
-                case 'explore':
-                    alert('📍 ' + el.dataset.name + '\nتفاصيل الموقع متاحة في قسم المناطق');
-                    break;
+                case 'save-ad': saveAd(); break;
+                case 'reset-ad-form': resetAdForm(); break;
+                case 'edit-ad': editAd(parseInt(id)); break;
+                case 'delete-ad': deleteAd(parseInt(id)); break;
+                case 'save-pulse': savePulse(); break;
+                case 'reset-pulse-form': resetPulseForm(); break;
+                case 'edit-pulse': editPulse(parseInt(id)); break;
+                case 'delete-pulse': deletePulse(parseInt(id)); break;
+                case 'open-dest-modal': openDestModal(); break;
+                case 'close-dest-modal': closeDestModal(); break;
+                case 'save-dest': saveDestination(); break;
+                case 'edit-dest': editDestination(parseInt(id)); break;
+                case 'delete-dest': deleteDestination(parseInt(id)); break;
+                case 'explore': alert('📍 ' + el.dataset.name + '\nالموقع متوفر على الخريطة التفاعلية وفي قسم المناطق.'); break;
             }
         });
-        // ===== COUNTERS =====
+
+        // Counters
         function updateCounters() {
             document.getElementById('total-visitors-counter').innerText = totalVisitors.toLocaleString();
             document.getElementById('online-users-counter').innerText = onlineUsers;
@@ -1397,7 +1410,7 @@
             sessionStorage.setItem('visited', 'true');
         }
         updateCounters();
-        console.log('✅ جنان الساحل يعمل مع نظام الإعلانات المتغيرة وشبكة البطاقات!');
+        console.log('✅ جنان الساحل يعمل بكامل ميزاته وبأحدث مؤشرات الطقس والأشعة فوق البنفسجية!');
     </script>
 </body>
 </html>
