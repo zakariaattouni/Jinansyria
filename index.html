@@ -47,7 +47,8 @@
             flex-direction: column;
             transition: var(--transition);
         }
-        header {            background: linear-gradient(135deg, rgba(2, 132, 199, 0.98), rgba(5, 150, 105, 0.98));            color: white;
+        header {            background: linear-gradient(135deg, rgba(2, 132, 199, 0.98), rgba(5, 150, 105, 0.98));
+            color: white;
             position: sticky;
             top: 0;
             z-index: 1000;
@@ -96,7 +97,8 @@
             padding: 0.35rem 0.6rem;
             border-radius: 6px;
             white-space: nowrap;        }
-        .nav-links a:hover, .nav-links a.active {            background: rgba(255, 255, 255, 0.25);
+        .nav-links a:hover, .nav-links a.active {
+            background: rgba(255, 255, 255, 0.25);
         }
         .nav-actions {
             display: flex;
@@ -145,7 +147,8 @@
             justify-content: center;
             gap: 2rem;            flex-wrap: wrap;
             align-items: center;
-        }        .live-stat-item {
+        }
+        .live-stat-item {
             display: flex;
             align-items: center;
             gap: 10px;
@@ -194,7 +197,8 @@
         }        .section { display: none; }
         .section.active { display: block; animation: fadeIn 0.4s ease-in-out; }
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         .hero {
             background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&w=1600&q=80') center/cover;
@@ -243,7 +247,8 @@
             gap: 10px;
         }
 
-        /* === Compact Pulse Section (Accordion Style) === */        .pulse-section {
+        /* === Pulse Section === */
+        .pulse-section {
             margin-bottom: 2rem;
             padding: 1.2rem;
             background: linear-gradient(135deg, rgba(2, 132, 199, 0.05), rgba(5, 150, 105, 0.05));
@@ -287,12 +292,11 @@
             min-width: 420px;
             max-width: 520px;
         }
-        .pulse-date {
-            font-size: 0.75rem;
+        .pulse-date {            font-size: 0.75rem;
             color: var(--accent);
             font-weight: 700;
             margin-bottom: 0.4rem;
-            display: block;            pointer-events: none;
+            display: block;
         }
         .pulse-title {
             font-size: 1.05rem;
@@ -304,7 +308,6 @@
             align-items: center;
             gap: 10px;
             line-height: 1.4;
-            pointer-events: none;
         }
         .pulse-title::after {
             content: '\f078';
@@ -330,7 +333,6 @@
             margin-top: 0;
             border-top: 1px solid transparent;
             padding-top: 0;
-            pointer-events: none;
         }
         .pulse-card.open .pulse-desc {
             max-height: 1000px;
@@ -339,9 +341,9 @@
             border-top: 1px solid var(--border);
             padding-top: 0.9rem;
         }
-
         .dest-grid {
-            display: grid;            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 1.5rem;
             margin-bottom: 1.5rem;
         }
@@ -359,7 +361,6 @@
         .dest-img, .ad-img { height: 200px; width: 100%; object-fit: cover; }
         .dest-body, .ad-body { padding: 1.25rem; flex: 1; display: flex; flex-direction: column; }
         
-        /* Mini Gallery Styles */
         .mini-gallery {
             display: flex;
             gap: 6px;
@@ -382,15 +383,15 @@
             flex-shrink: 0;
         }
         .mini-gallery img:hover { transform: scale(1.05); border-color: var(--primary); }
-        /* === Collapsible Description === */
+        
         .dest-desc {
             color: var(--text-muted);
             font-size: 0.9rem;
             margin-bottom: 0.5rem;
             line-height: 1.5;
             max-height: 2.7em;
-            overflow: hidden;
-            transition: max-height 0.4s ease;            position: relative;
+            overflow: hidden;            transition: max-height 0.4s ease;
+            position: relative;
             cursor: pointer;
         }
         .dest-desc.expanded {
@@ -438,8 +439,8 @@
         }
         .weather-widget:hover {
             transform: scale(1.02);
-            box-shadow: 0 8px 20px -5px rgba(59, 130, 246, 0.2);
-        }        .weather-icon-wrap {
+            box-shadow: 0 8px 20px -5px rgba(59, 130, 246, 0.2);        }
+        .weather-icon-wrap {
             font-size: 2.2rem;
             line-height: 1;
             flex-shrink: 0;
@@ -487,8 +488,8 @@
         .weather-meta {
             display: flex;
             gap: 12px;
-            font-size: 0.78rem;
-            color: var(--text-muted);            margin-bottom: 8px;
+            font-size: 0.78rem;            color: var(--text-muted);
+            margin-bottom: 8px;
             flex-wrap: wrap;
         }
         .weather-meta span {
@@ -535,12 +536,12 @@
             to { transform: rotate(360deg); }
         }
 
-        /* Ad Carousel Styles */
         .ad-carousel {
             position: relative;            width: 100%;
             height: 220px;
             overflow: hidden;
-            background: #000;        }
+            background: #000;
+        }
         .ad-carousel .ad-slide {
             position: absolute;
             top: 0;
@@ -585,10 +586,11 @@
             padding: 3px 10px;
             border-radius: 20px;
             font-size: 0.75rem;
-            font-weight: 700;
-            z-index: 5;        }
+            font-weight: 700;            z-index: 5;
+        }
 
-        .dest-badge {            background: rgba(2, 132, 199, 0.1);
+        .dest-badge {
+            background: rgba(2, 132, 199, 0.1);
             color: var(--primary);
             padding: 3px 10px;
             border-radius: 50px;
@@ -632,11 +634,11 @@
         }
         .btn-primary:hover { background: var(--primary-dark); }
 
-        /* === Show More Button === */
         .show-more-wrap {
-            text-align: center;
-            margin-bottom: 2rem;        }
-        .btn-show-more {            background: var(--bg-card);
+            text-align: center;            margin-bottom: 2rem;
+        }
+        .btn-show-more {
+            background: var(--bg-card);
             border: 2px solid var(--primary);
             color: var(--primary);
             padding: 0.7rem 2.5rem;
@@ -682,11 +684,11 @@
             gap: 0.8rem;
         }
         .message { padding: 10px 14px; border-radius: 12px; max-width: 85%; line-height: 1.5; font-size: 0.95rem; }
-        .message.user { background: var(--primary); color: white; align-self: flex-end; }
-        .message.ai { background: var(--border); color: var(--text-main); align-self: flex-start; }
-        .chat-input-area { display: flex; gap: 8px; }        .chat-input-area input {            flex: 1; padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; outline: none; background: var(--bg-main); color: var(--text-main);
+        .message.user { background: var(--primary); color: white; align-self: flex-end; }        .message.ai { background: var(--border); color: var(--text-main); align-self: flex-start; }
+        .chat-input-area { display: flex; gap: 8px; }
+        .chat-input-area input {
+            flex: 1; padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; outline: none; background: var(--bg-main); color: var(--text-main);
         }
-        /* Admin Gate & Panel */
         .admin-gate, .admin-panel {
             background: var(--bg-card);
             border: 1px solid var(--border);
@@ -731,15 +733,15 @@
             border-top: 1px solid var(--border);
             padding: 2rem 1.5rem;
             text-align: center;
-            margin-top: auto;
-            color: var(--text-muted);
-            font-size: 0.9rem;        }    </style>
+            margin-top: auto;            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+    </style>
 </head>
 <body>
-    <!-- Header -->
     <header>
         <div class="nav-container">
-            <div class="logo" id="logo-btn">
+            <div class="logo" onclick="switchSection('home')">
                 <i class="fa-solid fa-water"></i>
                 <div>
                     <span>جنان الساحل</span>
@@ -748,18 +750,17 @@
             </div>
             
             <ul class="nav-links" id="navLinks">
-                <li><a data-section="home" class="active" id="link-home">الرئيسية</a></li>
-                <li><a data-section="destinations" id="link-destinations">المناطق</a></li>
-                <li><a data-section="map-section" id="link-map-section">الخريطة</a></li>
-                <li><a data-section="ai-guide" id="link-ai-guide">المرشد الذكي</a></li>
-                <li><a data-section="admin" id="link-admin">غرفة الإدارة</a></li>
+                <li><a onclick="switchSection('home')" class="active" id="link-home">الرئيسية</a></li>
+                <li><a onclick="switchSection('destinations')" id="link-destinations">المناطق</a></li>
+                <li><a onclick="switchSection('map-section')" id="link-map-section">الخريطة</a></li>
+                <li><a onclick="switchSection('ai-guide')" id="link-ai-guide">المرشد الذكي</a></li>
+                <li><a onclick="switchSection('admin')" id="link-admin">غرفة الإدارة</a></li>
             </ul>
             <div class="nav-actions">
-                <button class="btn-icon" id="theme-toggle-btn" title="الوضع الليلي"><i class="fa-solid fa-moon" id="theme-icon"></i></button>
-                <button class="mobile-toggle" id="mobile-toggle-btn" title="القائمة"><i class="fa-solid fa-bars"></i></button>
+                <button class="btn-icon" onclick="toggleDarkMode()" title="الوضع الليلي"><i class="fa-solid fa-moon" id="theme-icon"></i></button>
+                <button class="mobile-toggle" onclick="toggleMenu()" title="القائمة"><i class="fa-solid fa-bars"></i></button>
             </div>
         </div>
-        <!-- Stats Bar Under Header -->
         <div class="header-stats-bar">
             <div class="header-stats-inner">
                 <div class="live-stat-item">
@@ -773,39 +774,36 @@
             </div>
         </div>
     </header>
-    <!-- Main Content -->
     <main>
-        <!-- HOME SECTION -->
         <section id="home" class="section active">
             <div class="hero">
                 <h1>جنان الساحل السوري<br>اللاذقية وطرطوس</h1>
                 <p>اختر المحافظة لاستعراض أروع المعالم السياحية والبوسترات الإعلانية الحية.</p>
             </div>
             <div class="region-selector">
-                <button class="region-btn active" data-region="all"><i class="fa-solid fa-globe"></i> كافة مناطق الساحل</button>                <button class="region-btn" data-region="latakia"><i class="fa-solid fa-mountain-city"></i> محافظة اللاذقية</button>
-                <button class="region-btn" data-region="tartus"><i class="fa-solid fa-water"></i> محافظة طرطوس وأرواد</button>
+                <button class="region-btn active" onclick="filterByRegion('all', this)"><i class="fa-solid fa-globe"></i> كافة مناطق الساحل</button>
+                <button class="region-btn" onclick="filterByRegion('latakia', this)"><i class="fa-solid fa-mountain-city"></i> محافظة اللاذقية</button>                <button class="region-btn" onclick="filterByRegion('tartus', this)"><i class="fa-solid fa-water"></i> محافظة طرطوس وأرواد</button>
             </div>
 
-            <!-- Compact Pulse Section (Accordion) -->
             <div class="pulse-section">
                 <h2 class="section-title"><i class="fa-solid fa-heart-pulse" style="color: var(--accent);"></i> نبض الساحل: فعاليات ونشاطات</h2>
                 <div class="pulse-scroll">
-                    <div class="pulse-card">
+                    <div class="pulse-card" onclick="togglePulseCard(this)">
                         <span class="pulse-date"><i class="fa-regular fa-calendar-check"></i> كل جمعة</span>
                         <div class="pulse-title">سوق المينا البحري الشعبي</div>
                         <div class="pulse-desc">تجمع أسبوعي للحرف اليدوية والمأكولات البحرية التقليدية على كورنيش طرطوس. يتميز السوق بعروض الصيادين الطازجة ومنتجات البحر الأبيض المتوسط، مع أجواء تراثية ساحرة تجمع العائلات والزوار من مختلف المحافظات.</div>
                     </div>
-                    <div class="pulse-card">
+                    <div class="pulse-card" onclick="togglePulseCard(this)">
                         <span class="pulse-date"><i class="fa-regular fa-calendar-check"></i> موسم صيفي</span>
                         <div class="pulse-title">ليالي قلعة صلاح الدين</div>
                         <div class="pulse-desc">عروض موسيقية حيوية وأمسيات شعرية ضمن أسوار القلعة التاريخية في اللاذقية. تستضيف القلعة فنانيين من سوريا والعالم العربي في أجواء ساحرة تجمع بين التاريخ والفن تحت النجوم.</div>
                     </div>
-                    <div class="pulse-card">
+                    <div class="pulse-card" onclick="togglePulseCard(this)">
                         <span class="pulse-date"><i class="fa-regular fa-calendar-check"></i> يومي</span>
                         <div class="pulse-title">رحلات الغوص والاستكشاف</div>
                         <div class="pulse-desc">نادي الغوص السوري ينظم رحلات يومية لاكتشاف الشعاب المرجانية وحطام السفن. يقدم النادي دورات تدريبية للمبتدئين والمحترفين مع معدات حديثة ومدربين معتمدين دولياً.</div>
                     </div>
-                    <div class="pulse-card">
+                    <div class="pulse-card" onclick="togglePulseCard(this)">
                         <span class="pulse-date"><i class="fa-regular fa-calendar-check"></i> نهاية الأسبوع</span>
                         <div class="pulse-title">مهرجان الحمضيات والتفاح</div>
                         <div class="pulse-desc">احتفال سنوي بمواسم القطاف في ريف اللاذقية مع عروض تراثية. يشمل المهرجان مسابقات لأجود أنواع الفواكه، معارض للمنتجات الريفية، وعروض فلكلورية تعكس التراث الساحلي الأصيل.</div>
@@ -815,38 +813,34 @@
 
             <h2 class="section-title"><i class="fa-solid fa-fire"></i> بطاقات المواقع السياحية والبوسترات</h2>
             <div class="dest-grid" id="home-destinations-grid"></div>
-            <!-- Show More Button -->
             <div class="show-more-wrap" id="home-show-more-wrap" style="display:none;">
-                <button class="btn-show-more" id="home-show-more-btn">
+                <button class="btn-show-more" onclick="toggleHomeShowMore()">
                     <i class="fa-solid fa-angles-down"></i> عرض باقي المواقع
                 </button>
             </div>
         </section>
-        <!-- DESTINATIONS SECTION -->
         <section id="destinations" class="section">
             <h2 class="section-title"><i class="fa-solid fa-map-marked-alt"></i> كافة المناطق والوجهات</h2>
             <div class="region-selector" style="margin-bottom: 1.5rem;">
-                <button class="region-btn active" data-region="all">الكل</button>
-                <button class="region-btn" data-region="latakia">اللاذقية</button>
-                <button class="region-btn" data-region="tartus">طرطوس</button>
+                <button class="region-btn active" onclick="filterByRegion('all', this)">الكل</button>
+                <button class="region-btn" onclick="filterByRegion('latakia', this)">اللاذقية</button>
+                <button class="region-btn" onclick="filterByRegion('tartus', this)">طرطوس</button>
             </div>
             <div class="dest-grid" id="all-destinations-grid"></div>
-        </section>        <!-- MAP SECTION -->
+        </section>
         <section id="map-section" class="section">
             <h2 class="section-title"><i class="fa-solid fa-map-location-dot"></i> الخريطة التفاعلية الشاملة</h2>
             <div class="map-layout">
-                <div class="map-sidebar">
-                    <h3 style="margin-bottom: 1rem; font-size: 1rem; font-weight: 800;">فلترة المحافظات</h3>
+                <div class="map-sidebar">                    <h3 style="margin-bottom: 1rem; font-size: 1rem; font-weight: 800;">فلترة المحافظات</h3>
                     <div style="display: flex; flex-direction: column; gap: 8px;">
-                        <button class="btn-primary" id="map-filter-all">كل المواقع</button>
-                        <button class="btn-primary" id="map-filter-latakia" style="background: var(--primary);">اللاذقية</button>
-                        <button class="btn-primary" id="map-filter-tartus" style="background: var(--secondary);">طرطوس</button>
+                        <button class="btn-primary" onclick="filterMapRegion('all')">كل المواقع</button>
+                        <button class="btn-primary" style="background: var(--primary);" onclick="filterMapRegion('latakia')">اللاذقية</button>
+                        <button class="btn-primary" style="background: var(--secondary);" onclick="filterMapRegion('tartus')">طرطوس</button>
                     </div>
                 </div>
                 <div id="map"></div>
             </div>
         </section>
-        <!-- AI GUIDE SECTION -->
         <section id="ai-guide" class="section">
             <h2 class="section-title"><i class="fa-solid fa-robot"></i> مرشد الساحل الذكي (Gemini AI)</h2>
             <div class="ai-container">
@@ -856,54 +850,50 @@
                         <div class="message ai">أهلاً بك! اسألني عن أي معلم في اللاذقية أو طرطوس، وسأوفر لك تفاصيل دقيقة فوراً.</div>
                     </div>
                     <div class="chat-input-area">
-                        <input type="text" id="chat-input" placeholder="اكتب استفسارك هنا...">
-                        <button class="btn-primary" id="chat-send-btn">إرسال</button>
+                        <input type="text" id="chat-input" placeholder="اكتب استفسارك هنا..." onkeypress="if(event.key==='Enter')sendAIMessage()">
+                        <button class="btn-primary" onclick="sendAIMessage()">إرسال</button>
                     </div>
                 </div>
                 <div class="planner-box">
                     <h3 style="margin-bottom: 0.8rem; font-weight: 800; font-size: 1rem;"><i class="fa-solid fa-route"></i> المخطط الذكي</h3>
                     <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">احصل على خطة رحلة مخصصة لزيارة أروع شواطئ وقلاع الساحل السوري.</p>
-                    <button class="btn-primary" id="plan-generate-btn" style="width: 100%; padding: 10px;">توليد البرنامج المقترح</button>
+                    <button class="btn-primary" style="width: 100%; padding: 10px;" onclick="generateSmartPlan()">توليد البرنامج المقترح</button>
                     <div id="plan-result" style="margin-top: 1rem; font-size: 0.9rem; color: var(--text-muted); line-height: 1.5;"></div>
                 </div>
             </div>
         </section>
-        <!-- ADMIN SECTION -->
         <section id="admin" class="section">
             <div id="admin-gate-box" class="admin-gate">
                 <h2 style="margin-bottom: 1rem;"><i class="fa-solid fa-lock"></i> غرفة الإدارة الآمنة</h2>
                 <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">يرجى إدخال كلمة المرور المصرح بها للدخول إلى لوحة التحكم:</p>
                 <input type="password" id="admin-pass-input" placeholder="كلمة المرور..." style="width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 1rem; background: var(--bg-main); color: var(--text-main);">
-                <button class="btn-primary" id="admin-login-btn" style="width: 100%; padding: 10px;">دخول الإدارة</button>
+                <button class="btn-primary" style="width: 100%; padding: 10px;" onclick="checkAdminPassword()">دخول الإدارة</button>
             </div>
             <div id="admin-panel-box" class="admin-panel" style="display: none;">
                 <h2 style="margin-bottom: 1.5rem;"><i class="fa-solid fa-gauge-high"></i> لوحة التحكم والسيطرة الشاملة</h2>
                 
-                <!-- Destinations Management Section -->
-                <div style="background: var(--bg-main); padding: 1.2rem; border-radius: 8px; border: 1px solid var(--border); margin-bottom: 1.5rem;">                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <div style="background: var(--bg-main); padding: 1.2rem; border-radius: 8px; border: 1px solid var(--border); margin-bottom: 1.5rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
                         <h3 style="font-size: 1.1rem;"><i class="fa-solid fa-map-pin"></i> إدارة ومقرات المواقع السياحية (إضافة وتحرير)</h3>
-                        <button class="btn-primary" id="admin-add-dest-btn"><i class="fa-solid fa-plus"></i> إضافة موقع جديد</button>
+                        <button class="btn-primary" onclick="openDestinationModal()"><i class="fa-solid fa-plus"></i> إضافة موقع جديد</button>
                     </div>
                     <div id="admin-destinations-list"></div>
                 </div>
-                <!-- Ad Posters Management Section -->
                 <div style="background: var(--bg-main); padding: 1.2rem; border-radius: 8px; border: 1px solid var(--border); margin-bottom: 1.5rem;">
-                    <h3 style="margin-bottom: 1rem; font-size: 1.1rem;"><i class="fa-solid fa-images"></i> إدارة بوسترات الإعلانات المضغوطة (تظهر كل 4 بطاقات)</h3>
-                    <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 1rem;">
+                    <h3 style="margin-bottom: 1rem; font-size: 1.1rem;"><i class="fa-solid fa-images"></i> إدارة بوسترات الإعلانات المضغوطة (تظهر كل 4 بطاقات)</h3>                    <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 1rem;">
                         <input type="file" id="ad-file-input" accept="image/*" multiple style="flex: 1; padding: 6px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 6px;">
                         <input type="text" id="ad-title-input" placeholder="عنوان البوستر الإعلاني..." style="flex: 1; padding: 6px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg-card); color: var(--text-main);">
-                        <button class="btn-primary" id="admin-add-ad-btn">إضافة بوستر</button>
+                        <button class="btn-primary" onclick="addNewAdPoster()">إضافة بوستر</button>
                     </div>
                     <div id="admin-ads-list"></div>
                 </div>
                 <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                    <button class="btn-primary" id="admin-reset-counters-btn"><i class="fa-solid fa-rotate"></i> تصفير وإعادة تعيين العدادات</button>
-                    <button class="btn-primary" id="admin-lock-btn" style="background: var(--accent);"><i class="fa-solid fa-lock"></i> إغلاق غرفة الإدارة</button>
+                    <button class="btn-primary" onclick="resetCounters()"><i class="fa-solid fa-rotate"></i> تصفير وإعادة تعيين العدادات</button>
+                    <button class="btn-primary" style="background: var(--accent);" onclick="lockAdminPanel()"><i class="fa-solid fa-lock"></i> إغلاق غرفة الإدارة</button>
                 </div>
             </div>
         </section>
     </main>
-    <!-- Destination Add/Edit Modal Form -->
     <div id="dest-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:2000; align-items:center; justify-content:center;">
         <div style="background:var(--bg-card); padding:2rem; border-radius:var(--radius); max-width:500px; width:90%; border:1px solid var(--border); box-shadow:var(--shadow); max-height:90vh; overflow-y:auto;">
             <h3 id="modal-title" style="margin-bottom:1rem; font-weight:800;">إضافة موقع سياحي جديد</h3>
@@ -929,171 +919,139 @@
                 <input type="file" id="form-dest-img" accept="image/*">
             </div>
             <div class="admin-form-group">
-                <label>التقييم (من 1 إلى 5):</label>                <input type="number" step="0.1" id="form-dest-rating" value="4.8" min="1" max="5">
+                <label>التقييم (من 1 إلى 5):</label>
+                <input type="number" step="0.1" id="form-dest-rating" value="4.8" min="1" max="5">
             </div>
             <div style="display:flex; gap:10px; margin-top:1.5rem;">
-                <button class="btn-primary" style="flex:1;" id="modal-save-btn">حفظ الموقع</button>
-                <button class="btn-primary" style="background:#ef4444; flex:1;" id="modal-cancel-btn">إلغاء</button>
+                <button class="btn-primary" style="flex:1;" onclick="saveDestinationData()">حفظ الموقع</button>
+                <button class="btn-primary" style="background:#ef4444; flex:1;" onclick="closeDestinationModal()">إلغاء</button>
             </div>
         </div>
     </div>
     <footer>
-        <p>جميع الحقوق محفوظة © 2026 | جنان الساحل (اللاذقية وطرطوس) - Explorer AI</p>
-    </footer>
-    <!-- Leaflet JS -->
+        <p>جميع الحقوق محفوظة © 2026 | جنان الساحل (اللاذقية وطرطوس) - Explorer AI</p>    </footer>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    
-    <!-- Firebase SDKs (Compat version for standard script execution) -->
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-analytics-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
     <script>
         // ============================================
-        // === GLOBAL EVENT DELEGATION (FIXES BUTTONS)
+        // === ALL FUNCTIONS DEFINED GLOBALLY FIRST
         // ============================================
-        document.addEventListener('click', function(e) {
-            const target = e.target;
-            
-            // 1. Pulse cards accordion
-            const pulseCard = target.closest('.pulse-card');
-            if (pulseCard) {
-                pulseCard.classList.toggle('open');
-                return;
-            }
-            
-            // 2. Description expand/collapse
-            const descEl = target.closest('.dest-desc');
-            if (descEl) {
-                toggleDescription(descEl);
-                return;
-            }
-            
-            // 3. Toggle desc button
-            const toggleBtn = target.closest('.toggle-desc-btn');
-            if (toggleBtn) {
-                const prevDesc = toggleBtn.previousElementSibling;
-                if (prevDesc && prevDesc.classList.contains('dest-desc')) {
-                    toggleDescription(prevDesc);
+        
+        // --- Pulse Card Toggle ---
+        function togglePulseCard(card) {
+            if (!card) return;
+            card.classList.toggle('open');
+        }
+        
+        // --- Description Toggle ---
+        function toggleDescription(el) {
+            if (!el) return;
+            el.classList.toggle('expanded');
+            var btn = el.nextElementSibling;
+            if (btn && btn.classList.contains('toggle-desc-btn')) {
+                if (el.classList.contains('expanded')) {
+                    btn.innerHTML = '<i class="fa-solid fa-chevron-up"></i> إخفاء التفاصيل';
+                } else {
+                    btn.innerHTML = '<i class="fa-solid fa-chevron-down"></i> اقرأ المزيد';
                 }
-                return;
-            }
-            
-            // 4. Navigation links            const navLink = target.closest('.nav-links a[data-section]');
-            if (navLink) {
-                switchSection(navLink.dataset.section);
-                return;
-            }
-            
-            // 5. Region selector buttons
-            const regionBtn = target.closest('.region-btn[data-region]');
-            if (regionBtn) {
-                filterByRegion(regionBtn.dataset.region, regionBtn);
-                return;
-            }
-            
-            // 6. Show more button
-            if (target.closest('#home-show-more-btn')) {
-                toggleHomeShowMore();
-                return;
-            }
-            
-            // 7. Map filter buttons
-            if (target.closest('#map-filter-all')) { filterMapRegion('all'); return; }
-            if (target.closest('#map-filter-latakia')) { filterMapRegion('latakia'); return; }
-            if (target.closest('#map-filter-tartus')) { filterMapRegion('tartus'); return; }
-            
-            // 8. Chat send
-            if (target.closest('#chat-send-btn')) { sendAIMessage(); return; }
-            
-            // 9. Plan generator
-            if (target.closest('#plan-generate-btn')) { generateSmartPlan(); return; }
-            
-            // 10. Admin buttons
-            if (target.closest('#admin-login-btn')) { checkAdminPassword(); return; }
-            if (target.closest('#admin-add-dest-btn')) { openDestinationModal(); return; }
-            if (target.closest('#admin-add-ad-btn')) { addNewAdPoster(); return; }
-            if (target.closest('#admin-reset-counters-btn')) { resetCounters(); return; }
-            if (target.closest('#admin-lock-btn')) { lockAdminPanel(); return; }
-            if (target.closest('#modal-save-btn')) { saveDestinationData(); return; }
-            if (target.closest('#modal-cancel-btn')) { closeDestinationModal(); return; }
-            
-            // 11. Edit/Delete destination buttons (with data attributes)
-            const editBtn = target.closest('[data-edit-dest]');
-            if (editBtn) { openEditDestinationModal(parseInt(editBtn.dataset.editDest)); return; }
-            const delBtn = target.closest('[data-delete-dest]');
-            if (delBtn) { deleteDestination(parseInt(delBtn.dataset.deleteDest)); return; }
-            
-            // 12. Ad poster delete
-            const adDelBtn = target.closest('[data-delete-ad]');
-            if (adDelBtn) { deleteAdPoster(parseInt(adDelBtn.dataset.deleteAd)); return; }
-            
-            // 13. Destination explore button            const exploreBtn = target.closest('[data-explore-dest]');
-            if (exploreBtn) { alert('تفاصيل الموقع: ' + exploreBtn.dataset.exploreDest); return; }
-            
-            // 14. Ad details button
-            const adDetailBtn = target.closest('[data-ad-detail]');
-            if (adDetailBtn) { alert('تم النقر على إعلان: ' + adDetailBtn.dataset.adDetail); return; }
-            
-            // 15. Theme toggle
-            if (target.closest('#theme-toggle-btn')) { toggleDarkMode(); return; }
-            
-            // 16. Mobile menu toggle
-            if (target.closest('#mobile-toggle-btn')) { toggleMenu(); return; }
-            
-            // 17. Logo click
-            if (target.closest('#logo-btn')) { switchSection('home'); return; }
-        });
-        
-        // Handle Enter key in chat input
-        document.addEventListener('keypress', function(e) {
-            if (e.target.id === 'chat-input' && e.key === 'Enter') {
-                sendAIMessage();
-            }
-        });
-
-        // --- Firebase Initialization ---
-        const firebaseConfig = {
-          apiKey: "AIzaSyCpAzIfRmO_jQzf7uf4uPDLkRqI9DaPhjE",
-          authDomain: "jinansyr-28efc.firebaseapp.com",
-          databaseURL: "https://jinansyr-28efc-default-rtdb.firebaseio.com",
-          projectId: "jinansyr-28efc",
-          storageBucket: "jinansyr-28efc.firebasestorage.app",
-          messagingSenderId: "662247928226",
-          appId: "1:662247928226:web:6b6249b1d38862c06702fb",
-          measurementId: "G-FZLQGVV6Y4"
-        };
-        const app = firebase.initializeApp(firebaseConfig);
-        const analytics = firebase.analytics();
-        const db = firebase.database();
-        let destinationsData = [];
-        let adPosters = [];
-        let adCarousels = {};
-        let homeExpanded = false;
-        let currentRegionFilter = 'all';
-
-        // ============================================
-        // === WEATHER API (Open-Meteo - FREE)
-        // ============================================
-        const weatherCache = {};
-        
-        async function fetchWeather(lat, lng) {            const cacheKey = `${lat.toFixed(2)}_${lng.toFixed(2)}`;
-            if (weatherCache[cacheKey]) return weatherCache[cacheKey];
-            
-            try {
-                const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,uv_index&timezone=auto`;
-                const response = await fetch(url);
-                if (!response.ok) throw new Error('Weather API failed');
-                const data = await response.json();
-                weatherCache[cacheKey] = data.current;
-                return data.current;
-            } catch (e) {
-                console.error('Weather fetch error:', e);
-                return null;
             }
         }
         
+        // --- Navigation ---
+        function switchSection(sectionId) {
+            document.querySelectorAll('.section').forEach(function(sec) { sec.classList.remove('active'); });
+            document.querySelectorAll('.nav-links a').forEach(function(a) { a.classList.remove('active'); });
+            
+            var targetSection = document.getElementById(sectionId);
+            if (targetSection) targetSection.classList.add('active');
+            
+            var link = document.getElementById('link-' + sectionId);
+            if (link) link.classList.add('active');
+            
+            var navLinks = document.getElementById('navLinks');
+            if (navLinks) navLinks.classList.remove('show');
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            if (sectionId === 'map-section' && !window.mapInitialized) {
+                initMap();
+                window.mapInitialized = true;
+            }
+        }        
+        function toggleMenu() {
+            var navLinks = document.getElementById('navLinks');
+            if (navLinks) navLinks.classList.toggle('show');
+        }
+        
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            var icon = document.getElementById('theme-icon');
+            if (icon) {
+                icon.classList.toggle('fa-moon');
+                icon.classList.toggle('fa-sun');
+            }
+        }
+        
+        // --- Region Filtering ---
+        var currentRegionFilter = 'all';
+        var homeExpanded = false;
+        
+        function filterByRegion(region, clickedBtn) {
+            currentRegionFilter = region;
+            document.querySelectorAll('.region-btn').forEach(function(btn) { btn.classList.remove('active'); });
+            if (clickedBtn) {
+                clickedBtn.classList.add('active');
+            }
+            renderAllGrids();
+        }
+        
+        function toggleHomeShowMore() {
+            homeExpanded = !homeExpanded;
+            var btns = document.querySelectorAll('.btn-show-more');
+            btns.forEach(function(btn) {
+                if (homeExpanded) {
+                    btn.innerHTML = '<i class="fa-solid fa-angles-up"></i> إخفاء المواقع الإضافية';
+                } else {
+                    btn.innerHTML = '<i class="fa-solid fa-angles-down"></i> عرض باقي المواقع';
+                }
+            });
+            renderAllGrids();
+        }
+        
+        function filterMapRegion(reg) {
+            alert('تم فلترة الخريطة لعرض منطقة: ' + (reg === 'all' ? 'الكل' : reg));
+        }
+        
+        // --- Weather Functions ---
+        var weatherCache = {};
+        
+        function fetchWeather(lat, lng, callback) {
+            var cacheKey = lat.toFixed(2) + '_' + lng.toFixed(2);            if (weatherCache[cacheKey]) {
+                callback(weatherCache[cacheKey]);
+                return;
+            }
+            
+            var url = 'https://api.open-meteo.com/v1/forecast?latitude=' + lat + '&longitude=' + lng + '&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,uv_index&timezone=auto';
+            
+            fetch(url)
+                .then(function(response) { return response.json(); })
+                .then(function(data) {
+                    if (data && data.current) {
+                        weatherCache[cacheKey] = data.current;
+                        callback(data.current);
+                    } else {
+                        callback(null);
+                    }
+                })
+                .catch(function(e) {
+                    console.error('Weather error:', e);
+                    callback(null);
+                });
+        }
+        
         function getWeatherInfo(code) {
-            const map = {
+            var map = {
                 0: { text: 'صافٍ ومشمس', icon: 'fa-sun', color: '#f59e0b', tip: 'طقس مثالي للأنشطة البحرية والاستكشاف في الهواء الطلق' },
                 1: { text: 'صافٍ غالباً', icon: 'fa-sun', color: '#fbbf24', tip: 'أجواء رائعة للتنزه والتصوير الفوتوغرافي' },
                 2: { text: 'غائم جزئياً', icon: 'fa-cloud-sun', color: '#94a3b8', tip: 'طقس لطيف ومعتدل، مناسب للمشي' },
@@ -1109,23 +1067,20 @@
                 71: { text: 'ثلج خفيف', icon: 'fa-snowflake', color: '#06b6d4', tip: 'ارتدِ ملابس دافئة، استمتع بالمشهد' },
                 73: { text: 'تساقط ثلج', icon: 'fa-snowflake', color: '#0891b2', tip: 'احذر الانزلاق في المناطق المرتفعة' },
                 75: { text: 'ثلج كثيف', icon: 'fa-snowflake', color: '#0e7490', tip: 'تجنب السفر في الجبال' },
-                77: { text: 'حبات ثلجية', icon: 'fa-snowflake', color: '#0e7490', tip: 'طقس نادر، كن حذراً' },
                 80: { text: 'زخات مطر خفيفة', icon: 'fa-cloud-showers-heavy', color: '#3b82f6', tip: 'زخات متقطعة، كن مستعداً' },
                 81: { text: 'زخات مطر معتدلة', icon: 'fa-cloud-showers-heavy', color: '#2563eb', tip: 'احذر الانزلاق، خذ احتياطاتك' },
                 82: { text: 'زخات مطر عنيفة', icon: 'fa-cloud-showers-heavy', color: '#1e40af', tip: 'طقس قاسٍ، ابقَ آمناً' },
-                85: { text: 'زخات ثلجية خفيفة', icon: 'fa-snowflake', color: '#0891b2', tip: 'ملابس شتوية ضرورية' },
-                86: { text: 'زخات ثلجية كثيفة', icon: 'fa-snowflake', color: '#0e7490', tip: 'تجنب المناطق الجبلية' },
                 95: { text: 'عاصفة رعدية', icon: 'fa-cloud-bolt', color: '#dc2626', tip: 'خطر! ابقَ في مبنى آمن، تجنب المسطحات المائية' },
                 96: { text: 'عاصفة رعدية مع برد', icon: 'fa-cloud-bolt', color: '#b91c1c', tip: 'طقس خطير جداً، لا تغادر منزلك' },
                 99: { text: 'عاصفة رعدية قوية', icon: 'fa-cloud-bolt', color: '#7f1d1d', tip: 'خطر شديد! ابحث عن ملجأ فوراً' }
             };
             return map[code] || { text: 'غير معروف', icon: 'fa-question', color: '#64748b', tip: 'تحقق من آخر تحديثات الطقس المحلية' };
         }
-        
-        function getUVInfo(uv) {
+                function getUVInfo(uv) {
             if (uv === undefined || uv === null || isNaN(uv)) {
                 return { level: 'غير متوفر', color: '#94a3b8', value: '-', tip: 'البيانات غير متاحة حالياً', icon: 'fa-circle-question' };
-            }            const uvVal = Math.round(uv);
+            }
+            var uvVal = Math.round(uv);
             if (uv <= 2) return { level: 'منخفض', color: '#10b981', value: uvVal, tip: 'لا حاجة لحماية خاصة، استمتع بيومك دون قلق', icon: 'fa-face-smile' };
             if (uv <= 5) return { level: 'متوسط', color: '#f59e0b', value: uvVal, tip: 'ارتدِ نظارة شمسية واستخدم واقي شمس SPF 15+', icon: 'fa-face-meh' };
             if (uv <= 7) return { level: 'مرتفع', color: '#f97316', value: uvVal, tip: 'استخدم واقي SPF 30+، ارتدِ قبعة ونظارة، وتجنب الشمس بين 10ص-4م', icon: 'fa-face-flushed' };
@@ -1133,197 +1088,78 @@
             return { level: 'خطير جداً', color: '#a855f7', value: uvVal, tip: 'خطر شديد! ابقَ في الظل، استخدم أقصى درجات الحماية، قد تسبب حروقاً خلال دقائق', icon: 'fa-triangle-exclamation' };
         }
         
-        async function updateWeatherWidget(destId, lat, lng) {
-            const widget = document.getElementById('weather-' + destId);
+        function updateWeatherWidget(destId, lat, lng) {
+            var widget = document.getElementById('weather-' + destId);
             if (!widget) return;
             
-            const weather = await fetchWeather(lat, lng);
-            if (!weather) {
-                widget.innerHTML = '<div class="weather-loading"><i class="fa-solid fa-circle-exclamation"></i> تعذر جلب حالة الطقس</div>';
-                return;
-            }
-            
-            const info = getWeatherInfo(weather.weather_code);
-            const uvInfo = getUVInfo(weather.uv_index);
-            const windSpeed = Math.round(weather.wind_speed_10m);
-            
-            widget.className = 'weather-widget';
-            widget.innerHTML = `
-                <div class="weather-icon-wrap" style="color: ${info.color};">
-                    <i class="fa-solid ${info.icon}"></i>
-                </div>
-                <div class="weather-content">
-                    <div class="weather-top">
-                        <div class="weather-temp-block">
-                            <span class="weather-temp">${Math.round(weather.temperature_2m)}°</span>
-                            <span class="weather-desc-text">${info.text}</span>
-                        </div>
-                        <span class="uv-badge" style="background: ${uvInfo.color};">
-                            <i class="fa-solid ${uvInfo.icon}"></i>
-                            UV ${uvInfo.value} · ${uvInfo.level}
-                        </span>
-                    </div>
-                    <div class="weather-meta">
-                        <span><i class="fa-solid fa-droplet" style="color:#3b82f6;"></i> رطوبة ${weather.relative_humidity_2m}%</span>
-                        <span><i class="fa-solid fa-wind" style="color:#64748b;"></i> رياح ${windSpeed} كم/س</span>
-                    </div>
-                    <div class="weather-tips">
-                        <div class="tip-row">
-                            <i class="fa-solid fa-location-dot tip-icon"></i>
-                            <div><strong>نصيحة الموقع:</strong> ${info.tip}</div>
-                        </div>
-                        <div class="tip-row">
-                            <i class="fa-solid fa-sun tip-icon" style="color: ${uvInfo.color};"></i>
-                            <div><strong>الحماية من الأشعة:</strong> ${uvInfo.tip}</div>                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        // --- Load Initial Data into Firebase if Empty, then Sync ---
-        function initFirebaseData() {
-            db.ref('destinations').once('value', (snapshot) => {
-                if (!snapshot.exists()) {
-                    const defaultDestinations = {
-                        1: { id: 1, name: "كسب", region: "latakia", description: "بلدة سياحية غناء تعانق الجبال وتطل على البحر في اللاذقية.", lat: 35.9325, lng: 35.9892, rating: 4.9, img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80" },
-                        2: { id: 2, name: "رأس البسيط", region: "latakia", description: "شبه جزيرة ساحرة ذات رمال ذهبية ومياه نقية في اللاذقية.", lat: 35.9183, lng: 35.8056, rating: 4.8, img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80" },
-                        3: { id: 3, name: "صلنفة", region: "latakia", description: "عروس المصايف السورية وتشتهر بغابات الصنوبر والضباب.", lat: 35.5833, lng: 36.2167, rating: 4.9, img: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&q=80" },
-                        4: { id: 4, name: "قلعة صلاح الدين", region: "latakia", description: "تحفة معمارية عسكرية تاريخية مسجلة في اليونسكو باللاذقية.", lat: 35.6, lng: 36.05, rating: 5.0, img: "https://images.unsplash.com/photo-1599839575945-a9e5af0c3fa5?auto=format&fit=crop&w=600&q=80" },
-                        5: { id: 5, name: "جزيرة أرواد", region: "tartus", description: "الجزيرة المأهولة الوحيدة في الساحل السوري في طرطوس.", lat: 34.8517, lng: 35.8569, rating: 4.9, img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80" },
-                        6: { id: 6, name: "قلعة المرقب (بانياس)", region: "tartus", description: "قلعة حصينة من أهم القلاع التاريخية المطلة على البحر في طرطوس.", lat: 35.15, lng: 35.95, rating: 4.9, img: "https://images.unsplash.com/photo-1599839575945-a9e5af0c3fa5?auto=format&fit=crop&w=600&q=80" },
-                        7: { id: 7, name: "مشتى الحلو", region: "tartus", description: "مصيف جبلي رائع يتميز بينابيعه العذبة في طرطوس.", lat: 34.8833, lng: 36.2167, rating: 4.7, img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80" },
-                        8: { id: 8, name: "قلعة صافيتا", region: "tartus", description: "برج صافيتا الأثري الشامخ في محافظة طرطوس.", lat: 34.8167, lng: 36.1167, rating: 4.8, img: "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=600&q=80" }
-                    };
-                    db.ref('destinations').set(defaultDestinations);
+            fetchWeather(lat, lng, function(weather) {
+                if (!weather) {
+                    widget.innerHTML = '<div class="weather-loading"><i class="fa-solid fa-circle-exclamation"></i> تعذر جلب حالة الطقس</div>';
+                    return;
                 }
-            });
-            db.ref('ad_posters').once('value', (snapshot) => {
-                if (!snapshot.exists()) {
-                    const defaultAds = {
-                        1: { id: 1, title: "مهرجان الساحل السياحي", images: ["https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=600&q=80", "https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=600&q=80", "https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&w=600&q=80"], desc: "تابعوا عروض الفنادق والمقاهي البحرية لهذا الموسم." },
-                        2: { id: 2, title: "رحلات جزيرة أرواد البحرية", images: ["https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80", "https://images.unsplash.com/photo-1544551763-46a8723ba3f9?auto=format&fit=crop&w=600&q=80", "https://images.unsplash.com/photo-1500930287596-c1ecaa71f4ca?auto=format&fit=crop&w=600&q=80"], desc: "خصومات خاصة للعائلات في القوارب التقليدية." }
-                    };
-                    db.ref('ad_posters').set(defaultAds);
-                }
-            });
-            db.ref('destinations').on('value', (snapshot) => {
-                const data = snapshot.val();
-                destinationsData = data ? Object.values(data) : [];
-                renderAllGrids();
-                if (document.getElementById('admin-panel-box').style.display === 'block') {
-                    renderAdminDestinationsList();
-                }
-            });
-            db.ref('ad_posters').on('value', (snapshot) => {
-                const data = snapshot.val();
-                adPosters = data ? Object.values(data) : [];
-                renderAllGrids();
-                if (document.getElementById('admin-panel-box').style.display === 'block') {
-                    renderAdminAdsList();
-                }
+                
+                var info = getWeatherInfo(weather.weather_code);
+                var uvInfo = getUVInfo(weather.uv_index);
+                var windSpeed = Math.round(weather.wind_speed_10m);
+                
+                widget.className = 'weather-widget';
+                widget.innerHTML = 
+                    '<div class="weather-icon-wrap" style="color: ' + info.color + ';">' +
+                        '<i class="fa-solid ' + info.icon + '"></i>' +
+                    '</div>' +
+                    '<div class="weather-content">' +
+                        '<div class="weather-top">' +
+                            '<div class="weather-temp-block">' +
+                                '<span class="weather-temp">' + Math.round(weather.temperature_2m) + '°</span>' +
+                                '<span class="weather-desc-text">' + info.text + '</span>' +
+                            '</div>' +
+                            '<span class="uv-badge" style="background: ' + uvInfo.color + ';">' +
+                                '<i class="fa-solid ' + uvInfo.icon + '"></i>' +
+                                ' UV ' + uvInfo.value + ' · ' + uvInfo.level +
+                            '</span>' +
+                        '</div>' +
+                        '<div class="weather-meta">' +
+                            '<span><i class="fa-solid fa-droplet" style="color:#3b82f6;"></i> رطوبة ' + weather.relative_humidity_2m + '%</span>' +
+                            '<span><i class="fa-solid fa-wind" style="color:#64748b;"></i> رياح ' + windSpeed + ' كم/س</span>' +
+                        '</div>' +
+                        '<div class="weather-tips">' +
+                            '<div class="tip-row">' +
+                                '<i class="fa-solid fa-location-dot tip-icon"></i>' +
+                                '<div><strong>نصيحة الموقع:</strong> ' + info.tip + '</div>' +                            '</div>' +
+                            '<div class="tip-row">' +
+                                '<i class="fa-solid fa-sun tip-icon" style="color: ' + uvInfo.color + ';"></i>' +
+                                '<div><strong>الحماية من الأشعة:</strong> ' + uvInfo.tip + '</div>' +
+                            '</div>' +
+                        '</div>' +
+                    '</div>';
             });
         }
+        
+        // --- Data & Rendering ---
+        var destinationsData = [];
+        var adPosters = [];
+        var adCarousels = {};
+        
         function renderAllGrids() {
-            let filtered = destinationsData;
+            var filtered = destinationsData;
             if (currentRegionFilter !== 'all') {
-                filtered = destinationsData.filter(d => d.region === currentRegionFilter);
+                filtered = destinationsData.filter(function(d) { return d.region === currentRegionFilter; });
             }
             renderGridWithAds('home-destinations-grid', filtered, true);
             renderGridWithAds('all-destinations-grid', filtered, false);
         }
-
-        let totalVisitors = 170001;
-        let onlineUsers = 42;
-        function updateCountersDisplay() {
-            const visitorEl = document.getElementById('total-visitors-counter');
-            const onlineEl = document.getElementById('online-users-counter');
-            if (visitorEl) visitorEl.innerText = totalVisitors.toLocaleString();
-            if (onlineEl) onlineEl.innerText = onlineUsers;
-        }
-        if (!sessionStorage.getItem('visited_session')) {
-            totalVisitors++;
-            sessionStorage.setItem('visited_session', 'true');
-        }
         
-        function compressImage(file, callback) {
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                const img = new Image();
-                img.onload = function () {
-                    const canvas = document.createElement('canvas');
-                    const MAX_WIDTH = 500;
-                    const MAX_HEIGHT = 500;
-                    let width = img.width;
-                    let height = img.height;
-                    if (width > height) {
-                        if (width > MAX_WIDTH) {
-                            height *= MAX_WIDTH / width;
-                            width = MAX_WIDTH;
-                        }
-                    } else {
-                        if (height > MAX_HEIGHT) {
-                            width *= MAX_HEIGHT / height;
-                            height = MAX_HEIGHT;
-                        }
-                    }
-                    canvas.width = width;
-                    canvas.height = height;
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0, width, height);
-                    
-                    const dataUrl = canvas.toDataURL('image/jpeg', 0.5);
-                    callback(dataUrl);                };
-                img.src = e.target.result;
-            };
-            reader.readAsDataURL(file);
-        }
-        
-        function filterByRegion(region, clickedBtn) {
-            currentRegionFilter = region;
-            document.querySelectorAll('.region-btn').forEach(btn => btn.classList.remove('active'));
-            if (clickedBtn) {
-                clickedBtn.classList.add('active');
-            } else {
-                document.querySelectorAll('.region-btn').forEach(btn => {
-                    if (btn.dataset.region === region) btn.classList.add('active');
-                });
-            }
-            renderAllGrids();
-        }
-        
-        function toggleHomeShowMore() {
-            homeExpanded = !homeExpanded;
-            const btn = document.getElementById('home-show-more-btn');
-            if (homeExpanded) {
-                btn.innerHTML = '<i class="fa-solid fa-angles-up"></i> إخفاء المواقع الإضافية';
-            } else {
-                btn.innerHTML = '<i class="fa-solid fa-angles-down"></i> عرض باقي المواقع';
-            }
-            renderAllGrids();
-        }
-
-        function toggleDescription(el) {
-            el.classList.toggle('expanded');
-            const btn = el.nextElementSibling;
-            if (btn && btn.classList.contains('toggle-desc-btn')) {
-                if (el.classList.contains('expanded')) {
-                    btn.innerHTML = '<i class="fa-solid fa-chevron-up"></i> إخفاء التفاصيل';
-                } else {
-                    btn.innerHTML = '<i class="fa-solid fa-chevron-down"></i> اقرأ المزيد';
-                }
-            }
-        }
-
         function startAdCarousels() {
-            Object.values(adCarousels).forEach(interval => clearInterval(interval));
+            Object.keys(adCarousels).forEach(function(key) { clearInterval(adCarousels[key]); });
             adCarousels = {};
-            document.querySelectorAll('.ad-carousel').forEach(carousel => {
-                const slides = carousel.querySelectorAll('.ad-slide');
-                const dots = carousel.querySelectorAll('.ad-carousel-dots .dot');
-                const counter = carousel.querySelector('.ad-carousel-counter');
-                if (slides.length <= 1) return;                let current = 0;
-                const id = 'carousel-' + Date.now() + '-' + Math.random().toString(36).substr(2, 5);
-                const rotate = () => {
+            document.querySelectorAll('.ad-carousel').forEach(function(carousel) {
+                var slides = carousel.querySelectorAll('.ad-slide');
+                var dots = carousel.querySelectorAll('.ad-carousel-dots .dot');
+                var counter = carousel.querySelector('.ad-carousel-counter');
+                if (slides.length <= 1) return;
+                var current = 0;
+                var id = 'carousel-' + Date.now() + '-' + Math.random().toString(36).substr(2, 5);
+                var rotate = function() {
                     slides[current].classList.remove('active-slide');
                     if (dots[current]) dots[current].classList.remove('active');
                     current = (current + 1) % slides.length;
@@ -1332,46 +1168,46 @@
                     if (counter) counter.innerText = (current + 1) + '/' + slides.length;
                 };
                 adCarousels[id] = setInterval(rotate, 8000);
-                dots.forEach((dot, idx) => {
-                    dot.addEventListener('click', (ev) => {
+                dots.forEach(function(dot, idx) {
+                    dot.addEventListener('click', function(ev) {
                         ev.stopPropagation();
                         slides[current].classList.remove('active-slide');
                         dots[current].classList.remove('active');
                         current = idx;
-                        slides[current].classList.add('active-slide');
-                        dots[current].classList.add('active');
+                        slides[current].classList.add('active-slide');                        dots[current].classList.add('active');
                         if (counter) counter.innerText = (current + 1) + '/' + slides.length;
                     });
                 });
             });
         }
-
+        
         function renderGridWithAds(containerId, data, isHome) {
-            const container = document.getElementById(containerId);
+            var container = document.getElementById(containerId);
             if (!container) return;
             
-            let displayData = data;
+            var displayData = data;
             if (isHome && !homeExpanded && data.length > 4) {
                 displayData = data.slice(0, 4);
             }
             
             if (isHome) {
-                const wrap = document.getElementById('home-show-more-wrap');
+                var wrap = document.getElementById('home-show-more-wrap');
                 if (wrap) {
                     wrap.style.display = data.length > 4 ? 'block' : 'none';
                 }
             }
 
-            let html = '';
-            let adIndex = 0;
-            displayData.forEach((dest, index) => {
-                const galleryImgs = [
+            var html = '';
+            var adIndex = 0;
+            displayData.forEach(function(dest, index) {
+                var galleryImgs = [
                     dest.img.replace('w=600', 'w=150'), 
                     'https://images.unsplash.com/photo-1544551763-46a8723ba3f9?auto=format&fit=crop&w=150&q=60',
                     'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=150&q=60'
                 ];
-                                let galleryHtml = '<div class="mini-gallery">';
-                galleryImgs.forEach(gImg => {
+                
+                var galleryHtml = '<div class="mini-gallery">';
+                galleryImgs.forEach(function(gImg) {
                     galleryHtml += '<img src="' + gImg + '" alt="gallery thumb" loading="lazy">';
                 });
                 galleryHtml += '</div>';
@@ -1382,25 +1218,23 @@
                 html += '<span class="dest-badge">' + (dest.region === 'latakia' ? 'محافظة اللاذقية' : 'محافظة طرطوس') + '</span>';
                 html += '<h3>' + dest.name + '</h3>';
                 
-                // Weather widget placeholder
                 html += '<div class="weather-widget weather-loading" id="weather-' + dest.id + '"><i class="fa-solid fa-spinner"></i> جاري جلب حالة الطقس الحقيقية...</div>';
                 
                 html += galleryHtml;
-                html += '<p class="dest-desc">' + dest.description + '</p>';
-                html += '<button class="toggle-desc-btn"><i class="fa-solid fa-chevron-down"></i> اقرأ المزيد</button>';
-                html += '<div class="dest-footer">';
-                html += '<div class="rating"><i class="fa-solid fa-star"></i> ' + dest.rating + '</div>';
-                html += '<button class="btn-primary" data-explore-dest="' + dest.name + '">استكشف</button>';
+                html += '<p class="dest-desc" onclick="toggleDescription(this)">' + dest.description + '</p>';
+                html += '<button class="toggle-desc-btn" onclick="toggleDescription(this.previousElementSibling)"><i class="fa-solid fa-chevron-down"></i> اقرأ المزيد</button>';
+                html += '<div class="dest-footer">';                html += '<div class="rating"><i class="fa-solid fa-star"></i> ' + dest.rating + '</div>';
+                html += '<button class="btn-primary" onclick="alert(\'تفاصيل الموقع: ' + dest.name + '\')">استكشف</button>';
                 html += '</div>';
                 html += '</div>';
                 html += '</div>';
 
                 if ((index + 1) % 4 === 0 && adPosters.length > 0) {
-                    const ad = adPosters[adIndex % adPosters.length];
-                    const images = ad.images || [ad.img];
-                    let slidesHtml = '';
-                    let dotsHtml = '';
-                    images.forEach((img, i) => {
+                    var ad = adPosters[adIndex % adPosters.length];
+                    var images = ad.images || [ad.img];
+                    var slidesHtml = '';
+                    var dotsHtml = '';
+                    images.forEach(function(img, i) {
                         slidesHtml += '<img src="' + img + '" class="ad-slide ' + (i === 0 ? 'active-slide' : '') + '" alt="' + ad.title + '" loading="lazy">';
                         dotsHtml += '<span class="dot ' + (i === 0 ? 'active' : '') + '"></span>';
                     });
@@ -1416,29 +1250,29 @@
                     html += '<p>' + ad.desc + '</p>';
                     html += '<div class="dest-footer">';
                     html += '<span style="font-size: 0.8rem; color: var(--accent); font-weight: 700;"><i class="fa-solid fa-images"></i> ' + images.length + ' صور</span>';
-                    html += '<button class="btn-primary" style="background: var(--accent);" data-ad-detail="' + ad.title + '">التفاصيل</button>';
+                    html += '<button class="btn-primary" style="background: var(--accent);" onclick="alert(\'تم النقر على إعلان: ' + ad.title + '\')">التفاصيل</button>';
                     html += '</div>';
                     html += '</div>';
-                    html += '</div>';                    adIndex++;
+                    html += '</div>';
+                    adIndex++;
                 }
             });
             container.innerHTML = html;
             startAdCarousels();
             
-            // Fetch weather for all visible destinations
-            displayData.forEach(dest => {
+            displayData.forEach(function(dest) {
                 if (dest.lat && dest.lng) {
                     updateWeatherWidget(dest.id, dest.lat, dest.lng);
                 }
             });
         }
         
+        // --- Admin Functions ---
         function checkAdminPassword() {
-            const passInput = document.getElementById('admin-pass-input');
+            var passInput = document.getElementById('admin-pass-input');
             if (!passInput) return;
-            const pass = passInput.value;
-            if (pass === 'salem1959') {
-                document.getElementById('admin-gate-box').style.display = 'none';
+            var pass = passInput.value;
+            if (pass === 'salem1959') {                document.getElementById('admin-gate-box').style.display = 'none';
                 document.getElementById('admin-panel-box').style.display = 'block';
                 renderAdminDestinationsList();
                 renderAdminAdsList();
@@ -1446,6 +1280,7 @@
                 alert('كلمة المرور غير صحيحة!');
             }
         }
+        
         function lockAdminPanel() {
             document.getElementById('admin-panel-box').style.display = 'none';
             document.getElementById('admin-gate-box').style.display = 'block';
@@ -1453,27 +1288,29 @@
         }
         
         function renderAdminDestinationsList() {
-            const listContainer = document.getElementById('admin-destinations-list');
+            var listContainer = document.getElementById('admin-destinations-list');
             if (!listContainer) return;
             if (destinationsData.length === 0) {
                 listContainer.innerHTML = '<p style="color: var(--text-muted); font-size: 0.9rem;">لا توجد مواقع مسجلة حالياً.</p>';
                 return;
             }
-            listContainer.innerHTML = destinationsData.map((dest) => `
-                <div class="admin-item-row">
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <img src="${dest.img}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 6px;" alt="">
-                        <div>
-                            <h4 style="font-size: 0.95rem;">${dest.name} <span style="font-size: 0.75rem; color: var(--primary);">(${dest.region === 'latakia' ? 'اللاذقية' : 'طرطوس'})</span></h4>
-                            <small style="color: var(--text-muted);">${dest.description.substring(0, 40)}...</small>
-                        </div>
-                    </div>
-                    <div style="display: flex; gap: 6px;">                        <button class="btn-primary" style="background: var(--secondary); padding: 4px 10px; font-size: 0.8rem;" data-edit-dest="${dest.id}">تحرير</button>
-                        <button class="btn-primary" style="background: #ef4444; padding: 4px 10px; font-size: 0.8rem;" data-delete-dest="${dest.id}">حذف</button>
-                    </div>
-                </div>
-            `).join('');
+            listContainer.innerHTML = destinationsData.map(function(dest) {
+                return '<div class="admin-item-row">' +
+                    '<div style="display: flex; align-items: center; gap: 10px;">' +
+                        '<img src="' + dest.img + '" style="width: 50px; height: 50px; object-fit: cover; border-radius: 6px;" alt="">' +
+                        '<div>' +
+                            '<h4 style="font-size: 0.95rem;">' + dest.name + ' <span style="font-size: 0.75rem; color: var(--primary);">(' + (dest.region === 'latakia' ? 'اللاذقية' : 'طرطوس') + ')</span></h4>' +
+                            '<small style="color: var(--text-muted);">' + dest.description.substring(0, 40) + '...</small>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div style="display: flex; gap: 6px;">' +
+                        '<button class="btn-primary" style="background: var(--secondary); padding: 4px 10px; font-size: 0.8rem;" onclick="openEditDestinationModal(' + dest.id + ')">تحرير</button>' +
+                        '<button class="btn-primary" style="background: #ef4444; padding: 4px 10px; font-size: 0.8rem;" onclick="deleteDestination(' + dest.id + ')">حذف</button>' +
+                    '</div>' +
+                '</div>';
+            }).join('');
         }
+        
         function openDestinationModal() {
             document.getElementById('modal-title').innerText = 'إضافة موقع سياحي جديد';
             document.getElementById('edit-dest-id').value = '';
@@ -1483,8 +1320,8 @@
             document.getElementById('form-dest-img').value = '';
             document.getElementById('dest-modal').style.display = 'flex';
         }
-        function openEditDestinationModal(id) {
-            const dest = destinationsData.find(d => d.id === id);
+        
+        function openEditDestinationModal(id) {            var dest = destinationsData.find(function(d) { return d.id === id; });
             if (!dest) return;
             document.getElementById('modal-title').innerText = 'تحرير وتعديل الموقع';
             document.getElementById('edit-dest-id').value = dest.id;
@@ -1495,38 +1332,74 @@
             document.getElementById('form-dest-img').value = '';
             document.getElementById('dest-modal').style.display = 'flex';
         }
+        
         function closeDestinationModal() {
             document.getElementById('dest-modal').style.display = 'none';
         }
-        function saveDestinationData() {
-            const editId = document.getElementById('edit-dest-id').value;
-            const name = document.getElementById('form-dest-name').value.trim();
-            const region = document.getElementById('form-dest-region').value;
-            const description = document.getElementById('form-dest-desc').value.trim();
-            const rating = parseFloat(document.getElementById('form-dest-rating').value) || 4.8;
-            const fileInput = document.getElementById('form-dest-img');
+        
+        function compressImage(file, callback) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                var img = new Image();
+                img.onload = function () {
+                    var canvas = document.createElement('canvas');
+                    var MAX_WIDTH = 500;
+                    var MAX_HEIGHT = 500;
+                    var width = img.width;
+                    var height = img.height;
+                    if (width > height) {
+                        if (width > MAX_WIDTH) {
+                            height *= MAX_WIDTH / width;
+                            width = MAX_WIDTH;
+                        }
+                    } else {
+                        if (height > MAX_HEIGHT) {
+                            width *= MAX_HEIGHT / height;
+                            height = MAX_HEIGHT;
+                        }
+                    }
+                    canvas.width = width;
+                    canvas.height = height;
+                    var ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+                    
+                    var dataUrl = canvas.toDataURL('image/jpeg', 0.5);
+                    callback(dataUrl);
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+                function saveDestinationData() {
+            var editId = document.getElementById('edit-dest-id').value;
+            var name = document.getElementById('form-dest-name').value.trim();
+            var region = document.getElementById('form-dest-region').value;
+            var description = document.getElementById('form-dest-desc').value.trim();
+            var rating = parseFloat(document.getElementById('form-dest-rating').value) || 4.8;
+            var fileInput = document.getElementById('form-dest-img');
             
             if (!name || !description) {
                 alert('يرجى ملء اسم الموقع ووصفه على الأقل.');
                 return;
             }
-            const proceedSave = (imgUrl) => {
-                let targetId = editId ? parseInt(editId) : Date.now();
-                const existingDest = editId ? destinationsData.find(d => d.id == editId) : null;
-                const finalImg = imgUrl || (existingDest ? existingDest.img : "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80");
-                const destObj = {
+            var proceedSave = function(imgUrl) {
+                var targetId = editId ? parseInt(editId) : Date.now();
+                var existingDest = editId ? destinationsData.find(function(d) { return d.id == editId; }) : null;
+                var finalImg = imgUrl || (existingDest ? existingDest.img : "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80");
+                var destObj = {
                     id: targetId,
                     name: name,
-                    region: region,                    description: description,
+                    region: region,
+                    description: description,
                     lat: region === 'latakia' ? 35.52 : 34.89,
                     lng: region === 'latakia' ? 35.79 : 35.88,
                     rating: rating,
                     img: finalImg
                 };
-                db.ref('destinations/' + targetId).set(destObj).then(() => {
+                db.ref('destinations/' + targetId).set(destObj).then(function() {
                     closeDestinationModal();
                     alert('تم حفظ وتحديث بيانات الموقع بنجاح!');
-                }).catch((error) => {
+                }).catch(function(error) {
                     alert('حدث خطأ أثناء الحفظ: ' + error.message);
                 });
             };
@@ -1538,154 +1411,199 @@
                 proceedSave(null);
             }
         }
+        
         function deleteDestination(id) {
             if (confirm('هل أنت متأكد من حذف هذا الموقع السياحي؟')) {
-                db.ref('destinations/' + id).remove().then(() => {
+                db.ref('destinations/' + id).remove().then(function() {
                     alert('تم حذف الموقع بنجاح.');
                 });
             }
         }
-        
-        function renderAdminAdsList() {
-            const listContainer = document.getElementById('admin-ads-list');
+                function renderAdminAdsList() {
+            var listContainer = document.getElementById('admin-ads-list');
             if (!listContainer) return;
             if (adPosters.length === 0) {
                 listContainer.innerHTML = '<p style="color: var(--text-muted); font-size: 0.9rem;">لا توجد بوسترات إعلانية حالياً.</p>';
                 return;
             }
-            listContainer.innerHTML = adPosters.map((ad) => {
-                const images = ad.images || [ad.img];
-                return `
-                <div class="admin-item-row">
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <img src="${images[0]}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 6px;" alt="">
-                        <div>
-                            <h4 style="font-size: 0.9rem;">${ad.title}</h4>
-                            <small style="color: var(--text-muted);">${ad.desc} <strong style="color:var(--accent);">(${images.length} صور)</strong></small>
-                        </div>
-                    </div>
-                    <button class="btn-primary" style="background: #ef4444; padding: 4px 10px; font-size: 0.8rem;" data-delete-ad="${ad.id}">حذف</button>
-                </div>
-            `}).join('');        }
+            listContainer.innerHTML = adPosters.map(function(ad) {
+                var images = ad.images || [ad.img];
+                return '<div class="admin-item-row">' +
+                    '<div style="display: flex; align-items: center; gap: 10px;">' +
+                        '<img src="' + images[0] + '" style="width: 50px; height: 50px; object-fit: cover; border-radius: 6px;" alt="">' +
+                        '<div>' +
+                            '<h4 style="font-size: 0.9rem;">' + ad.title + '</h4>' +
+                            '<small style="color: var(--text-muted);">' + ad.desc + ' <strong style="color:var(--accent);">(' + images.length + ' صور)</strong></small>' +
+                        '</div>' +
+                    '</div>' +
+                    '<button class="btn-primary" style="background: #ef4444; padding: 4px 10px; font-size: 0.8rem;" onclick="deleteAdPoster(' + ad.id + ')">حذف</button>' +
+                '</div>';
+            }).join('');
+        }
+        
         function addNewAdPoster() {
-            const fileInput = document.getElementById('ad-file-input');
-            const titleInput = document.getElementById('ad-title-input');
-            const title = titleInput.value.trim() || 'إعلان سياحي جديد';
+            var fileInput = document.getElementById('ad-file-input');
+            var titleInput = document.getElementById('ad-title-input');
+            var title = titleInput.value.trim() || 'إعلان سياحي جديد';
             
             if (fileInput.files && fileInput.files.length > 0) {
-                const files = Array.from(fileInput.files);
-                let compressedImages = [];
-                let processedCount = 0;
-                files.forEach(file => {
+                var files = Array.from(fileInput.files);
+                var compressedImages = [];
+                var processedCount = 0;
+                files.forEach(function(file) {
                     compressImage(file, function(compressedDataUrl) {
                         compressedImages.push(compressedDataUrl);
                         processedCount++;
                         if (processedCount === files.length) {
-                            const adId = Date.now();
-                            const adObj = {
+                            var adId = Date.now();
+                            var adObj = {
                                 id: adId,
                                 title: title,
                                 images: compressedImages,
                                 desc: "بوستر إعلاني مضاف حديثاً."
                             };
-                            db.ref('ad_posters/' + adId).set(adObj).then(() => {
+                            db.ref('ad_posters/' + adId).set(adObj).then(function() {
                                 titleInput.value = '';
                                 fileInput.value = '';
                                 alert('تمت إضافة البوستر الإعلاني مع ' + compressedImages.length + ' صور بنجاح!');
                             });
                         }
-                    });
-                });
+                    });                });
             } else {
                 alert('يرجى اختيار صورة واحدة أو أكثر للإعلان من الجهاز أولاً.');
             }
         }
+        
         function deleteAdPoster(id) {
-            db.ref('ad_posters/' + id).remove().then(() => {
+            db.ref('ad_posters/' + id).remove().then(function() {
                 alert('تم حذف البوستر بنجاح.');
             });
         }
         
-        function switchSection(sectionId) {
-            document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
-            document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
-            
-            const targetSection = document.getElementById(sectionId);
-            if (targetSection) targetSection.classList.add('active');
-            
-            const link = document.getElementById('link-' + sectionId);
-            if (link) link.classList.add('active');
-                        const navLinks = document.getElementById('navLinks');
-            if (navLinks) navLinks.classList.remove('show');
-            
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            if (sectionId === 'map-section' && !window.mapInitialized) {
-                initMap();
-                window.mapInitialized = true;
-            }
-        }
-        function toggleMenu() {
-            const navLinks = document.getElementById('navLinks');
-            if (navLinks) navLinks.classList.toggle('show');
-        }
-        
-        let map;
+        // --- Map ---
+        var map;
         function initMap() {
             if (document.getElementById('map')) {
                 map = L.map('map').setView([35.2, 35.9], 9);
                 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                     attribution: '&copy; OpenStreetMap'
                 }).addTo(map);
-                destinationsData.forEach(dest => {
+                destinationsData.forEach(function(dest) {
                     L.marker([dest.lat, dest.lng]).addTo(map)
                         .bindPopup('<b>' + dest.name + '</b><br>' + dest.description);
                 });
             }
         }
-        function filterMapRegion(reg) {
-            alert('تم فلترة الخريطة لعرض منطقة: ' + (reg === 'all' ? 'الكل' : reg));
-        }
         
+        // --- AI Chat ---
         function sendAIMessage() {
-            const input = document.getElementById('chat-input');
-            const messages = document.getElementById('chat-messages');
+            var input = document.getElementById('chat-input');
+            var messages = document.getElementById('chat-messages');
             if (!input || !input.value.trim()) return;
             
             messages.innerHTML += '<div class="message user">' + input.value + '</div>';
-            const q = input.value;
+            var q = input.value;
             input.value = '';
             messages.scrollTop = messages.scrollHeight;
             
-            setTimeout(() => {
-                let reply = "بصفتي مرشدك الذكي، أنصحك بزيارة جزيرة أرواد ومرتفعات صلنفة وكسب لما تتمتع به من جمال فريد.";
+            setTimeout(function() {
+                var reply = "بصفتي مرشدك الذكي، أنصحك بزيارة جزيرة أرواد ومرتفعات صلنفة وكسب لما تتمتع به من جمال فريد.";
                 if (q.includes('أرواد')) reply = "جزيرة أرواد تقع في طرطوس وتتميز بالقوارب والقلاع التاريخية والمطاعم البحرية.";
                 messages.innerHTML += '<div class="message ai">' + reply + '</div>';
                 messages.scrollTop = messages.scrollHeight;
             }, 500);
         }
+        
         function generateSmartPlan() {
-            const planResult = document.getElementById('plan-result');            if (planResult) {
-                planResult.innerHTML = "<b>برنامج سياحي مقترح:</b><br>• اليوم الأول: اللاذقية وشاطئ البسيط.<br>• اليوم الثاني: صلنفة وغاباتها.<br>• اليوم الثالث: طرطوس وجزيرة أرواد.";
-            }
+            var planResult = document.getElementById('plan-result');
+            if (planResult) {
+                planResult.innerHTML = "<b>برنامج سياحي مقترح:</b><br>• اليوم الأول: اللاذقية وشاطئ البسيط.<br>• اليوم الثاني: صلنفة وغاباتها.<br>• اليوم الثالث: طرطوس وجزيرة أرواد.";            }
         }
+        
+        // --- Counters ---
+        var totalVisitors = 170001;
+        var onlineUsers = 42;
+        
+        function updateCountersDisplay() {
+            var visitorEl = document.getElementById('total-visitors-counter');
+            var onlineEl = document.getElementById('online-users-counter');
+            if (visitorEl) visitorEl.innerText = totalVisitors.toLocaleString();
+            if (onlineEl) onlineEl.innerText = onlineUsers;
+        }
+        
         function resetCounters() {
             totalVisitors = 170001;
             updateCountersDisplay();
             alert('تمت إعادة تعيين العداد ليصبح 170,001 بنجاح.');
         }
-        function toggleDarkMode() {
-            document.body.classList.toggle('dark-mode');
-            const icon = document.getElementById('theme-icon');
-            if (icon) {
-                icon.classList.toggle('fa-moon');
-                icon.classList.toggle('fa-sun');
-            }
+        
+        // --- Firebase Init ---
+        var db;
+        try {
+            var firebaseConfig = {
+              apiKey: "AIzaSyCpAzIfRmO_jQzf7uf4uPDLkRqI9DaPhjE",
+              authDomain: "jinansyr-28efc.firebaseapp.com",
+              databaseURL: "https://jinansyr-28efc-default-rtdb.firebaseio.com",
+              projectId: "jinansyr-28efc",
+              storageBucket: "jinansyr-28efc.firebasestorage.app",
+              messagingSenderId: "662247928226",
+              appId: "1:662247928226:web:6b6249b1d38862c06702fb",
+              measurementId: "G-FZLQGVV6Y4"
+            };
+            var app = firebase.initializeApp(firebaseConfig);
+            try { firebase.analytics(); } catch(e) { console.log('Analytics not available'); }
+            db = firebase.database();
+            
+            db.ref('destinations').once('value', function(snapshot) {
+                if (!snapshot.exists()) {
+                    var defaultDestinations = {
+                        1: { id: 1, name: "كسب", region: "latakia", description: "بلدة سياحية غناء تعانق الجبال وتطل على البحر في اللاذقية.", lat: 35.9325, lng: 35.9892, rating: 4.9, img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80" },
+                        2: { id: 2, name: "رأس البسيط", region: "latakia", description: "شبه جزيرة ساحرة ذات رمال ذهبية ومياه نقية في اللاذقية.", lat: 35.9183, lng: 35.8056, rating: 4.8, img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80" },
+                        3: { id: 3, name: "صلنفة", region: "latakia", description: "عروس المصايف السورية وتشتهر بغابات الصنوبر والضباب.", lat: 35.5833, lng: 36.2167, rating: 4.9, img: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&q=80" },
+                        4: { id: 4, name: "قلعة صلاح الدين", region: "latakia", description: "تحفة معمارية عسكرية تاريخية مسجلة في اليونسكو باللاذقية.", lat: 35.6, lng: 36.05, rating: 5.0, img: "https://images.unsplash.com/photo-1599839575945-a9e5af0c3fa5?auto=format&fit=crop&w=600&q=80" },
+                        5: { id: 5, name: "جزيرة أرواد", region: "tartus", description: "الجزيرة المأهولة الوحيدة في الساحل السوري في طرطوس.", lat: 34.8517, lng: 35.8569, rating: 4.9, img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80" },
+                        6: { id: 6, name: "قلعة المرقب (بانياس)", region: "tartus", description: "قلعة حصينة من أهم القلاع التاريخية المطلة على البحر في طرطوس.", lat: 35.15, lng: 35.95, rating: 4.9, img: "https://images.unsplash.com/photo-1599839575945-a9e5af0c3fa5?auto=format&fit=crop&w=600&q=80" },
+                        7: { id: 7, name: "مشتى الحلو", region: "tartus", description: "مصيف جبلي رائع يتميز بينابيعه العذبة في طرطوس.", lat: 34.8833, lng: 36.2167, rating: 4.7, img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80" },
+                        8: { id: 8, name: "قلعة صافيتا", region: "tartus", description: "برج صافيتا الأثري الشامخ في محافظة طرطوس.", lat: 34.8167, lng: 36.1167, rating: 4.8, img: "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=600&q=80" }
+                    };
+                    db.ref('destinations').set(defaultDestinations);                }
+            });
+            db.ref('ad_posters').once('value', function(snapshot) {
+                if (!snapshot.exists()) {
+                    var defaultAds = {
+                        1: { id: 1, title: "مهرجان الساحل السياحي", images: ["https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=600&q=80", "https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=600&q=80", "https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&w=600&q=80"], desc: "تابعوا عروض الفنادق والمقاهي البحرية لهذا الموسم." },
+                        2: { id: 2, title: "رحلات جزيرة أرواد البحرية", images: ["https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80", "https://images.unsplash.com/photo-1544551763-46a8723ba3f9?auto=format&fit=crop&w=600&q=80", "https://images.unsplash.com/photo-1500930287596-c1ecaa71f4ca?auto=format&fit=crop&w=600&q=80"], desc: "خصومات خاصة للعائلات في القوارب التقليدية." }
+                    };
+                    db.ref('ad_posters').set(defaultAds);
+                }
+            });
+            db.ref('destinations').on('value', function(snapshot) {
+                var data = snapshot.val();
+                destinationsData = data ? Object.values(data) : [];
+                renderAllGrids();
+                if (document.getElementById('admin-panel-box').style.display === 'block') {
+                    renderAdminDestinationsList();
+                }
+            });
+            db.ref('ad_posters').on('value', function(snapshot) {
+                var data = snapshot.val();
+                adPosters = data ? Object.values(data) : [];
+                renderAllGrids();
+                if (document.getElementById('admin-panel-box').style.display === 'block') {
+                    renderAdminAdsList();
+                }
+            });
+        } catch(e) {
+            console.error('Firebase error:', e);
+            alert('تحذير: حدث خطأ في الاتصال بقاعدة البيانات. بعض الوظائف قد لا تعمل.');
         }
         
-        window.onload = function() {
-            initFirebaseData();
-            updateCountersDisplay();
-        };
+        // --- Init ---
+        if (!sessionStorage.getItem('visited_session')) {
+            totalVisitors++;
+            sessionStorage.setItem('visited_session', 'true');
+        }
+        updateCountersDisplay();
     </script>
 </body>
 </html>
