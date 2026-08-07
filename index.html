@@ -564,7 +564,26 @@
     </footer>
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <!-- Firebase SDKs (Compat version for standard script execution) -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-analytics-compat.js"></script>
+
     <script>
+        // --- Firebase Initialization ---
+        const firebaseConfig = {
+          apiKey: "AIzaSyCpAzIfRmO_jQzf7uf4uPDLkRqI9DaPhjE",
+          authDomain: "jinansyr-28efc.firebaseapp.com",
+          databaseURL: "https://jinansyr-28efc-default-rtdb.firebaseio.com",
+          projectId: "jinansyr-28efc",
+          storageBucket: "jinansyr-28efc.firebasestorage.app",
+          messagingSenderId: "662247928226",
+          appId: "1:662247928226:web:6b6249b1d38862c06702fb",
+          measurementId: "G-FZLQGVV6Y4"
+        };
+        const app = firebase.initializeApp(firebaseConfig);
+        const analytics = firebase.analytics();
+
         // --- Initial Destinations Storage ---
         let destinationsData = JSON.parse(localStorage.getItem('jnan_destinations')) || [
             { id: 1, name: "كسب", region: "latakia", description: "بلدة سياحية غناء تعانق الجبال وتطل على البحر في اللاذقية.", lat: 35.9325, lng: 35.9892, rating: 4.9, img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80" },
@@ -576,26 +595,35 @@
             { id: 7, name: "مشتى الحلو", region: "tartus", description: "مصيف جبلي رائع يتميز بينابيعه العذبة في طرطوس.", lat: 34.8833, lng: 36.2167, rating: 4.7, img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80" },
             { id: 8, name: "قلعة صافيتا", region: "tartus", description: "برج صافيتا الأثري الشامخ في محافظة طرطوس.", lat: 34.8167, lng: 36.1167, rating: 4.8, img: "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=600&q=80" }
         ];
+
         // --- Ad Posters Data Storage ---
         let adPosters = JSON.parse(localStorage.getItem('jnan_ad_posters')) || [
             { id: 1, title: "مهرجان الساحل السياحي", img: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=600&q=80", desc: "تابعوا عروض الفنادق والمقاهي البحرية لهذا الموسم." },
             { id: 2, title: "رحلات جزيرة أرواد البحرية", img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80", desc: "خصومات خاصة للعائلات في القوارب التقليدية." }
         ];
+
         let totalVisitors = localStorage.getItem('jnan_total_v') ? parseInt(localStorage.getItem('jnan_total_v')) : 170001;
         let onlineUsers = 42;
+
         function updateCountersDisplay() {
-            document.getElementById('total-visitors-counter').innerText = totalVisitors.toLocaleString();
-            document.getElementById('online-users-counter').innerText = onlineUsers;
+            const visitorEl = document.getElementById('total-visitors-counter');
+            const onlineEl = document.getElementById('online-users-counter');
+            if (visitorEl) visitorEl.innerText = totalVisitors.toLocaleString();
+            if (onlineEl) onlineEl.innerText = onlineUsers;
         }
+
         if (!sessionStorage.getItem('visited_session')) {
             totalVisitors++;
             localStorage.setItem('jnan_total_v', totalVisitors);
             sessionStorage.setItem('visited_session', 'true');
         }
+
         // --- Region Filtering System & Ad Insertion Every 3 Cards ---
         function filterByRegion(region) {
             document.querySelectorAll('.region-btn').forEach(btn => btn.classList.remove('active'));
-            event && event.currentTarget && event.currentTarget.classList.add('active');
+            if (window.event && window.event.currentTarget) {
+                window.event.currentTarget.classList.add('active');
+            }
             let filtered = destinationsData;
             if (region !== 'all') {
                 filtered = destinationsData.filter(d => d.region === region);
@@ -603,6 +631,7 @@
             renderGridWithAds('home-destinations-grid', filtered);
             renderGridWithAds('all-destinations-grid', filtered);
         }
+
         function renderGridWithAds(containerId, data) {
             const container = document.getElementById(containerId);
             if (!container) return;
@@ -645,9 +674,12 @@
             });
             container.innerHTML = html;
         }
+
         // --- Admin Room Management ---
         function checkAdminPassword() {
-            const pass = document.getElementById('admin-pass-input').value;
+            const passInput = document.getElementById('admin-pass-input');
+            if (!passInput) return;
+            const pass = passInput.value;
             if (pass === 'salem1959') {
                 document.getElementById('admin-gate-box').style.display = 'none';
                 document.getElementById('admin-panel-box').style.display = 'block';
@@ -657,19 +689,22 @@
                 alert('كلمة المرور غير صحيحة!');
             }
         }
+
         function lockAdminPanel() {
             document.getElementById('admin-panel-box').style.display = 'none';
             document.getElementById('admin-gate-box').style.display = 'block';
             document.getElementById('admin-pass-input').value = '';
         }
+
         // --- Destinations Management (Add, Edit, Delete) ---
         function renderAdminDestinationsList() {
             const listContainer = document.getElementById('admin-destinations-list');
+            if (!listContainer) return;
             if (destinationsData.length === 0) {
                 listContainer.innerHTML = '<p style="color: var(--text-muted); font-size: 0.9rem;">لا توجد مواقع مسجلة حالياً.</p>';
                 return;
             }
-            listContainer.innerHTML = destinationsData.map((dest, idx) => `
+            listContainer.innerHTML = destinationsData.map((dest) => `
                 <div class="admin-item-row">
                     <div style="display: flex; align-items: center; gap: 10px;">
                         <img src="${dest.img}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 6px;" alt="">
@@ -685,6 +720,7 @@
                 </div>
             `).join('');
         }
+
         function openDestinationModal() {
             document.getElementById('modal-title').innerText = 'إضافة موقع سياحي جديد';
             document.getElementById('edit-dest-id').value = '';
@@ -694,6 +730,7 @@
             document.getElementById('form-dest-img').value = '';
             document.getElementById('dest-modal').style.display = 'flex';
         }
+
         function openEditDestinationModal(id) {
             const dest = destinationsData.find(d => d.id === id);
             if (!dest) return;
@@ -706,9 +743,11 @@
             document.getElementById('form-dest-img').value = '';
             document.getElementById('dest-modal').style.display = 'flex';
         }
+
         function closeDestinationModal() {
             document.getElementById('dest-modal').style.display = 'none';
         }
+
         function saveDestinationData() {
             const editId = document.getElementById('edit-dest-id').value;
             const name = document.getElementById('form-dest-name').value.trim();
@@ -716,13 +755,14 @@
             const description = document.getElementById('form-dest-desc').value.trim();
             const rating = parseFloat(document.getElementById('form-dest-rating').value) || 4.8;
             const fileInput = document.getElementById('form-dest-img');
+            
             if (!name || !description) {
                 alert('يرجى ملء اسم الموقع ووصفه على الأقل.');
                 return;
             }
+
             const proceedSave = (imgUrl) => {
                 if (editId) {
-                    // Update existing
                     const index = destinationsData.findIndex(d => d.id == editId);
                     if (index !== -1) {
                         destinationsData[index].name = name;
@@ -732,7 +772,6 @@
                         if (imgUrl) destinationsData[index].img = imgUrl;
                     }
                 } else {
-                    // Add new
                     const newDest = {
                         id: Date.now(),
                         name: name,
@@ -751,6 +790,7 @@
                 filterByRegion('all');
                 alert('تم حفظ وتحديث بيانات الموقع بنجاح!');
             };
+
             if (fileInput.files && fileInput.files[0]) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
@@ -762,6 +802,7 @@
                 proceedSave(existingImg);
             }
         }
+
         function deleteDestination(id) {
             if (confirm('هل أنت متأكد من حذف هذا الموقع السياحي؟')) {
                 destinationsData = destinationsData.filter(d => d.id !== id);
@@ -771,9 +812,11 @@
                 alert('تم حذف الموقع بنجاح.');
             }
         }
+
         // --- Ad Posters Management ---
         function renderAdminAdsList() {
             const listContainer = document.getElementById('admin-ads-list');
+            if (!listContainer) return;
             if (adPosters.length === 0) {
                 listContainer.innerHTML = '<p style="color: var(--text-muted); font-size: 0.9rem;">لا توجد بوسترات إعلانية حالياً.</p>';
                 return;
@@ -791,10 +834,12 @@
                 </div>
             `).join('');
         }
+
         function addNewAdPoster() {
             const fileInput = document.getElementById('ad-file-input');
             const titleInput = document.getElementById('ad-title-input');
             const title = titleInput.value.trim() || 'إعلان سياحي جديد';
+            
             if (fileInput.files && fileInput.files[0]) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
@@ -816,6 +861,7 @@
                 alert('يرجى اختيار صورة الإعلان من الجهاز أولاً.');
             }
         }
+
         function deleteAdPoster(index) {
             adPosters.splice(index, 1);
             localStorage.setItem('jnan_ad_posters', JSON.stringify(adPosters));
@@ -823,48 +869,63 @@
             filterByRegion('all');
             alert('تم حذف البوستر بنجاح.');
         }
+
         // --- Navigation & Sections ---
         function switchSection(sectionId) {
             document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
             document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
             
-            document.getElementById(sectionId).classList.add('active');
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) targetSection.classList.add('active');
+            
             const link = document.getElementById(`link-${sectionId}`);
             if (link) link.classList.add('active');
-            document.getElementById('navLinks').classList.remove('show');
+            
+            const navLinks = document.getElementById('navLinks');
+            if (navLinks) navLinks.classList.remove('show');
+            
             window.scrollTo({ top: 0, behavior: 'smooth' });
             if (sectionId === 'map-section' && !window.mapInitialized) {
                 initMap();
                 window.mapInitialized = true;
             }
         }
+
         function toggleMenu() {
-            document.getElementById('navLinks').classList.toggle('show');
+            const navLinks = document.getElementById('navLinks');
+            if (navLinks) navLinks.classList.toggle('show');
         }
+
         // --- Map Functions ---
         let map;
         function initMap() {
-            map = L.map('map').setView([35.2, 35.9], 9);
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; OpenStreetMap'
-            }).addTo(map);
-            destinationsData.forEach(dest => {
-                L.marker([dest.lat, dest.lng]).addTo(map)
-                    .bindPopup(`<b>${dest.name}</b><br>${dest.description}`);
-            });
+            if (document.getElementById('map')) {
+                map = L.map('map').setView([35.2, 35.9], 9);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; OpenStreetMap'
+                }).addTo(map);
+                destinationsData.forEach(dest => {
+                    L.marker([dest.lat, dest.lng]).addTo(map)
+                        .bindPopup(`<b>${dest.name}</b><br>${dest.description}`);
+                });
+            }
         }
+
         function filterMapRegion(reg) {
             alert(`تم فلترة الخريطة لعرض منطقة: ${reg === 'all' ? 'الكل' : reg}`);
         }
+
         // --- AI Chat ---
         function sendAIMessage() {
             const input = document.getElementById('chat-input');
             const messages = document.getElementById('chat-messages');
-            if (!input.value.trim()) return;
+            if (!input || !input.value.trim()) return;
+            
             messages.innerHTML += `<div class="message user">${input.value}</div>`;
             const q = input.value;
             input.value = '';
             messages.scrollTop = messages.scrollHeight;
+            
             setTimeout(() => {
                 let reply = "بصفتي مرشدك الذكي، أنصحك بزيارة جزيرة أرواد ومرتفعات صلنفة وكسب لما تتمتع به من جمال فريد.";
                 if (q.includes('أرواد')) reply = "جزيرة أرواد تقع في طرطوس وتتميز بالقوارب والقلاع التاريخية والمطاعم البحرية.";
@@ -872,21 +933,30 @@
                 messages.scrollTop = messages.scrollHeight;
             }, 500);
         }
+
         function generateSmartPlan() {
-            document.getElementById('plan-result').innerHTML = "<b>برنامج سياحي مقترح:</b><br>• اليوم الأول: اللاذقية وشاطئ البسيط.<br>• اليوم الثاني: صلنفة وغاباتها.<br>• اليوم الثالث: طرطوس وجزيرة أرواد.";
+            const planResult = document.getElementById('plan-result');
+            if (planResult) {
+                planResult.innerHTML = "<b>برنامج سياحي مقترح:</b><br>• اليوم الأول: اللاذقية وشاطئ البسيط.<br>• اليوم الثاني: صلنفة وغاباتها.<br>• اليوم الثالث: طرطوس وجزيرة أرواد.";
+            }
         }
+
         function resetCounters() {
             totalVisitors = 170001;
             localStorage.setItem('jnan_total_v', totalVisitors);
             updateCountersDisplay();
             alert('تمت إعادة تعيين العداد ليصبح 170,001 بنجاح.');
         }
+
         function toggleDarkMode() {
             document.body.classList.toggle('dark-mode');
             const icon = document.getElementById('theme-icon');
-            icon.classList.toggle('fa-moon');
-            icon.classList.toggle('fa-sun');
+            if (icon) {
+                icon.classList.toggle('fa-moon');
+                icon.classList.toggle('fa-sun');
+            }
         }
+
         window.onload = function() {
             filterByRegion('all');
             updateCountersDisplay();
