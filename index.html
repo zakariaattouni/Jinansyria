@@ -586,28 +586,41 @@
         const analytics = firebase.analytics();
         const db = firebase.database();
 
-        // --- Initial Destinations Storage & Firebase Sync ---
         let destinationsData = [];
         let adPosters = [];
 
-        function loadDataFromFirebase() {
+        // --- Load Initial Data into Firebase if Empty, then Sync ---
+        function initFirebaseData() {
+            db.ref('destinations').once('value', (snapshot) => {
+                if (!snapshot.exists()) {
+                    const defaultDestinations = {
+                        1: { id: 1, name: "كسب", region: "latakia", description: "بلدة سياحية غناء تعانق الجبال وتطل على البحر في اللاذقية.", lat: 35.9325, lng: 35.9892, rating: 4.9, img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80" },
+                        2: { id: 2, name: "رأس البسيط", region: "latakia", description: "شبه جزيرة ساحرة ذات رمال ذهبية ومياه نقية في اللاذقية.", lat: 35.9183, lng: 35.8056, rating: 4.8, img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80" },
+                        3: { id: 3, name: "صلنفة", region: "latakia", description: "عروس المصايف السورية وتشتهر بغابات الصنوبر والضباب.", lat: 35.5833, lng: 36.2167, rating: 4.9, img: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&q=80" },
+                        4: { id: 4, name: "قلعة صلاح الدين", region: "latakia", description: "تحفة معمارية عسكرية تاريخية مسجلة في اليونسكو باللاذقية.", lat: 35.6, lng: 36.05, rating: 5.0, img: "https://images.unsplash.com/photo-1599839575945-a9e5af0c3fa5?auto=format&fit=crop&w=600&q=80" },
+                        5: { id: 5, name: "جزيرة أرواد", region: "tartus", description: "الجزيرة المأهولة الوحيدة في الساحل السوري في طرطوس.", lat: 34.8517, lng: 35.8569, rating: 4.9, img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80" },
+                        6: { id: 6, name: "قلعة المرقب (بانياس)", region: "tartus", description: "قلعة حصينة من أهم القلاع التاريخية المطلة على البحر في طرطوس.", lat: 35.15, lng: 35.95, rating: 4.9, img: "https://images.unsplash.com/photo-1599839575945-a9e5af0c3fa5?auto=format&fit=crop&w=600&q=80" },
+                        7: { id: 7, name: "مشتى الحلو", region: "tartus", description: "مصيف جبلي رائع يتميز بينابيعه العذبة في طرطوس.", lat: 34.8833, lng: 36.2167, rating: 4.7, img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80" },
+                        8: { id: 8, name: "قلعة صافيتا", region: "tartus", description: "برج صافيتا الأثري الشامخ في محافظة طرطوس.", lat: 34.8167, lng: 36.1167, rating: 4.8, img: "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=600&q=80" }
+                    };
+                    db.ref('destinations').set(defaultDestinations);
+                }
+            });
+
+            db.ref('ad_posters').once('value', (snapshot) => {
+                if (!snapshot.exists()) {
+                    const defaultAds = {
+                        1: { id: 1, title: "مهرجان الساحل السياحي", img: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=600&q=80", desc: "تابعوا عروض الفنادق والمقاهي البحرية لهذا الموسم." },
+                        2: { id: 2, title: "رحلات جزيرة أرواد البحرية", img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80", desc: "خصومات خاصة للعائلات في القوارب التقليدية." }
+                    };
+                    db.ref('ad_posters').set(defaultAds);
+                }
+            });
+
+            // Realtime listeners
             db.ref('destinations').on('value', (snapshot) => {
                 const data = snapshot.val();
-                if (data) {
-                    destinationsData = Object.values(data);
-                } else {
-                    // Fallback default data if empty
-                    destinationsData = [
-                        { id: 1, name: "كسب", region: "latakia", description: "بلدة سياحية غناء تعانق الجبال وتطل على البحر في اللاذقية.", lat: 35.9325, lng: 35.9892, rating: 4.9, img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80" },
-                        { id: 2, name: "رأس البسيط", region: "latakia", description: "شبه جزيرة ساحرة ذات رمال ذهبية ومياه نقية في اللاذقية.", lat: 35.9183, lng: 35.8056, rating: 4.8, img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80" },
-                        { id: 3, name: "صلنفة", region: "latakia", description: "عروس المصايف السورية وتشتهر بغابات الصنوبر والضباب.", lat: 35.5833, lng: 36.2167, rating: 4.9, img: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&q=80" },
-                        { id: 4, name: "قلعة صلاح الدين", region: "latakia", description: "تحفة معمارية عسكرية تاريخية مسجلة في اليونسكو باللاذقية.", lat: 35.6, lng: 36.05, rating: 5.0, img: "https://images.unsplash.com/photo-1599839575945-a9e5af0c3fa5?auto=format&fit=crop&w=600&q=80" },
-                        { id: 5, name: "جزيرة أرواد", region: "tartus", description: "الجزيرة المأهولة الوحيدة في الساحل السوري في طرطوس.", lat: 34.8517, lng: 35.8569, rating: 4.9, img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80" },
-                        { id: 6, name: "قلعة المرقب (بانياس)", region: "tartus", description: "قلعة حصينة من أهم القلاع التاريخية المطلة على البحر في طرطوس.", lat: 35.15, lng: 35.95, rating: 4.9, img: "https://images.unsplash.com/photo-1599839575945-a9e5af0c3fa5?auto=format&fit=crop&w=600&q=80" },
-                        { id: 7, name: "مشتى الحلو", region: "tartus", description: "مصيف جبلي رائع يتميز بينابيعه العذبة في طرطوس.", lat: 34.8833, lng: 36.2167, rating: 4.7, img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80" },
-                        { id: 8, name: "قلعة صافيتا", region: "tartus", description: "برج صافيتا الأثري الشامخ في محافظة طرطوس.", lat: 34.8167, lng: 36.1167, rating: 4.8, img: "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=600&q=80" }
-                    ];
-                }
+                destinationsData = data ? Object.values(data) : [];
                 filterByRegion('all');
                 if (document.getElementById('admin-panel-box').style.display === 'block') {
                     renderAdminDestinationsList();
@@ -616,14 +629,7 @@
 
             db.ref('ad_posters').on('value', (snapshot) => {
                 const data = snapshot.val();
-                if (data) {
-                    adPosters = Object.values(data);
-                } else {
-                    adPosters = [
-                        { id: 1, title: "مهرجان الساحل السياحي", img: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=600&q=80", desc: "تابعوا عروض الفنادق والمقاهي البحرية لهذا الموسم." },
-                        { id: 2, title: "رحلات جزيرة أرواد البحرية", img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80", desc: "خصومات خاصة للعائلات في القوارب التقليدية." }
-                    ];
-                }
+                adPosters = data ? Object.values(data) : [];
                 filterByRegion('all');
                 if (document.getElementById('admin-panel-box').style.display === 'block') {
                     renderAdminAdsList();
@@ -646,15 +652,15 @@
             sessionStorage.setItem('visited_session', 'true');
         }
 
-        // --- Utility to Compress and Resize Image Files ---
+        // --- High Compression Image Utility ---
         function compressImage(file, callback) {
             const reader = new FileReader();
             reader.onload = function (e) {
                 const img = new Image();
                 img.onload = function () {
                     const canvas = document.createElement('canvas');
-                    const MAX_WIDTH = 800;
-                    const MAX_HEIGHT = 800;
+                    const MAX_WIDTH = 500;
+                    const MAX_HEIGHT = 500;
                     let width = img.width;
                     let height = img.height;
 
@@ -675,8 +681,7 @@
                     const ctx = canvas.getContext('2d');
                     ctx.drawImage(img, 0, 0, width, height);
                     
-                    // Compress to JPEG with 0.7 quality to ensure small size for database
-                    const dataUrl = canvas.toDataURL('image/jpeg', 0.7);
+                    const dataUrl = canvas.toDataURL('image/jpeg', 0.5); // 50% quality for compact size
                     callback(dataUrl);
                 };
                 img.src = e.target.result;
@@ -829,6 +834,9 @@
 
             const proceedSave = (imgUrl) => {
                 let targetId = editId ? parseInt(editId) : Date.now();
+                const existingDest = editId ? destinationsData.find(d => d.id == editId) : null;
+                const finalImg = imgUrl || (existingDest ? existingDest.img : "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80");
+
                 const destObj = {
                     id: targetId,
                     name: name,
@@ -837,12 +845,12 @@
                     lat: region === 'latakia' ? 35.52 : 34.89,
                     lng: region === 'latakia' ? 35.79 : 35.88,
                     rating: rating,
-                    img: imgUrl || (editId ? destinationsData.find(d => d.id == editId).img : "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80")
+                    img: finalImg
                 };
 
                 db.ref('destinations/' + targetId).set(destObj).then(() => {
                     closeDestinationModal();
-                    alert('تم حفظ وتحديث بيانات الموقع بنجاح عبر Firebase!');
+                    alert('تم حفظ وتحديث بيانات الموقع بنجاح!');
                 }).catch((error) => {
                     alert('حدث خطأ أثناء الحفظ: ' + error.message);
                 });
@@ -873,7 +881,7 @@
                 listContainer.innerHTML = '<p style="color: var(--text-muted); font-size: 0.9rem;">لا توجد بوسترات إعلانية حالياً.</p>';
                 return;
             }
-            listContainer.innerHTML = adPosters.map((ad, idx) => `
+            listContainer.innerHTML = adPosters.map((ad) => `
                 <div class="admin-item-row">
                     <div style="display: flex; align-items: center; gap: 10px;">
                         <img src="${ad.img}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 6px;" alt="">
@@ -1005,7 +1013,7 @@
         }
 
         window.onload = function() {
-            loadDataFromFirebase();
+            initFirebaseData();
             updateCountersDisplay();
         };
     </script>
