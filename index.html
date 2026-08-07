@@ -364,7 +364,8 @@
             measurementId: "G-DY6GYB5L4N"
         };
         const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
+        let analytics = null;
+        try { analytics = getAnalytics(app); } catch (e) { console.log('Analytics غير مدعوم هنا'); }
         const db = getFirestore(app);
 
         const ADMIN_KEY = atob('c2FsZW0xOTU5');
@@ -389,10 +390,18 @@
         let onlineUsers = 42;
 
         const eventsData = [
-            { id: 1, destName: "رأس البسيط", title: "مهرجان الساحل البحري", date: "15 أغسطس 2026", description: "مهرجان سنوي يضم عروض بحرية وموسيقى حية.", location: "شاطئ البسيط", region: "latakia", lat: 35.9183, lng: 35.8056 },
-            { id: 2, destName: "جزيرة أرواد", title: "رحلة أرواد التاريخية", date: "20 أغسطس 2026", description: "جولة إرشادية في جزيرة أرواد.", location: "جزيرة أرواد", region: "tartus", lat: 34.8517, lng: 35.8569 },            { id: 3, destName: "صلنفة", title: "مهرجان صلنفة السياحي", date: "25 أغسطس 2026", description: "فعاليات ثقافية وفنية في مرتفعات صلنفة.", location: "صلنفة", region: "latakia", lat: 35.5833, lng: 36.2167 },
+            { id: 1, destName: "رأس البسيط", title: "مهرجان الساحل البحري", date: "15 أغسطس 2026", description: "مهرجان سنوي يضم عروض بحرية وموسيقى حية.", location: "شاطئ البسيط", region: "latakia", lat: 35.9183, lng: 35.8056 },            { id: 2, destName: "جزيرة أرواد", title: "رحلة أرواد التاريخية", date: "20 أغسطس 2026", description: "جولة إرشادية في جزيرة أرواد.", location: "جزيرة أرواد", region: "tartus", lat: 34.8517, lng: 35.8569 },
+            { id: 3, destName: "صلنفة", title: "مهرجان صلنفة السياحي", date: "25 أغسطس 2026", description: "فعاليات ثقافية وفنية في مرتفعات صلنفة.", location: "صلنفة", region: "latakia", lat: 35.5833, lng: 36.2167 },
             { id: 4, destName: "قلعة صلاح الدين", title: "جولة تاريخية مرشدّة", date: "كل جمعة", description: "زيارة برفقة مرشد أثري.", location: "قلعة صلاح الدين", region: "latakia", lat: 35.6, lng: 36.05 }
         ];
+
+        // ====== مهلة زمنية لمنع التعليق ======
+        function withTimeout(promise, ms) {
+            return Promise.race([
+                promise,
+                new Promise((resolve) => setTimeout(() => resolve(null), ms))
+            ]);
+        }
 
         function updateDBStatus(online) {
             const el = document.getElementById('db-status');
@@ -401,32 +410,20 @@
         }
 
         async function loadDestinationsFromFirestore() {
-            try {
-                const snapshot = await getDocs(collection(db, 'destinations'));
-                if (snapshot.empty) {
-                    for (const dest of DEFAULT_DESTINATIONS) {
-                        await setDoc(doc(db, 'destinations', dest.id), dest);
-                    }
-                    destinationsData = [...DEFAULT_DESTINATIONS];
-                } else {
-                    destinationsData = snapshot.docs.map(d => ({ ...d.data(), id: d.id }));
-                    destinationsData.sort((a, b) => (parseInt(a.id) || 0) - (parseInt(b.id) || 0));
-                }
-                updateDBStatus(true);
-                return true;
-            } catch (e) {
-                console.error('Firestore error:', e);
-                updateDBStatus(false);
+            const snapshot = await getDocs(collection(db, 'destinations'));
+            if (snapshot.empty) {
+                await Promise.all(DEFAULT_DESTINATIONS.map(dest => setDoc(doc(db, 'destinations', dest.id), dest)));
                 destinationsData = [...DEFAULT_DESTINATIONS];
-                return false;
+            } else {
+                destinationsData = snapshot.docs.map(d => ({ ...d.data(), id: d.id }));
+                destinationsData.sort((a, b) => (parseInt(a.id) || 0) - (parseInt(b.id) || 0));
             }
+            updateDBStatus(true);
         }
 
         async function loadAdsFromFirestore() {
-            try {
-                const snapshot = await getDocs(collection(db, 'ad_posters'));
-                adPosters = snapshot.docs.map(d => ({ ...d.data(), id: d.id }));
-            } catch (e) { console.error('Ads load error:', e); adPosters = []; }
+            const snapshot = await getDocs(collection(db, 'ad_posters'));
+            adPosters = snapshot.docs.map(d => ({ ...d.data(), id: d.id }));
         }
 
         async function saveDestToFirestore(dest) {
@@ -439,23 +436,35 @@
             catch (e) { console.error('Delete error:', e); updateDBStatus(false); return false; }
         }
 
-        async function saveAdToFirestore(ad) {            try { await setDoc(doc(db, 'ad_posters', String(ad.id)), ad); return true; }
+        async function saveAdToFirestore(ad) {
+            try { await setDoc(doc(db, 'ad_posters', String(ad.id)), ad); return true; }
             catch (e) { console.error('Ad save error:', e); return false; }
         }
-
         async function deleteAdFromFirestore(id) {
             try { await deleteDoc(doc(db, 'ad_posters', String(id))); return true; }
             catch (e) { console.error('Ad delete error:', e); return false; }
         }
 
+        // ====== تهيئة محمية بالكامل ======
         async function initApp() {
-            await loadDestinationsFromFirestore();
-            await loadAdsFromFirestore();
-            document.getElementById('loading-overlay').style.display = 'none';
-            filterByRegion('all');
-            updateCountersDisplay();
+            try {
+                await withTimeout(loadDestinationsFromFirestore(), 8000);
+                await withTimeout(loadAdsFromFirestore(), 5000);
+            } catch (e) {
+                console.error('Firestore error:', e);
+                updateDBStatus(false);
+            } finally {
+                if (!destinationsData || destinationsData.length === 0) {
+                    destinationsData = [...DEFAULT_DESTINATIONS];
+                }
+                if (!adPosters) adPosters = [];
+                document.getElementById('loading-overlay').style.display = 'none';
+                filterByRegion('all');
+                updateCountersDisplay();
+            }
         }
 
+        // ====== AI ENGINE ======
         const aiMemory = { lastTopics: [], conversationCount: 0 };
         const knowledgeBase = {
             "كسب": { info: "كسب بلدة جبلية ساحرة على ارتفاع 800 متر، تحيط بها غابات الصنوبر.", tips: "أفضل وقت: الصيف والربيع.", nearby: ["رأس البسيط", "صلنفة"], bestFor: ["عائلة", "استرخاء"] },
@@ -479,8 +488,7 @@
             if (l.includes('رحلة') || l.includes('برنامج') || l.includes('خطة')) return 'plan';
             if (l.includes('هادئ') || l.includes('استرخاء') || l.includes('هدوء')) return 'relax';
             if (l.includes('شكرا') || l.includes('شكراً')) return 'thanks';
-            if (l.includes('مرحبا') || l.includes('أهلا') || l.includes('سلام')) return 'greeting';
-            for (const p of Object.keys(knowledgeBase)) { if (l.includes(p)) return 'place:' + p; }
+            if (l.includes('مرحبا') || l.includes('أهلا') || l.includes('سلام')) return 'greeting';            for (const p of Object.keys(knowledgeBase)) { if (l.includes(p)) return 'place:' + p; }
             return 'general';
         }
 
@@ -488,7 +496,8 @@
             if (aiMemory.lastTopics.length === 0) return null;
             const last = aiMemory.lastTopics[aiMemory.lastTopics.length - 1];
             const info = knowledgeBase[last];
-            return info && info.nearby.length > 0 ? info.nearby[Math.floor(Math.random() * info.nearby.length)] : null;        }
+            return info && info.nearby.length > 0 ? info.nearby[Math.floor(Math.random() * info.nearby.length)] : null;
+        }
 
         function generateAIResponse(userText) {
             const intent = detectIntent(userText);
@@ -502,7 +511,7 @@
                     suggestions = rp.map(p => `أخبرني عن ${p.name}`); break;
                 case 'family':
                     const fp = destinationsData.filter(d => knowledgeBase[d.name]?.bestFor.includes('عائلة'));
-                    response = '👨‍👩‍👧‍👦 أفضل الوجهات العائلية:<br><br>'; fp.slice(0,4).forEach(p => response += `• <strong>${p.name}</strong>: ${p.description.substring(0,60)}...<br>`);
+                    response = '👨‍👩‍👧‍ أفضل الوجهات العائلية:<br><br>'; fp.slice(0,4).forEach(p => response += `• <strong>${p.name}</strong>: ${p.description.substring(0,60)}...<br>`);
                     suggestions = ['أخبرني عن رأس البسيط', 'أخبرني عن جزيرة أرواد']; break;
                 case 'beach':
                     response = '🏖️ أفضل الشواطئ:<br><br>• <strong>رأس البسيط</strong>: رمال ذهبية ومياه صافية<br><br>🌊 من أجمل شواطئ المتوسط!';
@@ -528,8 +537,7 @@
                     if (intent.startsWith('place:')) {
                         const pn = intent.replace('place:', '');
                         const info = knowledgeBase[pn];
-                        if (!aiMemory.lastTopics.includes(pn)) { aiMemory.lastTopics.push(pn); if (aiMemory.lastTopics.length > 10) aiMemory.lastTopics.shift(); }
-                        aiMemory.conversationCount++;
+                        if (!aiMemory.lastTopics.includes(pn)) { aiMemory.lastTopics.push(pn); if (aiMemory.lastTopics.length > 10) aiMemory.lastTopics.shift(); }                        aiMemory.conversationCount++;
                         updateContextBadge();
                         if (info) {
                             response = `📍 <strong>${pn}</strong><br><br>${info.info}<br><br>💡 ${info.tips}<br>`;
@@ -537,7 +545,8 @@
                             if (re.length > 0) { response += '<br>📅 فعاليات:<br>'; re.forEach(e => response += `• ${e.title}<br>`); }
                             if (info.nearby.length > 0) response += `<br>🗺️ مواقع قريبة: ${info.nearby.join('، ')}`;
                             suggestions = info.nearby.map(n => `أخبرني عن ${n}`);
-                        } else {                            const d = destinationsData.find(x => x.name === pn);
+                        } else {
+                            const d = destinationsData.find(x => x.name === pn);
                             response = d ? `📍 <strong>${pn}</strong><br><br>${d.description}<br>⭐ ${d.rating}/5` : 'لم أجد معلومات عن هذا المكان.';
                             suggestions = ['أقترح لي مكاناً'];
                         }
@@ -577,8 +586,7 @@
                 if (suggestions.length > 0) {
                     shtml = '<div class="suggestion-chips">';
                     suggestions.forEach(s => shtml += `<button class="chip" onclick="askQuickQuestion('${s}')">${s}</button>`);
-                    shtml += '</div>';
-                }
+                    shtml += '</div>';                }
                 messages.innerHTML += `<div class="message ai">${response}${shtml}</div>`;
                 messages.scrollTop = messages.scrollHeight;
             }, 800 + Math.random() * 1000);
@@ -586,7 +594,8 @@
 
         function askQuickQuestion(q) { document.getElementById('chat-input').value = q; sendAIMessage(); }
 
-        function generateSmartPlan(type) {            const r = document.getElementById('plan-result');
+        function generateSmartPlan(type) {
+            const r = document.getElementById('plan-result');
             const plans = {
                 family: '📋 خطة عائلية (3 أيام):<br>اليوم 1: شاطئ البسيط<br>اليوم 2: قلعة صلاح الدين → صلنفة<br>اليوم 3: طرطوس → أرواد',
                 adventure: '📋 مغامرة (3 أيام):<br>اليوم 1: غابات كسب<br>اليوم 2: مغارة صلنفة<br>اليوم 3: غوص في البسيط',
@@ -596,6 +605,7 @@
             r.innerHTML = plans[type] || '';
         }
 
+        // ====== RENDER ======
         function updateCountersDisplay() {
             document.getElementById('total-visitors-counter').innerText = totalVisitors.toLocaleString();
             document.getElementById('online-users-counter').innerText = onlineUsers;
@@ -625,8 +635,7 @@
             const container = document.getElementById(containerId);
             if (!container) return;
             let html = '', adIndex = 0;
-            let dataToShow = (containerId === 'home-destinations-grid' && !showAllDestinations) ? data.slice(0, 4) : data;
-            dataToShow.forEach((dest, index) => {
+            let dataToShow = (containerId === 'home-destinations-grid' && !showAllDestinations) ? data.slice(0, 4) : data;            dataToShow.forEach((dest, index) => {
                 const gc = dest.gallery ? dest.gallery.length : 0;
                 html += `<div class="dest-card" onclick="openDetailModal('${dest.id}')">
                     <img src="${dest.img}" class="dest-img" alt="${dest.name}">
@@ -635,7 +644,8 @@
                         <h3>${dest.name}</h3><p>${dest.description}</p>
                         ${gc > 0 ? `<span class="gallery-count-badge"><i class="fa-solid fa-images"></i> ${gc} صور</span>` : ''}
                         <div class="dest-footer"><div class="rating"><i class="fa-solid fa-star"></i> ${dest.rating}</div>
-                        <button class="btn-primary" onclick="event.stopPropagation();openDetailModal('${dest.id}')">استكشف</button></div>                    </div></div>`;
+                        <button class="btn-primary" onclick="event.stopPropagation();openDetailModal('${dest.id}')">استكشف</button></div>
+                    </div></div>`;
                 if ((index+1) % 3 === 0 && adPosters.length > 0 && (containerId !== 'home-destinations-grid' || showAllDestinations)) {
                     const ad = adPosters[adIndex % adPosters.length];
                     html += `<div class="ad-card"><img src="${ad.img}" class="ad-img" alt="${ad.title}">
@@ -674,8 +684,7 @@
             const gallery = dest.gallery || [];
             if (gallery.length > 0) {
                 gs.style.display = 'block';
-                gg.innerHTML = gallery.map((img, i) => `<div class="gallery-item" onclick="openLightbox('${dest.id}',${i})"><img src="${img}" alt=""></div>`).join('');
-            } else gs.style.display = 'none';
+                gg.innerHTML = gallery.map((img, i) => `<div class="gallery-item" onclick="openLightbox('${dest.id}',${i})"><img src="${img}" alt=""></div>`).join('');            } else gs.style.display = 'none';
             const de = eventsData.filter(e => e.destName === dest.name);
             const ec = document.getElementById('modal-detail-events-list');
             if (de.length > 0) {
@@ -684,6 +693,7 @@
             document.getElementById('detail-modal').style.display = 'flex';
             document.body.style.overflow = 'hidden';
         }
+
         function closeModalDetail() { document.getElementById('detail-modal').style.display = 'none'; document.body.style.overflow = 'auto'; }
         function openLightbox(id, i) {
             const d = destinationsData.find(x => String(x.id) === String(id));
@@ -700,6 +710,7 @@
             document.getElementById('lightbox-img').src = currentLightboxImages[currentLightboxIndex];
         }
 
+        // ====== ADMIN ======
         function checkAdminPassword() {
             if (document.getElementById('admin-pass-input').value === ADMIN_KEY) {
                 document.getElementById('admin-gate-box').style.display = 'none';
@@ -722,8 +733,7 @@
                         <img src="${d.img}" style="width:50px;height:50px;object-fit:cover;border-radius:6px" alt="">
                         <div><h4 style="font-size:.95rem">${d.name} <span style="font-size:.75rem;color:var(--primary)">(${d.region === 'latakia' ? 'اللاذقية' : 'طرطوس'})</span></h4>
                         <small style="color:var(--text-muted)">${d.description.substring(0,40)}...</small>
-                        ${gc > 0 ? `<small style="color:var(--secondary);display:block;font-size:.7rem"><i class="fa-solid fa-images"></i> ${gc} صور</small>` : ''}</div>
-                    </div>
+                        ${gc > 0 ? `<small style="color:var(--secondary);display:block;font-size:.7rem"><i class="fa-solid fa-images"></i> ${gc} صور</small>` : ''}</div>                    </div>
                     <div style="display:flex;gap:6px">
                         <button class="btn-primary" style="background:var(--secondary);padding:4px 10px;font-size:.8rem" onclick="openEditDestinationModal('${d.id}')">تحرير</button>
                         <button class="btn-primary" style="background:#ef4444;padding:4px 10px;font-size:.8rem" onclick="deleteDestination('${d.id}')">حذف</button>
@@ -733,7 +743,8 @@
         function renderAdminAdsList() {
             const c = document.getElementById('admin-ads-list');
             if (adPosters.length === 0) { c.innerHTML = '<p style="color:var(--text-muted)">لا توجد بوسترات.</p>'; return; }
-            c.innerHTML = adPosters.map((a, i) => `<div class="admin-item-row">                <div style="display:flex;align-items:center;gap:10px">
+            c.innerHTML = adPosters.map((a, i) => `<div class="admin-item-row">
+                <div style="display:flex;align-items:center;gap:10px">
                     <img src="${a.img}" style="width:50px;height:50px;object-fit:cover;border-radius:6px" alt="">
                     <div><h4 style="font-size:.9rem">${a.title}</h4></div></div>
                 <button class="btn-primary" style="background:#ef4444;padding:4px 10px;font-size:.8rem" onclick="deleteAdPoster('${a.id}')">حذف</button></div>`).join('');
@@ -771,8 +782,7 @@
             if (currentGalleryImages.length === 0) { p.innerHTML = ''; return; }
             p.innerHTML = currentGalleryImages.map((img, i) => `<div style="position:relative;width:60px;height:60px">
                 <img src="${img}" style="width:60px;height:60px;object-fit:cover;border-radius:6px;border:1px solid var(--border)">
-                <button onclick="removeGalleryImage(${i})" style="position:absolute;top:-5px;right:-5px;background:#ef4444;color:#fff;border:none;width:18px;height:18px;border-radius:50%;font-size:.6rem;cursor:pointer">×</button></div>`).join('');
-        }
+                <button onclick="removeGalleryImage(${i})" style="position:absolute;top:-5px;right:-5px;background:#ef4444;color:#fff;border:none;width:18px;height:18px;border-radius:50%;font-size:.6rem;cursor:pointer">×</button></div>`).join('');        }
         function removeGalleryImage(i) { currentGalleryImages.splice(i, 1); renderGalleryPreview(); }
         document.getElementById('form-dest-gallery').addEventListener('change', async function(e) {
             for (const f of Array.from(e.target.files)) {
@@ -782,7 +792,8 @@
         });
 
         function compressImage(file, maxW = 800, q = 0.7) {
-            return new Promise((resolve, reject) => {                const r = new FileReader();
+            return new Promise((resolve, reject) => {
+                const r = new FileReader();
                 r.onload = e => {
                     const img = new Image();
                     img.onload = () => {
@@ -820,8 +831,7 @@
                 const idx = destinationsData.findIndex(d => String(d.id) === String(editId));
                 if (idx !== -1) {
                     destinationsData[idx] = { ...destinationsData[idx], name, region, description, rating, gallery: currentGalleryImages };
-                    if (mainImage) destinationsData[idx].img = mainImage;
-                    await saveDestToFirestore(destinationsData[idx]);
+                    if (mainImage) destinationsData[idx].img = mainImage;                    await saveDestToFirestore(destinationsData[idx]);
                 }
             } else {
                 const newId = String(Date.now());
@@ -831,7 +841,8 @@
             }
             closeDestinationModal();
             renderAdminDestinationsList();
-            filterByRegion('all');            alert('تم حفظ الموقع في السحابة بنجاح! ✅');
+            filterByRegion('all');
+            alert('تم حفظ الموقع في السحابة بنجاح! ✅');
         }
 
         async function deleteDestination(id) {
@@ -869,8 +880,7 @@
         }
 
         function switchSection(id) {
-            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));            document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             const l = document.getElementById(`link-${id}`);
             if (l) l.classList.add('active');
@@ -880,7 +890,8 @@
             if (id === 'events') renderEvents('all-events-grid');
         }
         function toggleMenu() { document.getElementById('navLinks').classList.toggle('show'); }
-        let map, mapMarkers = [];        function initMap() {
+        let map, mapMarkers = [];
+        function initMap() {
             map = L.map('map').setView([35.2, 35.9], 9);
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OSM' }).addTo(map);
             renderMapMarkers('all');
@@ -916,9 +927,9 @@
             i.classList.toggle('fa-moon'); i.classList.toggle('fa-sun');
         }
 
+        // PWA
         const APP_ICON = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0ea5e9"/><stop offset="1" stop-color="#059669"/></linearGradient></defs><rect width="512" height="512" rx="100" fill="url(#g)"/><circle cx="370" cy="150" r="55" fill="#fcd34d" opacity=".9"/><path d="M0 300C80 260 160 340 240 300S400 260 512 300V512H0Z" fill="#fff" opacity=".25"/><path d="M0 350C80 310 160 390 240 350S400 310 512 350V512H0Z" fill="#fff" opacity=".35"/><path d="M0 400C80 360 160 440 240 400S400 360 512 400V512H0Z" fill="#fff" opacity=".45"/><path d="M150 290Q155 220 160 170" stroke="#92400e" stroke-width="12" fill="none" stroke-linecap="round"/><path d="M160 170Q120 130 80 140" stroke="#16a34a" stroke-width="8" fill="none" stroke-linecap="round"/><path d="M160 170Q200 120 240 130" stroke="#16a34a" stroke-width="8" fill="none" stroke-linecap="round"/><path d="M160 170Q130 110 100 100" stroke="#22c55e" stroke-width="7" fill="none" stroke-linecap="round"/><path d="M160 170Q190 100 220 90" stroke="#22c55e" stroke-width="7" fill="none" stroke-linecap="round"/></svg>`;
-        const iconURL = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(APP_ICON)));
-        const manifest = { name: "جنان الساحل", short_name: "جنان الساحل", start_url: ".", display: "standalone", background_color: "#0284c7", theme_color: "#0284c7", icons: [{ src: iconURL, sizes: "512x512", type: "image/svg+xml", purpose: "any maskable" }] };
+        const iconURL = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(APP_ICON)));        const manifest = { name: "جنان الساحل", short_name: "جنان الساحل", start_url: ".", display: "standalone", background_color: "#0284c7", theme_color: "#0284c7", icons: [{ src: iconURL, sizes: "512x512", type: "image/svg+xml", purpose: "any maskable" }] };
         const mLink = document.createElement('link'); mLink.rel = 'manifest'; mLink.href = URL.createObjectURL(new Blob([JSON.stringify(manifest)], { type: 'application/json' })); document.head.appendChild(mLink);
         let deferredPrompt;
         window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredPrompt = e; document.getElementById('install-btn').style.display = 'flex'; });
@@ -929,7 +940,8 @@
         window.sendAIMessage = sendAIMessage; window.askQuickQuestion = askQuickQuestion; window.generateSmartPlan = generateSmartPlan;
         window.checkAdminPassword = checkAdminPassword; window.lockAdminPanel = lockAdminPanel;
         window.openDestinationModal = openDestinationModal; window.openEditDestinationModal = openEditDestinationModal;
-        window.closeDestinationModal = closeDestinationModal; window.saveDestinationData = saveDestinationData;        window.deleteDestination = deleteDestination; window.addNewAdPoster = addNewAdPoster; window.deleteAdPoster = deleteAdPoster;
+        window.closeDestinationModal = closeDestinationModal; window.saveDestinationData = saveDestinationData;
+        window.deleteDestination = deleteDestination; window.addNewAdPoster = addNewAdPoster; window.deleteAdPoster = deleteAdPoster;
         window.resetCounters = resetCounters; window.openDetailModal = openDetailModal; window.closeModalDetail = closeModalDetail;
         window.openLightbox = openLightbox; window.closeLightbox = closeLightbox; window.navigateLightbox = navigateLightbox;
         window.removeGalleryImage = removeGalleryImage; window.installApp = installApp;
