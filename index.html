@@ -3,6 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- ║   PWA: أيقونة التطبيق + مانيفست مدمج + تثبيت على الشاشة  ║ -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <meta name="theme-color" content="#0284c7">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="جنان الساحل">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="جنان الساحل">
+    <meta name="description" content="دليلك الشامل للسياحة في اللاذقية وطرطوس - جنان الساحل السوري">
+    <meta name="msapplication-TileColor" content="#0284c7">
+    
+    <!-- أيقونة SVG مدمجة (بحر + شمس + شجرة) -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cdefs%3E%3ClinearGradient id='sky' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%2387CEEB'/%3E%3Cstop offset='1' stop-color='%23FFD89B'/%3E%3C/linearGradient%3E%3ClinearGradient id='sea' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%230284c7'/%3E%3Cstop offset='1' stop-color='%230369a1'/%3E%3C/linearGradient%3E%3CradialGradient id='sun' cx='0.5' cy='0.5' r='0.5'%3E%3Cstop offset='0' stop-color='%23FED7AA'/%3E%3Cstop offset='1' stop-color='%23F59E0B'/%3E%3C/radialGradient%3E%3C/defs%3E%3Ccircle cx='256' cy='256' r='256' fill='url(%23sky)'/%3E%3Cg stroke='%23F59E0B' stroke-width='8' stroke-linecap='round'%3E%3Cline x1='150' y1='70' x2='150' y2='95'/%3E%3Cline x1='100' y1='110' x2='120' y2='125'/%3E%3Cline x1='80' y1='170' x2='105' y2='170'/%3E%3Cline x1='200' y1='110' x2='180' y2='125'/%3E%3Cline x1='220' y1='70' x2='220' y2='95'/%3E%3C/g%3E%3Ccircle cx='150' cy='150' r='55' fill='url(%23sun)' stroke='%23D97706' stroke-width='3'/%3E%3Cpath d='M 0 290 Q 80 270 160 290 T 320 290 T 480 290 T 640 290 L 640 340 L 0 340 Z' fill='url(%23sea)'/%3E%3Cpath d='M 0 330 Q 80 315 160 330 T 320 330 T 480 330 T 640 330 L 640 380 L 0 380 Z' fill='%230284c7' opacity='0.9'/%3E%3Cpath d='M 0 370 Q 80 358 160 370 T 320 370 T 480 370 T 640 370 L 640 512 L 0 512 Z' fill='%230369a1'/%3E%3Cellipse cx='256' cy='430' rx='140' ry='18' fill='%23F5DEB3' opacity='0.9'/%3E%3Cpath d='M 370 420 Q 365 350 372 270 L 378 270 Q 385 350 380 420 Z' fill='%236B3410'/%3E%3Cg fill='%23059669' stroke='%23047857' stroke-width='1.5'%3E%3Cellipse cx='375' cy='260' rx='22' ry='70' transform='rotate(-25 375 260)'/%3E%3Cellipse cx='375' cy='260' rx='22' ry='70' transform='rotate(25 375 260)'/%3E%3Cellipse cx='375' cy='260' rx='22' ry='70' transform='rotate(0 375 260)'/%3E%3Cellipse cx='375' cy='260' rx='22' ry='70' transform='rotate(-65 375 260)'/%3E%3Cellipse cx='375' cy='260' rx='22' ry='70' transform='rotate(65 375 260)'/%3E%3C/g%3E%3Cg fill='%2310b981' opacity='0.7'%3E%3Cellipse cx='375' cy='260' rx='15' ry='55' transform='rotate(-25 375 260)'/%3E%3Cellipse cx='375' cy='260' rx='15' ry='55' transform='rotate(25 375 260)'/%3E%3C/g%3E%3C/svg%3E">
+    
+    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cdefs%3E%3ClinearGradient id='sky' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%2387CEEB'/%3E%3Cstop offset='1' stop-color='%23FFD89B'/%3E%3C/linearGradient%3E%3ClinearGradient id='sea' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%230284c7'/%3E%3Cstop offset='1' stop-color='%230369a1'/%3E%3C/linearGradient%3E%3CradialGradient id='sun' cx='0.5' cy='0.5' r='0.5'%3E%3Cstop offset='0' stop-color='%23FED7AA'/%3E%3Cstop offset='1' stop-color='%23F59E0B'/%3E%3C/radialGradient%3E%3C/defs%3E%3Ccircle cx='256' cy='256' r='256' fill='url(%23sky)'/%3E%3Cg stroke='%23F59E0B' stroke-width='8' stroke-linecap='round'%3E%3Cline x1='150' y1='70' x2='150' y2='95'/%3E%3Cline x1='100' y1='110' x2='120' y2='125'/%3E%3Cline x1='80' y1='170' x2='105' y2='170'/%3E%3Cline x1='200' y1='110' x2='180' y2='125'/%3E%3Cline x1='220' y1='70' x2='220' y2='95'/%3E%3C/g%3E%3Ccircle cx='150' cy='150' r='55' fill='url(%23sun)' stroke='%23D97706' stroke-width='3'/%3E%3Cpath d='M 0 290 Q 80 270 160 290 T 320 290 T 480 290 T 640 290 L 640 340 L 0 340 Z' fill='url(%23sea)'/%3E%3Cpath d='M 0 330 Q 80 315 160 330 T 320 330 T 480 330 T 640 330 L 640 380 L 0 380 Z' fill='%230284c7' opacity='0.9'/%3E%3Cpath d='M 0 370 Q 80 358 160 370 T 320 370 T 480 370 T 640 370 L 640 512 L 0 512 Z' fill='%230369a1'/%3E%3Cellipse cx='256' cy='430' rx='140' ry='18' fill='%23F5DEB3' opacity='0.9'/%3E%3Cpath d='M 370 420 Q 365 350 372 270 L 378 270 Q 385 350 380 420 Z' fill='%236B3410'/%3E%3Cg fill='%23059669' stroke='%23047857' stroke-width='1.5'%3E%3Cellipse cx='375' cy='260' rx='22' ry='70' transform='rotate(-25 375 260)'/%3E%3Cellipse cx='375' cy='260' rx='22' ry='70' transform='rotate(25 375 260)'/%3E%3Cellipse cx='375' cy='260' rx='22' ry='70' transform='rotate(0 375 260)'/%3E%3Cellipse cx='375' cy='260' rx='22' ry='70' transform='rotate(-65 375 260)'/%3E%3Cellipse cx='375' cy='260' rx='22' ry='70' transform='rotate(65 375 260)'/%3E%3C/g%3E%3C/svg%3E">
+    
+    <!-- المانيفست: سيتم إنشاؤه ديناميكياً كـ Blob URL عبر السكريبت أدناه -->
+    <link rel="manifest" id="pwa-manifest">
+    
     <title>جنان الساحل | اللاذقية وطرطوس</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -26,8 +47,7 @@
         .dark-mode {
             --bg-main: #0f172a;
             --bg-card: #1e293b;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
+            --text-main: #f8fafc;            --text-muted: #94a3b8;
             --border: #334155;
             --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
         }
@@ -76,8 +96,7 @@
             display: flex;
             gap: 0.3rem;
             list-style: none;
-            align-items: center;
-        }
+            align-items: center;        }
         .nav-links a {
             color: white;
             text-decoration: none;
@@ -96,7 +115,24 @@
             display: flex;
             gap: 0.5rem;
             align-items: center;
-        }                .btn-icon {
+        }
+        .btn-install {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1.5px solid rgba(255, 255, 255, 0.5);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 50px;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            transition: var(--transition);
+        }
+        .btn-install:hover { background: rgba(255, 255, 255, 0.35); transform: translateY(-1px); }
+        .btn-install.show { display: inline-flex; }
+        .btn-icon {
             background: rgba(255, 255, 255, 0.2);
             border: none;
             color: white;
@@ -109,8 +145,7 @@
             justify-content: center;
             font-size: 0.85rem;
             transition: var(--transition);
-        }
-        .btn-icon:hover { background: rgba(255, 255, 255, 0.35); }
+        }        .btn-icon:hover { background: rgba(255, 255, 255, 0.35); }
         .mobile-toggle {
             display: none;
             background: rgba(255, 255, 255, 0.2);
@@ -159,8 +194,7 @@
             100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); }
         }
         
-        .ai-toolbar {
-            background: rgba(0, 0, 0, 0.25);
+        .ai-toolbar {            background: rgba(0, 0, 0, 0.25);
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             padding: 0.55rem 1rem;
             display: flex;
@@ -209,8 +243,7 @@
                 background: rgba(2, 132, 199, 0.98);
                 flex-direction: column;
                 padding: 1rem;
-                gap: 0.5rem;
-                box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+                gap: 0.5rem;                box-shadow: 0 10px 20px rgba(0,0,0,0.2);
             }
             .nav-links.show { display: flex; }
             .nav-links a { padding: 0.6rem 1rem; width: 100%; text-align: right; }
@@ -259,8 +292,7 @@
             cursor: pointer;
             transition: var(--transition);
             box-shadow: var(--shadow);
-            display: flex;
-            align-items: center;
+            display: flex;            align-items: center;
             gap: 8px;
         }
         .region-btn:hover, .region-btn.active {
@@ -309,8 +341,7 @@
             font-weight: 700;
         }
         .pulse-section {
-            margin-bottom: 2rem;
-            padding: 1.2rem;
+            margin-bottom: 2rem;            padding: 1.2rem;
             background: linear-gradient(135deg, rgba(2, 132, 199, 0.05), rgba(5, 150, 105, 0.05));
             border-radius: var(--radius);
             border: 1px solid var(--border);
@@ -359,8 +390,7 @@
             font-size: 0.75rem;
             color: var(--accent);
             font-weight: 700;
-            margin-bottom: 0.4rem;
-            display: block;
+            margin-bottom: 0.4rem;            display: block;
         }
         .pulse-title {
             font-size: 1.05rem;
@@ -409,8 +439,7 @@
             overflow-y: auto;
         }
         .dest-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            display: grid;            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 1.5rem;
             margin-bottom: 1.5rem;
         }
@@ -459,8 +488,7 @@
         .leaflet-popup-content h4 {
             white-space: normal !important;
             word-break: break-word !important;
-        }
-        .leaflet-popup-content p {
+        }        .leaflet-popup-content p {
             white-space: normal !important;
             word-break: break-word !important;
             overflow-wrap: break-word !important;
@@ -509,8 +537,7 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 6px;
-            flex-wrap: wrap;
-            gap: 6px;
+            flex-wrap: wrap;            gap: 6px;
         }
         .uv-title-label {
             font-size: 0.78rem;
@@ -559,8 +586,7 @@
         }
         .weather-tips .tip-row { display: flex; gap: 6px; margin-bottom: 4px; color: var(--text-main); }
         .weather-tips .tip-row:last-child { margin-bottom: 0; }
-        .weather-tips .tip-icon { color: var(--accent); flex-shrink: 0; margin-top: 2px; }
-        .weather-tips strong { color: var(--primary); }
+        .weather-tips .tip-icon { color: var(--accent); flex-shrink: 0; margin-top: 2px; }        .weather-tips strong { color: var(--primary); }
         .weather-loading { padding: 14px; text-align: center; color: var(--text-muted); font-size: 0.85rem; }
         .weather-loading i { animation: spin 1s linear infinite; margin-left: 8px; }
         @keyframes spin { to { transform: rotate(360deg); } }
@@ -609,8 +635,7 @@
         }
         .btn-primary:hover { background: var(--primary-dark); }
         .btn-danger { background: #ef4444; }
-        .btn-danger:hover { background: #dc2626; }
-        .btn-success { background: #059669; }
+        .btn-danger:hover { background: #dc2626; }        .btn-success { background: #059669; }
         .btn-success:hover { background: #047857; }
         .show-more-wrap { text-align: center; margin-bottom: 2rem; }
         .btn-show-more {
@@ -659,8 +684,7 @@
             text-align: center;
             margin-top: auto;
             color: var(--text-muted);
-            font-size: 0.95rem;
-            font-weight: 600;
+            font-size: 0.95rem;            font-weight: 600;
             line-height: 1.7;
             position: relative;
             z-index: 5;
@@ -709,8 +733,7 @@
             font-weight: 800;
             font-size: 1.05rem;
             box-shadow: 0 10px 25px rgba(37, 211, 102, 0.4);
-            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-            overflow: hidden;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);            overflow: hidden;
             border: none;
             cursor: pointer;
             z-index: 50;
@@ -759,8 +782,7 @@
             position: absolute;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%);
-            width: 100%;
+            transform: translate(-50%, -50%);            width: 100%;
             height: 100%;
             border-radius: 50px;
             background: #25D366;
@@ -809,8 +831,7 @@
             z-index: 2501;
             display: none;
             flex-direction: column;
-            overflow: hidden;
-            animation: aiModalIn 0.35s ease-out;
+            overflow: hidden;            animation: aiModalIn 0.35s ease-out;
         }
         @keyframes aiModalIn {
             from { opacity: 0; transform: translate(-50%, -46%) scale(0.95); }
@@ -859,8 +880,7 @@
         .ai-msg {
             max-width: 85%;
             padding: 10px 14px;
-            border-radius: 14px;
-            font-size: 0.88rem;
+            border-radius: 14px;            font-size: 0.88rem;
             line-height: 1.6;
             word-wrap: break-word;
         }
@@ -909,8 +929,7 @@
         .ai-input {
             flex: 1;
             border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 8px 14px;
+            border-radius: 20px;            padding: 8px 14px;
             font-size: 0.88rem;
             background: var(--bg-main);
             color: var(--text-main);
@@ -958,6 +977,9 @@
                 <li><a data-action="nav" data-section="admin">الإدارة</a></li>
             </ul>
             <div class="nav-actions">
+                <button class="btn-install" id="btnInstall" title="تثبيت التطبيق على الجهاز">
+                    <i class="fa-solid fa-download"></i>                    <span>تثبيت</span>
+                </button>
                 <button class="btn-icon" data-action="toggle-theme"><i class="fa-solid fa-moon" id="theme-icon"></i></button>
                 <button class="mobile-toggle" data-action="toggle-menu"><i class="fa-solid fa-bars"></i></button>
             </div>
@@ -1005,8 +1027,7 @@
         </section>
         <section id="destinations" class="section">
             <h2 class="section-title"><i class="fa-solid fa-map-marked-alt"></i> كافة المناطق والوجهات</h2>
-            <div class="region-selector" style="margin-bottom:1.5rem;">
-                <button class="region-btn active" data-action="filter-region" data-region="all">الكل</button>
+            <div class="region-selector" style="margin-bottom:1.5rem;">                <button class="region-btn active" data-action="filter-region" data-region="all">الكل</button>
                 <button class="region-btn" data-action="filter-region" data-region="latakia">اللاذقية</button>
                 <button class="region-btn" data-action="filter-region" data-region="tartus">طرطوس</button>
             </div>
@@ -1055,8 +1076,7 @@
                     <h3 style="margin-bottom:0.5rem; font-size:1.1rem;"><i class="fa-solid fa-heart-pulse" style="color:var(--accent);"></i> فعاليات نبض الساحل</h3>
                     <div class="admin-note">كل فعالية تظهر في الصفحة الرئيسية. اضغط على العنوان لفتح النص الموسع.</div>
                     <input type="hidden" id="pulse-edit-id">
-                    <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:1rem;">
-                        <input type="text" id="pulse-date-input" class="admin-input" placeholder="الموعد (مثال: كل جمعة)">
+                    <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:1rem;">                        <input type="text" id="pulse-date-input" class="admin-input" placeholder="الموعد (مثال: كل جمعة)">
                         <input type="text" id="pulse-title-input" class="admin-input" placeholder="عنوان الفعالية">
                         <textarea id="pulse-desc-input" class="admin-textarea" rows="3" placeholder="النص الموسع للفعالية..."></textarea>
                         <div style="display:flex; gap:10px; flex-wrap:wrap;">
@@ -1105,8 +1125,7 @@
             </div>
             <div class="admin-form-group">
                 <label>المحافظة:</label>
-                <select id="form-dest-region">
-                    <option value="latakia">اللاذقية</option>
+                <select id="form-dest-region">                    <option value="latakia">اللاذقية</option>
                     <option value="tartus">طرطوس</option>
                 </select>
             </div>
@@ -1155,11 +1174,154 @@
     </footer>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-    
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>    
     <script>
-        var db = null;
-        try {
+        // ═══════════════════════════════════════════════════════════════
+        // ║  PWA: إنشاء المانيفست ديناميكياً كـ Blob URL             ║
+        // ║  (يعمل مع file:// أو https:// بدون ملفات خارجية)          ║
+        // ═══════════════════════════════════════════════════════════════
+        (function() {
+            var iconSVG = "data:image/svg+xml," + encodeURIComponent(
+                '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">' +
+                '<defs>' +
+                '<linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">' +
+                '<stop offset="0" stop-color="#87CEEB"/>' +
+                '<stop offset="1" stop-color="#FFD89B"/>' +
+                '</linearGradient>' +
+                '<linearGradient id="sea" x1="0" y1="0" x2="0" y2="1">' +
+                '<stop offset="0" stop-color="#0284c7"/>' +
+                '<stop offset="1" stop-color="#0369a1"/>' +
+                '</linearGradient>' +
+                '<radialGradient id="sun" cx="0.5" cy="0.5" r="0.5">' +
+                '<stop offset="0" stop-color="#FED7AA"/>' +
+                '<stop offset="1" stop-color="#F59E0B"/>' +
+                '</radialGradient>' +
+                '</defs>' +
+                '<circle cx="256" cy="256" r="256" fill="url(#sky)"/>' +
+                '<g stroke="#F59E0B" stroke-width="8" stroke-linecap="round">' +
+                '<line x1="150" y1="70" x2="150" y2="95"/>' +
+                '<line x1="100" y1="110" x2="120" y2="125"/>' +
+                '<line x1="80" y1="170" x2="105" y2="170"/>' +
+                '<line x1="200" y1="110" x2="180" y2="125"/>' +
+                '<line x1="220" y1="70" x2="220" y2="95"/>' +
+                '</g>' +
+                '<circle cx="150" cy="150" r="55" fill="url(#sun)" stroke="#D97706" stroke-width="3"/>' +
+                '<path d="M 0 290 Q 80 270 160 290 T 320 290 T 480 290 T 640 290 L 640 340 L 0 340 Z" fill="url(#sea)"/>' +
+                '<path d="M 0 330 Q 80 315 160 330 T 320 330 T 480 330 T 640 330 L 640 380 L 0 380 Z" fill="#0284c7" opacity="0.9"/>' +
+                '<path d="M 0 370 Q 80 358 160 370 T 320 370 T 480 370 T 640 370 L 640 512 L 0 512 Z" fill="#0369a1"/>' +
+                '<ellipse cx="256" cy="430" rx="140" ry="18" fill="#F5DEB3" opacity="0.9"/>' +
+                '<path d="M 370 420 Q 365 350 372 270 L 378 270 Q 385 350 380 420 Z" fill="#6B3410"/>' +
+                '<g fill="#059669" stroke="#047857" stroke-width="1.5">' +
+                '<ellipse cx="375" cy="260" rx="22" ry="70" transform="rotate(-25 375 260)"/>' +
+                '<ellipse cx="375" cy="260" rx="22" ry="70" transform="rotate(25 375 260)"/>' +
+                '<ellipse cx="375" cy="260" rx="22" ry="70" transform="rotate(0 375 260)"/>' +
+                '<ellipse cx="375" cy="260" rx="22" ry="70" transform="rotate(-65 375 260)"/>' +
+                '<ellipse cx="375" cy="260" rx="22" ry="70" transform="rotate(65 375 260)"/>' +
+                '</g>' +
+                '</svg>'
+            );
+
+            var manifest = {
+                name: "جنان الساحل - دليل اللاذقية وطرطوس السياحي",
+                short_name: "جنان الساحل",                description: "دليلك الشامل للسياحة في الساحل السوري - اللاذقية وطرطوس",
+                start_url: "./",
+                scope: "./",
+                display: "standalone",
+                orientation: "any",
+                background_color: "#0284c7",
+                theme_color: "#0284c7",
+                lang: "ar",
+                dir: "rtl",
+                categories: ["travel", "tourism", "navigation"],
+                icons: [
+                    { src: iconSVG, sizes: "192x192", type: "image/svg+xml", purpose: "any" },
+                    { src: iconSVG, sizes: "512x512", type: "image/svg+xml", purpose: "any" },
+                    { src: iconSVG, sizes: "192x192", type: "image/svg+xml", purpose: "maskable" },
+                    { src: iconSVG, sizes: "512x512", type: "image/svg+xml", purpose: "maskable" }
+                ],
+                screenshots: [],
+                shortcuts: [
+                    {
+                        name: "الخريطة التفاعلية",
+                        short_name: "الخريطة",
+                        description: "عرض الخريطة التفاعلية للمواقع",
+                        url: "./#map-section",
+                        icons: [{ src: iconSVG, sizes: "96x96" }]
+                    },
+                    {
+                        name: "المناطق السياحية",
+                        short_name: "المناطق",
+                        description: "استعراض كافة المناطق",
+                        url: "./#destinations",
+                        icons: [{ src: iconSVG, sizes: "96x96" }]
+                    }
+                ]
+            };
+
+            var manifestBlob = new Blob([JSON.stringify(manifest)], { type: 'application/manifest+json' });
+            var manifestURL = URL.createObjectURL(manifestBlob);
+            var linkEl = document.getElementById('pwa-manifest');
+            if (linkEl) linkEl.setAttribute('href', manifestURL);
+
+            // تسجيل Service Worker بسيط لتفعيل PWA (اختياري لكن مفيد)
+            if ('serviceWorker' in navigator) {
+                var swCode = 
+                    "const CACHE='jinan-v1';" +
+                    "self.addEventListener('install',e=>{self.skipWaiting();});" +
+                    "self.addEventListener('activate',e=>{e.waitUntil(self.clients.claim());});" +
+                    "self.addEventListener('fetch',e=>{" +
+                    "  if(e.request.method!=='GET')return;" +
+                    "  e.respondWith(" +
+                    "    caches.open(CACHE).then(c=>c.match(e.request).then(r=>r||fetch(e.request).then(res=>{" +                    "      if(res.ok && res.type==='basic'){c.put(e.request,res.clone());}" +
+                    "      return res;" +
+                    "    }).catch(()=>c.match('/'))))" +
+                    "  );" +
+                    "});";
+                var swBlob = new Blob([swCode], { type: 'application/javascript' });
+                var swURL = URL.createObjectURL(swBlob);
+                navigator.serviceWorker.register(swURL).then(function(){
+                    console.log('✅ Service Worker registered');
+                }).catch(function(err){
+                    console.warn('⚠️ SW registration skipped:', err.message);
+                });
+            }
+
+            // زر "تثبيت"
+            var deferredPrompt = null;
+            window.addEventListener('beforeinstallprompt', function(e){
+                e.preventDefault();
+                deferredPrompt = e;
+                var btn = document.getElementById('btnInstall');
+                if (btn) btn.classList.add('show');
+            });
+            window.addEventListener('appinstalled', function(){
+                var btn = document.getElementById('btnInstall');
+                if (btn) btn.classList.remove('show');
+                deferredPrompt = null;
+                console.log('✅ App installed');
+            });
+            window.addEventListener('DOMContentLoaded', function(){
+                var btn = document.getElementById('btnInstall');
+                if (btn) {
+                    btn.addEventListener('click', function(){
+                        if (!deferredPrompt) {
+                            alert('لتثبيت التطبيق:\n• Chrome/Edge: اضغط على زر "تثبيت" في شريط العنوان\n• Safari iOS: اضغط على زر المشاركة ثم "إضافة إلى الشاشة الرئيسية"\n• Android: من قائمة المتصفح → "إضافة إلى الشاشة الرئيسية"');
+                            return;
+                        }
+                        deferredPrompt.prompt();
+                        deferredPrompt.userChoice.then(function(choice){
+                            deferredPrompt = null;
+                            if (choice.outcome === 'accepted') {
+                                btn.classList.remove('show');
+                            }
+                        });
+                    });
+                }
+            });
+            console.log('✅ PWA manifest generated dynamically');
+        })();
+
+        var db = null;        try {
             var firebaseConfig = {
                 apiKey: "AIzaSyCpAzIfRmO_jQzf7uf4uPDLkRqI9DaPhjE",
                 authDomain: "jinansyr-28efc.firebaseapp.com",                
@@ -1208,8 +1370,7 @@
         function initMap() {
             setTimeout(function() {
                 if (!mapInstance) {
-                    mapInstance = L.map('map').setView([35.25, 35.9], 10);
-                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    mapInstance = L.map('map').setView([35.25, 35.9], 10);                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                         attribution: '&copy; OpenStreetMap contributors'                    
                     }).addTo(mapInstance);
                 } else {
@@ -1258,8 +1419,7 @@
                 2: { text: 'غائم جزئياً', icon: 'fa-cloud-sun', color: '#94a3b8', tip: 'طقس معتدل ولطيف جداً للمشي' },
                 3: { text: 'غائم بالكامل', icon: 'fa-cloud', color: '#64748b', tip: 'أجواء مظللة، احمل معطفاً خفيفاً' },
                 45: { text: 'ضباب خفيف', icon: 'fa-smog', color: '#cbd5e1', tip: 'رؤية محدودة، انتبه أثناء القيادة في الجبال' },
-                51: { text: 'رذاذ خفيف', icon: 'fa-cloud-rain', color: '#60a5fa', tip: 'احمل مظلة صغيرة معك' },                
-                61: { text: 'مطر خفيف', icon: 'fa-cloud-rain', color: '#3b82f6', tip: 'استعد لأمطار متقطعة، ارتدِ ملابس مناسبة' },
+                51: { text: 'رذاذ خفيف', icon: 'fa-cloud-rain', color: '#60a5fa', tip: 'احمل مظلة صغيرة معك' },                                61: { text: 'مطر خفيف', icon: 'fa-cloud-rain', color: '#3b82f6', tip: 'استعد لأمطار متقطعة، ارتدِ ملابس مناسبة' },
                 95: { text: 'عاصفة رعدية', icon: 'fa-cloud-bolt', color: '#dc2626', tip: 'تحذير! ابقَ في أماكن آمنة وتجنب المرتفعات' }
             };
             return map[code] || { text: 'معتدل ومستقر', icon: 'fa-cloud-sun', color: '#3b82f6', tip: 'أجواء مناسبة للزيارة' };
@@ -1308,8 +1468,7 @@
                             '<span class="uv-badge-pill" style="background: ' + uvInfo.color + ';"><i class="fa-solid ' + uvInfo.icon + '"></i> ' + uvInfo.value + ' · ' + uvInfo.level + '</span>' +
                         '</div>' +
                         '<div class="uv-gradient-bar">' +                            
-                            '<div class="uv-pointer" style="left: ' + uvInfo.percent + ';"></div>' +
-                        '</div>' +
+                            '<div class="uv-pointer" style="left: ' + uvInfo.percent + ';"></div>' +                        '</div>' +
                     '</div>' +
                     '<div class="weather-tips">' +
                         '<div class="tip-row">' +
@@ -1358,8 +1517,7 @@
             var count = 0;
             displayData.forEach(function(dest) {
                 var img = dest.img || 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80';
-                html += '<div class="dest-card">';
-                html += '<img src="' + img + '" class="dest-img" alt="' + dest.name + '">';
+                html += '<div class="dest-card">';                html += '<img src="' + img + '" class="dest-img" alt="' + dest.name + '">';
                 html += '<div class="dest-body">';
                 html += '<span class="dest-badge">' + (dest.region === 'latakia' ? 'محافظة اللاذقية' : 'محافظة طرطوس') + '</span>';
                 html += '<h3>' + dest.name + '</h3>';
@@ -1408,8 +1566,7 @@
                 var img = card.querySelector('.ad-card-img');
                 var title = card.querySelector('h3');
                 var desc = card.querySelector('.ad-card-desc');
-                if (img) img.src = currentAd.img || '';
-                if (title) title.innerText = currentAd.title || '';
+                if (img) img.src = currentAd.img || '';                if (title) title.innerText = currentAd.title || '';
                 if (desc) desc.innerText = currentAd.desc || '';
             });
         }
@@ -1458,8 +1615,7 @@
             sorted.forEach(function(ev) {
                 html += '<div class="admin-item-row">';
                 html += '<div><strong>' + ev.title + '</strong> <span style="color:var(--accent);font-size:0.8rem;">(' + ev.date + ')</span></div>';
-                html += '<div style="display:flex;gap:6px;">';
-                html += '<button class="btn-primary btn-success" style="padding:4px 10px;font-size:0.8rem;" data-action="edit-pulse" data-id="' + ev.id + '">تعديل</button>';
+                html += '<div style="display:flex;gap:6px;">';                html += '<button class="btn-primary btn-success" style="padding:4px 10px;font-size:0.8rem;" data-action="edit-pulse" data-id="' + ev.id + '">تعديل</button>';
                 html += '<button class="btn-primary btn-danger" style="padding:4px 10px;font-size:0.8rem;" data-action="delete-pulse" data-id="' + ev.id + '">حذف</button>';
                 html += '</div></div>';
             });
@@ -1508,8 +1664,7 @@
         function resetAdForm() {
             document.getElementById('ad-edit-id').value = '';
             document.getElementById('ad-title-input').value = '';
-            document.getElementById('ad-desc-input').value = '';
-            document.getElementById('ad-img-input').value = '';
+            document.getElementById('ad-desc-input').value = '';            document.getElementById('ad-img-input').value = '';
             document.getElementById('ad-save-btn').innerHTML = '<i class="fa-solid fa-plus"></i> إضافة إعلان';
             document.getElementById('ad-cancel-btn').style.display = 'none';
         }
@@ -1558,8 +1713,7 @@
             var rating = parseFloat(document.getElementById('form-dest-rating').value) || 4.5;
             if (!name || !desc) { alert('املأ الاسم والوصف'); return; }
             var id = editId ? parseInt(editId) : Date.now();
-            var obj = {
-                id: id, name: name, region: region, lat: lat, lng: lng,
+            var obj = {                id: id, name: name, region: region, lat: lat, lng: lng,
                 description: desc,
                 img: img || 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80',
                 rating: rating
@@ -1608,8 +1762,7 @@
             });
             db.ref('pulse_events').on('value', function(snap) {
                 var data = snap.val();
-                pulseEvents = data ? Object.values(data) : [];
-                renderAll();
+                pulseEvents = data ? Object.values(data) : [];                renderAll();
             });
             db.ref('ads_list').on('value', function(snap) {
                 var data = snap.val();
@@ -1658,8 +1811,7 @@
                     document.getElementById('navLinks').classList.toggle('show');
                     break;
                 case 'toggle-theme':
-                    document.body.classList.toggle('dark-mode');
-                    var icon = document.getElementById('theme-icon');
+                    document.body.classList.toggle('dark-mode');                    var icon = document.getElementById('theme-icon');
                     icon.classList.toggle('fa-moon');
                     icon.classList.toggle('fa-sun');
                     break;
@@ -1708,8 +1860,7 @@
             document.getElementById('online-users-counter').innerText = onlineUsers;
         }
         if (!sessionStorage.getItem('visited')) {
-            totalVisitors++;
-            sessionStorage.setItem('visited', 'true');
+            totalVisitors++;            sessionStorage.setItem('visited', 'true');
         }
         updateCounters();
         
@@ -1758,8 +1909,7 @@
             
             var html = '';
             chips.forEach(function(c) {
-                html += '<div class="ai-chip" onclick="handleChipClick(\'' + c.replace(/'/g, "\\'") + '\')">' + c + '</div>';
-            });
+                html += '<div class="ai-chip" onclick="handleChipClick(\'' + c.replace(/'/g, "\\'") + '\')">' + c + '</div>';            });
             box.innerHTML = html;
         }
                 function handleChipClick(text) {
@@ -1808,8 +1958,7 @@
             if (/وين|أين|اين|موقع|مكان|عنوان|جهة|محافظة|تقع|بعيدة|قريبة/.test(text)) return 'location';
             if (/ما هي|ماهو|ما هو|عرفني|معلومات|صف|تعريف|تاريخ|قصة|عن|وصف/.test(text)) return 'description';
             if (/فعالي|فعالية|حدث|نشاط|مهرجان|حفلة|حفل|نبض/.test(text)) return 'events';
-            if (/عرض|عروض|خصم|حجز|اعلان|إعلان|ترويج|فندق|مطعم/.test(text)) return 'offers';
-            if (/كم عدد|عدد|احصائيات|إحصائيات/.test(text)) return 'count';
+            if (/عرض|عروض|خصم|حجز|اعلان|إعلان|ترويج|فندق|مطعم/.test(text)) return 'offers';            if (/كم عدد|عدد|احصائيات|إحصائيات/.test(text)) return 'count';
             if (/افضل|أفضل|احسن|أحسن|ارقى|أرقى|ترتيب|اعلى|أعلى/.test(text)) return 'best';
             if (/مرحبا|اهلا|أهلا|سلام|هاي|صباح|مساء|هلا/.test(text)) return 'greeting';            if (/شكرا|شكراً|ممنون|يعطيك|عافية|تسلم/.test(text)) return 'thanks';
             return 'unknown';
@@ -1858,8 +2007,7 @@
                 if (dest && dest.lat && dest.lng) {
                     var cacheKey = dest.lat.toFixed(2) + '_' + dest.lng.toFixed(2);
                     var w = weatherCache[cacheKey];
-                    if (w) {
-                        var info = getWeatherInfo(w.weather_code);
+                    if (w) {                        var info = getWeatherInfo(w.weather_code);
                         return '🌡️ **طقس ' + dest.name + '**\n' + info.text + ' · ' + Math.round(w.temperature_2m) + '°\nرطوبة: ' + w.relative_humidity_2m + '% · رياح: ' + Math.round(w.wind_speed_10m) + ' كم/س';                    }
                     fetchWeather(dest.lat, dest.lng, function(){});
                     return '⏳ جاري جلب طقس **' + dest.name + '**... أعد السؤال بعد ثوانٍ.';
@@ -1908,8 +2056,7 @@
             
             // ─── نية: العروض ───
             if (intent === 'offers') {
-                if (adsList.length === 0) return '📭 لا توجد عروض حالياً.';
-                var list = adsList.map(function(a) { return '• **' + a.title + '**'; }).join('\n');                return '📢 **العروض المتاحة:**\n' + list + '\n\nللتفاصيل: افتح قسم **الخريطة**.';
+                if (adsList.length === 0) return '📭 لا توجد عروض حالياً.';                var list = adsList.map(function(a) { return '• **' + a.title + '**'; }).join('\n');                return '📢 **العروض المتاحة:**\n' + list + '\n\nللتفاصيل: افتح قسم **الخريطة**.';
             }
             
             // ─── نية: الإحصاء ───
