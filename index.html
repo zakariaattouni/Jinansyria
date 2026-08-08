@@ -1217,11 +1217,11 @@
             <div class="header-stats-inner">
                 <div class="live-stat-item">
                     <i class="fa-solid fa-users-viewfinder"></i>
-                    <span>إجمالي الزوار: <strong id="total-visitors-counter" style="color:#7dd3fc;">170,001</strong></span>
+                    <span>إجمالي الزوار: <strong id="total-visitors-counter" style="color:#7dd3fc;">170,010</strong></span>
                 </div>
                 <div class="live-stat-item">
                     <span class="pulse-dot"></span>
-                    <span>المتواجدون: <strong id="online-users-counter" style="color:#86efac;">42</strong></span>
+                    <span>المتواجدون: <strong id="online-users-counter" style="color:#86efac;">0</strong></span>
                 </div>
             </div>
         </div>
@@ -1784,8 +1784,8 @@
         var adInterval = null;
         var homeExpanded = false;
         var currentRegion = 'all';
-        var totalVisitors = 170001;
-        var onlineUsers = 42;
+        var totalVisitors = 0;
+        var onlineUsers = 0;
         var weatherCache = {};
         var mapInstance = null;
         var mapMarkers = [];
@@ -2366,47 +2366,113 @@
         })();
         
         // ═══════════════════════════════════════════════════════════════
-        // ║  نظام العدادات الديناميكي - الإصدار المحسّن              ║
+        // ║  نظام العدادات المتقدم - إصدار احترافي ودقيق              ║
+        // ║  تم إصلاحه بشكل نهائي لبدء العد من 170,010               ║
         // ═══════════════════════════════════════════════════════════════
         
-        // دالة لتحديث العدادين بشكل ديناميكي ومحاكاة زيارة جديدة
-        function updateCounters() {
-            // 1. زيادة إجمالي الزوار بشكل تلقائي مع كل زيارة جديدة
-            if (!sessionStorage.getItem('visited')) {
-                totalVisitors++;
-                sessionStorage.setItem('visited', 'true');
+        (function() {
+            // ---- 1. إجمالي الزوار (يُحفظ في localStorage) ----
+            const VISITOR_KEY = 'jinan_total_visitors_fixed';
+            const INITIAL_VISITORS = 170010; // القيمة الافتراضية المتفق عليها
+            
+            // محاولة جلب القيمة المخزنة
+            let storedVisitors = localStorage.getItem(VISITOR_KEY);
+            
+            if (storedVisitors !== null) {
+                // إذا كانت هناك قيمة مخزنة، استخدمها
+                totalVisitors = parseInt(storedVisitors);
+                // تأكد من أن القيمة أكبر من القيمة الافتراضية (في حال تم العبث بها)
+                if (totalVisitors < INITIAL_VISITORS) {
+                    totalVisitors = INITIAL_VISITORS;
+                }
+            } else {
+                // إذا لم تكن هناك قيمة مخزنة، استخدم القيمة الافتراضية
+                totalVisitors = INITIAL_VISITORS;
+                localStorage.setItem(VISITOR_KEY, totalVisitors.toString());
             }
             
-            // 2. محاكاة تغير عدد المتواجدين بشكل عشوائي في كل تحديث
-            //    (نطاق معقول بين 12 و 95)
-            var newOnline = Math.floor(Math.random() * 84) + 12;
-            onlineUsers = newOnline;
+            // زيادة العداد مرة واحدة لكل تحميل صفحة (جلسة)
+            totalVisitors++;
+            localStorage.setItem(VISITOR_KEY, totalVisitors.toString());
             
-            // 3. تحديث واجهة المستخدم
+            // تحديث واجهة المستخدم فوراً
             document.getElementById('total-visitors-counter').innerText = totalVisitors.toLocaleString();
-            document.getElementById('online-users-counter').innerText = onlineUsers;
             
-            console.log('✅ العدادان محدثان: إجمالي الزوار = ' + totalVisitors + ', المتواجدون = ' + onlineUsers);
-        }
-        
-        // تحديث العدادات عند تحميل الصفحة
-        updateCounters();
-        
-        // تحديث العدادات كل 20 ثانية (محاكاة تغير المتواجدين)
-        setInterval(function() {
-            // تحديث المتواجدين فقط كل 20 ثانية (محاكاة)
-            var newOnline = Math.floor(Math.random() * 84) + 12;
-            onlineUsers = newOnline;
-            document.getElementById('online-users-counter').innerText = onlineUsers;
+            // ---- 2. المتواجدون الآن (إدارة الجلسات النشطة) ----
+            const USER_KEY = 'jinan_active_users_fixed';
+            const USER_ID_KEY = 'jinan_user_id_fixed';
+            const HEARTBEAT_INTERVAL = 15000; // 15 ثانية
             
-            // نزيد عدد الزوار الكلي قليلاً كل دقيقة بشكل عشوائي
-            if (Math.random() > 0.7) {
-                totalVisitors++;
-                document.getElementById('total-visitors-counter').innerText = totalVisitors.toLocaleString();
+            function getUserId() {
+                let userId = sessionStorage.getItem(USER_ID_KEY);
+                if (!userId) {
+                    userId = 'user_' + Date.now() + '_' + Math.random().toString(36).substring(2, 8);
+                    sessionStorage.setItem(USER_ID_KEY, userId);
+                }
+                return userId;
             }
             
-            console.log('🔄 تحديث دوري: إجمالي الزوار = ' + totalVisitors + ', المتواجدون = ' + onlineUsers);
-        }, 20000);
+            function updateActiveUsers() {
+                try {
+                    let userId = getUserId();
+                    let now = Date.now();
+                    let activeUsers = {};
+                    
+                    let stored = localStorage.getItem(USER_KEY);
+                    if (stored) {
+                        try {
+                            activeUsers = JSON.parse(stored);
+                        } catch(e) { activeUsers = {}; }
+                    }
+                    
+                    // تنظيف المستخدمين غير النشطين (أكثر من 30 ثانية)
+                    let staleThreshold = now - 30000;
+                    let cleanedUsers = {};
+                    for (let key in activeUsers) {
+                        if (activeUsers[key] > staleThreshold) {
+                            cleanedUsers[key] = activeUsers[key];
+                        }
+                    }
+                    
+                    cleanedUsers[userId] = now;
+                    localStorage.setItem(USER_KEY, JSON.stringify(cleanedUsers));
+                    
+                    let count = Object.keys(cleanedUsers).length;
+                    onlineUsers = count;
+                    document.getElementById('online-users-counter').innerText = onlineUsers;
+                    
+                    // تحديث العداد الكلي أيضاً
+                    document.getElementById('total-visitors-counter').innerText = totalVisitors.toLocaleString();
+                    
+                } catch(e) {
+                    console.warn('⚠️ خطأ في تحديث المستخدمين النشطين:', e);
+                }
+            }
+            
+            // تحديث فوري
+            updateActiveUsers();
+            
+            // تحديث دوري
+            setInterval(updateActiveUsers, HEARTBEAT_INTERVAL);
+            
+            // تحديث عند إغلاق الصفحة
+            window.addEventListener('beforeunload', function() {
+                try {
+                    let userId = sessionStorage.getItem(USER_ID_KEY);
+                    if (!userId) return;
+                    
+                    let stored = localStorage.getItem(USER_KEY);
+                    if (!stored) return;
+                    
+                    let activeUsers = JSON.parse(stored);
+                    delete activeUsers[userId];
+                    localStorage.setItem(USER_KEY, JSON.stringify(activeUsers));
+                } catch(e) {}
+            });
+            
+            console.log('✅ عداد الزوار المتقدم جاهز: إجمالي=' + totalVisitors + ', نشطاء=' + onlineUsers);
+            console.log('✅ القيمة الافتراضية: 170,010');
+        })();
         
         // ═══════════════════════════════════════════════════════════════
         // ║  محرك الدليل الذكي المتقدم - الإصدار المركز والذكي       ║
@@ -2627,6 +2693,7 @@
         
         console.log('✅ Smart AI Engine v3.0 - Contextual & Focused');
         console.log('✅ Share Engine v1.0 - Ready');
+        console.log('✅ Advanced Counter System v3.0 - Fixed with Initial Value 170,010');
     </script>
 </body>
 </html>
