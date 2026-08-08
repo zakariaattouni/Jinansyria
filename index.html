@@ -1223,12 +1223,14 @@
                     <span class="pulse-dot"></span>
                     <span>المتواجدون: <strong id="online-users-counter" style="color:#86efac;">42</strong></span>
                 </div>
-            </div>        </div>        
+            </div>
+        </div>
         <div class="ai-toolbar">
             <button class="ai-toolbar-btn" id="smartAiToggle">
                 <i class="fa-solid fa-wand-magic-sparkles"></i>
                 <span>مرشد الساحل الذكي</span>
-                <span class="ai-badge">AI</span>            </button>
+                <span class="ai-badge">AI</span>
+            </button>
         </div>
     </header>
     <main>
@@ -2363,17 +2365,51 @@
             }
         })();
         
+        // ═══════════════════════════════════════════════════════════════
+        // ║  نظام العدادات الديناميكي - الإصدار المحسّن              ║
+        // ═══════════════════════════════════════════════════════════════
+        
+        // دالة لتحديث العدادين بشكل ديناميكي ومحاكاة زيارة جديدة
         function updateCounters() {
+            // 1. زيادة إجمالي الزوار بشكل تلقائي مع كل زيارة جديدة
+            if (!sessionStorage.getItem('visited')) {
+                totalVisitors++;
+                sessionStorage.setItem('visited', 'true');
+            }
+            
+            // 2. محاكاة تغير عدد المتواجدين بشكل عشوائي في كل تحديث
+            //    (نطاق معقول بين 12 و 95)
+            var newOnline = Math.floor(Math.random() * 84) + 12;
+            onlineUsers = newOnline;
+            
+            // 3. تحديث واجهة المستخدم
             document.getElementById('total-visitors-counter').innerText = totalVisitors.toLocaleString();
             document.getElementById('online-users-counter').innerText = onlineUsers;
+            
+            console.log('✅ العدادان محدثان: إجمالي الزوار = ' + totalVisitors + ', المتواجدون = ' + onlineUsers);
         }
-        if (!sessionStorage.getItem('visited')) {
-            totalVisitors++;
-            sessionStorage.setItem('visited', 'true');
-        }
+        
+        // تحديث العدادات عند تحميل الصفحة
         updateCounters();
         
-        // ═══════════════════════════════════════════════════════════════        // ║  محرك الدليل الذكي المتقدم - الإصدار المركز والذكي       ║
+        // تحديث العدادات كل 20 ثانية (محاكاة تغير المتواجدين)
+        setInterval(function() {
+            // تحديث المتواجدين فقط كل 20 ثانية (محاكاة)
+            var newOnline = Math.floor(Math.random() * 84) + 12;
+            onlineUsers = newOnline;
+            document.getElementById('online-users-counter').innerText = onlineUsers;
+            
+            // نزيد عدد الزوار الكلي قليلاً كل دقيقة بشكل عشوائي
+            if (Math.random() > 0.7) {
+                totalVisitors++;
+                document.getElementById('total-visitors-counter').innerText = totalVisitors.toLocaleString();
+            }
+            
+            console.log('🔄 تحديث دوري: إجمالي الزوار = ' + totalVisitors + ', المتواجدون = ' + onlineUsers);
+        }, 20000);
+        
+        // ═══════════════════════════════════════════════════════════════
+        // ║  محرك الدليل الذكي المتقدم - الإصدار المركز والذكي       ║
         // ═══════════════════════════════════════════════════════════════
         
         var aiChatHistory = [];
