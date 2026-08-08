@@ -1221,7 +1221,7 @@
                 </div>
                 <div class="live-stat-item">
                     <span class="pulse-dot"></span>
-                    <span>المتواجدون: <strong id="online-users-counter" style="color:#86efac;">0</strong></span>
+                    <span>المتواجدون: <strong id="online-users-counter" style="color:#86efac;">48</strong></span>
                 </div>
             </div>
         </div>
@@ -2367,41 +2367,43 @@
         
         // ═══════════════════════════════════════════════════════════════
         // ║  نظام العدادات المتقدم - إصدار احترافي ودقيق              ║
-        // ║  تم إصلاحه بشكل نهائي لبدء العد من 170,010               ║
+        // ║  تم إصلاحه بشكل نهائي: إجمالي الزوار = 170,010           ║
+        // ║  المتواجدون الآن = 48 (قيمة افتراضية)                    ║
         // ═══════════════════════════════════════════════════════════════
         
         (function() {
             // ---- 1. إجمالي الزوار (يُحفظ في localStorage) ----
-            const VISITOR_KEY = 'jinan_total_visitors_fixed';
-            const INITIAL_VISITORS = 170010; // القيمة الافتراضية المتفق عليها
+            const VISITOR_KEY = 'jinan_total_visitors_final';
+            const INITIAL_VISITORS = 170010;
             
-            // محاولة جلب القيمة المخزنة
             let storedVisitors = localStorage.getItem(VISITOR_KEY);
             
             if (storedVisitors !== null) {
-                // إذا كانت هناك قيمة مخزنة، استخدمها
                 totalVisitors = parseInt(storedVisitors);
-                // تأكد من أن القيمة أكبر من القيمة الافتراضية (في حال تم العبث بها)
                 if (totalVisitors < INITIAL_VISITORS) {
                     totalVisitors = INITIAL_VISITORS;
                 }
             } else {
-                // إذا لم تكن هناك قيمة مخزنة، استخدم القيمة الافتراضية
                 totalVisitors = INITIAL_VISITORS;
                 localStorage.setItem(VISITOR_KEY, totalVisitors.toString());
             }
             
-            // زيادة العداد مرة واحدة لكل تحميل صفحة (جلسة)
+            // زيادة العداد مع كل زيارة
             totalVisitors++;
             localStorage.setItem(VISITOR_KEY, totalVisitors.toString());
             
-            // تحديث واجهة المستخدم فوراً
+            // تحديث واجهة المستخدم
             document.getElementById('total-visitors-counter').innerText = totalVisitors.toLocaleString();
             
-            // ---- 2. المتواجدون الآن (إدارة الجلسات النشطة) ----
-            const USER_KEY = 'jinan_active_users_fixed';
-            const USER_ID_KEY = 'jinan_user_id_fixed';
-            const HEARTBEAT_INTERVAL = 15000; // 15 ثانية
+            // ---- 2. المتواجدون الآن (يبدأ من 48) ----
+            const INITIAL_ONLINE = 48;
+            const USER_KEY = 'jinan_active_users_final';
+            const USER_ID_KEY = 'jinan_user_id_final';
+            const HEARTBEAT_INTERVAL = 15000;
+            
+            // تعيين القيمة الافتراضية للمتواجدين
+            onlineUsers = INITIAL_ONLINE;
+            document.getElementById('online-users-counter').innerText = onlineUsers;
             
             function getUserId() {
                 let userId = sessionStorage.getItem(USER_ID_KEY);
@@ -2425,7 +2427,7 @@
                         } catch(e) { activeUsers = {}; }
                     }
                     
-                    // تنظيف المستخدمين غير النشطين (أكثر من 30 ثانية)
+                    // تنظيف المستخدمين غير النشطين
                     let staleThreshold = now - 30000;
                     let cleanedUsers = {};
                     for (let key in activeUsers) {
@@ -2437,11 +2439,14 @@
                     cleanedUsers[userId] = now;
                     localStorage.setItem(USER_KEY, JSON.stringify(cleanedUsers));
                     
-                    let count = Object.keys(cleanedUsers).length;
-                    onlineUsers = count;
+                    // عدد المستخدمين النشطين + القيمة الافتراضية (لإعطاء انطباع بوجود زوار)
+                    let activeCount = Object.keys(cleanedUsers).length;
+                    // نضيف القيمة الافتراضية إلى العدد الفعلي للنشاط
+                    let totalOnline = INITIAL_ONLINE + Math.min(activeCount, 30);
+                    onlineUsers = totalOnline;
                     document.getElementById('online-users-counter').innerText = onlineUsers;
                     
-                    // تحديث العداد الكلي أيضاً
+                    // تحديث العداد الكلي
                     document.getElementById('total-visitors-counter').innerText = totalVisitors.toLocaleString();
                     
                 } catch(e) {
@@ -2450,7 +2455,7 @@
             }
             
             // تحديث فوري
-            updateActiveUsers();
+            setTimeout(updateActiveUsers, 100);
             
             // تحديث دوري
             setInterval(updateActiveUsers, HEARTBEAT_INTERVAL);
@@ -2471,7 +2476,7 @@
             });
             
             console.log('✅ عداد الزوار المتقدم جاهز: إجمالي=' + totalVisitors + ', نشطاء=' + onlineUsers);
-            console.log('✅ القيمة الافتراضية: 170,010');
+            console.log('✅ القيم الافتراضية: إجمالي 170,010 | متواجدون 48');
         })();
         
         // ═══════════════════════════════════════════════════════════════
@@ -2693,7 +2698,8 @@
         
         console.log('✅ Smart AI Engine v3.0 - Contextual & Focused');
         console.log('✅ Share Engine v1.0 - Ready');
-        console.log('✅ Advanced Counter System v3.0 - Fixed with Initial Value 170,010');
+        console.log('✅ Advanced Counter System v4.0 - Final Fixed Version');
+        console.log('✅ Total Visitors: 170,010 | Online Users: 48');
     </script>
 </body>
 </html>
