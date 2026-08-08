@@ -47,7 +47,7 @@
             transition: var(--transition);
         }
         header {
-            background: linear-gradient(135deg, rgba(2, 132, 199, 0.98), rgba(5, 150, 105, 0.98));            color: white;
+            background: linear-gradient(135deg, rgba(2, 132, 199, 0.98), rgba(5, 150, 105, 0.98));                        color: white;
             position: sticky;
             top: 0;
             z-index: 1000;
@@ -96,7 +96,7 @@
             display: flex;
             gap: 0.5rem;
             align-items: center;
-        }        .btn-icon {
+        }                .btn-icon {
             background: rgba(255, 255, 255, 0.2);
             border: none;
             color: white;
@@ -145,7 +145,7 @@
             font-size: 0.9rem;
             font-weight: 700;
             color: white;
-        }        .pulse-dot {
+        }                .pulse-dot {
             width: 10px;
             height: 10px;
             background-color: #4ade80;
@@ -159,7 +159,6 @@
             100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); }
         }
         
-        /* شريط الدليل الذكي الثابت تحت الهيدر */
         .ai-toolbar {
             background: rgba(0, 0, 0, 0.25);
             border-top: 1px solid rgba(255, 255, 255, 0.1);
@@ -194,8 +193,8 @@
             background: #f59e0b;
             color: #fff;
             font-size: 0.62rem;
-            padding: 2px 7px;            border-radius: 10px;
-            font-weight: 900;
+            padding: 2px 7px;            
+            border-radius: 10px;            font-weight: 900;
             letter-spacing: 0.5px;
         }
         
@@ -243,8 +242,8 @@
         }
         .hero h1 { font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 900; margin-bottom: 1rem; }
         .hero p { font-size: clamp(1rem, 2vw, 1.2rem); max-width: 700px; margin: 0 auto 2rem; opacity: 0.95; }
-        .region-selector {            display: flex;
-            justify-content: center;
+        .region-selector {            
+            display: flex;            justify-content: center;
             gap: 1rem;
             margin-bottom: 2rem;
             flex-wrap: wrap;
@@ -292,8 +291,8 @@
             border-radius: 50px;
             font-size: 0.75rem;
             font-weight: 800;
-            z-index: 2;            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-        }
+            z-index: 2;            
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);        }
         .ad-card-img { height: 200px; width: 100%; object-fit: cover; transition: opacity 0.5s ease-in-out; }
         .ad-card-body { padding: 1.25rem; flex: 1; display: flex; flex-direction: column; }
         .ad-card-body h3 { font-size: 1.2rem; margin-bottom: 0.4rem; font-weight: 800; color: var(--text-main); }
@@ -341,8 +340,8 @@
             border-right: 4px solid var(--accent);
             box-shadow: var(--shadow);
             min-width: 320px;
-            max-width: 380px;            flex-shrink: 0;
-            transition: var(--transition);
+            max-width: 380px;            
+            flex-shrink: 0;            transition: var(--transition);
             cursor: pointer;
             user-select: none;
         }
@@ -390,8 +389,8 @@
         .pulse-desc {
             font-size: 0.9rem;
             color: var(--text-muted);
-            line-height: 1.8;            max-height: 0;
-            overflow: hidden;
+            line-height: 1.8;            
+            max-height: 0;            overflow: hidden;
             opacity: 0;
             transition: max-height 0.6s ease, opacity 0.4s ease, margin-top 0.4s ease;
             margin-top: 0;
@@ -439,9 +438,8 @@
             margin-bottom: 0.6rem;
         }
         .dest-body h3 { font-size: 1.2rem; margin-bottom: 0.4rem; font-weight: 800; }
-                #map {
-            height: 500px;
-            width: 100%;
+        #map {
+            height: 500px;            width: 100%;
             border-radius: var(--radius);
             box-shadow: var(--shadow);
             border: 1px solid var(--border);
@@ -488,9 +486,9 @@
         .weather-icon-wrap { font-size: 2rem; line-height: 1; flex-shrink: 0; }
         .weather-content { flex: 1; min-width: 0; }
         .weather-temp-block { display: flex; align-items: baseline; gap: 8px; }
-        .weather-temp { font-size: 1.5rem; font-weight: 900; color: var(--text-main); line-height: 1; }        .weather-desc-text { font-size: 0.85rem; font-weight: 700; color: var(--text-main); }
-        
-        .weather-meta {
+        .weather-temp { font-size: 1.5rem; font-weight: 900; color: var(--text-main); line-height: 1; }        
+        .weather-desc-text { font-size: 0.85rem; font-weight: 700; color: var(--text-main); }
+                .weather-meta {
             display: flex;
             gap: 10px;
             font-size: 0.78rem;
@@ -537,9 +535,9 @@
             height: 6px;
             width: 100%;
             border-radius: 3px;
-            background: linear-gradient(to right, #10b981, #f59e0b, #f97316, #ef4444, #a855f7);            position: relative;
-            margin-bottom: 6px;
-        }
+            background: linear-gradient(to right, #10b981, #f59e0b, #f97316, #ef4444, #a855f7);            
+            position: relative;
+            margin-bottom: 6px;        }
         .uv-pointer {
             width: 10px;
             height: 12px;
@@ -586,9 +584,9 @@
         .dest-desc::after {
             content: '';
             position: absolute;
-            bottom: 0; right: 0;            width: 100%; height: 1.2em;
-            background: linear-gradient(transparent, var(--bg-card));
-            transition: opacity 0.3s;
+            bottom: 0; right: 0;            
+            width: 100%; height: 1.2em;
+            background: linear-gradient(transparent, var(--bg-card));            transition: opacity 0.3s;
             pointer-events: none;
         }
         .dest-desc.expanded::after { opacity: 0; }
@@ -635,9 +633,9 @@
         }
         .admin-form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px; text-align: right; }
         .admin-form-group label { font-size: 0.85rem; font-weight: 700; color: var(--text-muted); }
-        .admin-form-group input, .admin-form-group select, .admin-form-group textarea {            padding: 8px 12px; border: 1px solid var(--border); border-radius: 6px;
-            background: var(--bg-card); color: var(--text-main); font-size: 0.9rem;
-        }
+        .admin-form-group input, .admin-form-group select, .admin-form-group textarea {            
+            padding: 8px 12px; border: 1px solid var(--border); border-radius: 6px;
+            background: var(--bg-card); color: var(--text-main); font-size: 0.9rem;        }
         .admin-input, .admin-textarea {
             width: 100%; padding: 8px 12px; border: 1px solid var(--border); border-radius: 6px;
             background: var(--bg-card); color: var(--text-main); font-size: 0.9rem; font-family: inherit;
@@ -684,12 +682,11 @@
         }
         footer .footer-country {
             color: var(--secondary);
-            font-weight: 700;            padding: 2px 10px;
-            background: rgba(5, 150, 105, 0.1);
-            border-radius: 50px;
+            font-weight: 700;            
+            padding: 2px 10px;
+            background: rgba(5, 150, 105, 0.1);            border-radius: 50px;
             font-size: 0.85rem;
         }
-
         .whatsapp-wrapper {
             display: flex;
             justify-content: center;
@@ -733,10 +730,10 @@
             transform: translateY(-4px) scale(1.03);
             box-shadow: 0 15px 35px rgba(37, 211, 102, 0.55);
         }
-        .whatsapp-btn:hover::before { opacity: 1; }        .whatsapp-btn:active { transform: translateY(-2px) scale(1.01); }
+        .whatsapp-btn:hover::before { opacity: 1; }        
+        .whatsapp-btn:active { transform: translateY(-2px) scale(1.01); }
         .whatsapp-btn .wa-icon {
-            font-size: 1.4rem;
-            display: flex;
+            font-size: 1.4rem;            display: flex;
             align-items: center;
             justify-content: center;
             width: 32px;
@@ -782,12 +779,10 @@
         @media (max-width: 600px) {
             .whatsapp-btn { padding: 12px 22px; font-size: 0.95rem; }
             .whatsapp-btn .wa-icon { font-size: 1.2rem; width: 28px; height: 28px; }
-            footer { padding: 1.4rem 1rem; font-size: 0.88rem; }        }
-
-        /* نافذة الدليل الذكي - modal مركزي */
+            footer { padding: 1.4rem 1rem; font-size: 0.88rem; }        
+        }
         .smart-ai-overlay {
-            display: none;
-            position: fixed;
+            display: none;            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
@@ -831,12 +826,12 @@
             align-items: center;
             flex-shrink: 0;
         }
-        .ai-header-title {            display: flex;
+        .ai-header-title {            
+            display: flex;
             align-items: center;
             gap: 10px;
             font-weight: 800;
-            font-size: 1rem;
-        }
+            font-size: 1rem;        }
         .ai-header-close {
             background: rgba(255,255,255,0.2);
             border: none;
@@ -880,12 +875,12 @@
         .ai-msg.user {
             background: var(--primary);
             color: white;
-            align-self: flex-end;            border-bottom-left-radius: 2px;
+            align-self: flex-end;            
+            border-bottom-left-radius: 2px;
         }
         .ai-suggestions {
             display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
+            flex-wrap: wrap;            gap: 6px;
             margin-top: 6px;
         }
         .ai-chip {
@@ -929,12 +924,12 @@
             height: 36px;
             border-radius: 50%;
             cursor: pointer;
-            display: flex;            align-items: center;
+            display: flex;            
+            align-items: center;
             justify-content: center;
             transition: var(--transition);
         }
-        .ai-send-btn:hover { background: var(--primary-dark); }
-        .ai-typing {
+        .ai-send-btn:hover { background: var(--primary-dark); }        .ai-typing {
             font-size: 0.75rem;
             color: var(--text-muted);
             font-style: italic;
@@ -978,13 +973,12 @@
                     <span>المتواجدون: <strong id="online-users-counter" style="color:#86efac;">42</strong></span>
                 </div>
             </div>
-        </div>        <!-- شريط الدليل الذكي الثابت تحت الهيدر -->
+        </div>        
         <div class="ai-toolbar">
             <button class="ai-toolbar-btn" id="smartAiToggle">
                 <i class="fa-solid fa-wand-magic-sparkles"></i>
                 <span>مرشد الساحل الذكي</span>
-                <span class="ai-badge">AI</span>
-            </button>
+                <span class="ai-badge">AI</span>            </button>
         </div>
     </header>
     <main>
@@ -1027,13 +1021,13 @@
             <div class="dest-grid" id="map-ads-grid" style="grid-template-columns: 1fr; max-width: 600px; margin: 0 auto;"></div>
         </section>
         <section id="admin" class="section">
-            <div id="admin-gate-box" class="admin-gate">                <h2><i class="fa-solid fa-lock"></i> غرفة الإدارة</h2>
+            <div id="admin-gate-box" class="admin-gate">                
+                <h2><i class="fa-solid fa-lock"></i> غرفة الإدارة</h2>
                 <p style="color:var(--text-muted); margin:1rem 0;">أدخل كلمة المرور:</p>
                 <input type="password" id="admin-pass-input" placeholder="كلمة المرور..." style="width:100%; padding:10px; border:1px solid var(--border); border-radius:8px; margin-bottom:1rem; background:var(--bg-main); color:var(--text-main);">
                 <button class="btn-primary" style="width:100%; padding:10px;" data-action="admin-login">دخول</button>
             </div>
-            <div id="admin-panel-box" class="admin-panel" style="display:none;">
-                <h2 style="margin-bottom:1.5rem;"><i class="fa-solid fa-gauge-high"></i> لوحة التحكم</h2>
+            <div id="admin-panel-box" class="admin-panel" style="display:none;">                <h2 style="margin-bottom:1.5rem;"><i class="fa-solid fa-gauge-high"></i> لوحة التحكم</h2>
                 
                 <div style="background:var(--bg-main); padding:1.2rem; border-radius:8px; border:1px solid var(--border); margin-bottom:1.5rem;">
                     <h3 style="margin-bottom:0.5rem; font-size:1.1rem;"><i class="fa-solid fa-rectangle-ad" style="color:var(--primary);"></i> إدارة الإعلانات (تظهر كل 4 بطاقات وفي الخريطة)</h3>
@@ -1076,34 +1070,31 @@
                     <button class="btn-primary btn-danger" data-action="admin-lock"><i class="fa-solid fa-lock"></i> خروج</button>
                 </div>
             </div>
-        </section>    </main>
-
-    <!-- نافذة الدليل الذكي - modal مركزي -->
+        </section>    
+    </main>
     <div class="smart-ai-overlay" id="smartAiOverlay"></div>
     <div class="smart-ai-modal" id="smartAiModal">
         <div class="ai-header">
             <div class="ai-header-title">
-                <i class="fa-solid fa-wand-magic-sparkles"></i>
-                <span>مرشد الساحل الذكي</span>
+                <i class="fa-solid fa-wand-magic-sparkles"></i>                <span>مرشد الساحل الذكي</span>
             </div>
             <button class="ai-header-close" id="smartAiClose"><i class="fa-solid fa-xmark"></i></button>
         </div>
         <div class="ai-chat-body" id="aiChatBody">
             <div class="ai-msg bot">
-                أهلاً بك! أنا **مرشد الساحل الذكي**. قرأت جميع بيانات تطبيقنا (المواقع، الفعاليات الحية، العروض، وحالة الطقس و UV). كيف يمكنني مساعدتك في تخطيط يومك؟
+                أهلاً بك! 👋 اسألني سؤالاً محدداً وسأجيبك بإيجاز ودقة.<br>
+                أمثلة: <strong>"تقييم كسب"</strong>، <strong>"طقس طرطوس"</strong>، <strong>"أين أرواد؟"</strong>
             </div>
-            <div class="ai-suggestions" id="aiDynamicSuggestions">
-            </div>
+            <div class="ai-suggestions" id="aiDynamicSuggestions"></div>
         </div>
         <div class="ai-typing" id="aiTyping">
-            <i class="fa-solid fa-circle-notch fa-spin"></i> الدليل يجري حوسبة سياقية سريعة...
+            <i class="fa-solid fa-circle-notch fa-spin"></i> جاري التحليل...
         </div>
         <div class="ai-footer">
-            <input type="text" class="ai-input" id="aiInput" placeholder="أسألني عن رحلة، طقس، فعالية، أو توصية..." onkeypress="if(event.key==='Enter') sendSmartAiMessage()">
+            <input type="text" class="ai-input" id="aiInput" placeholder="اكتب سؤالك..." onkeypress="if(event.key==='Enter') sendSmartAiMessage()">
             <button class="ai-send-btn" onclick="sendSmartAiMessage()"><i class="fa-solid fa-paper-plane"></i></button>
         </div>
     </div>
-
     <div id="dest-modal">
         <div class="modal-content">
             <h3 id="modal-title" style="margin-bottom:1rem;">إضافة موقع جديد</h3>
@@ -1125,7 +1116,8 @@
             </div>
             <div class="admin-form-group">
                 <label>خط الطول (Longitude):</label>
-                <input type="text" id="form-dest-lng" placeholder="مثال: 35.79">            </div>
+                <input type="text" id="form-dest-lng" placeholder="مثال: 35.79">            
+            </div>
             <div class="admin-form-group">
                 <label>الوصف:</label>
                 <textarea id="form-dest-desc" rows="3" placeholder="وصف الموقع..."></textarea>
@@ -1133,8 +1125,7 @@
             <div class="admin-form-group">
                 <label>صورة (رابط):</label>
                 <input type="text" id="form-dest-img" placeholder="رابط الصورة">
-            </div>
-            <div class="admin-form-group">
+            </div>            <div class="admin-form-group">
                 <label>التقييم:</label>
                 <input type="number" step="0.1" id="form-dest-rating" value="4.5" min="1" max="5">
             </div>
@@ -1144,7 +1135,6 @@
             </div>
         </div>
     </div>
-
     <div class="whatsapp-wrapper">
         <a href="https://wa.me/963939436998" target="_blank" rel="noopener noreferrer" class="whatsapp-btn" aria-label="تواصل معنا عبر واتساب">
             <span class="wa-pulse"></span>
@@ -1155,7 +1145,6 @@
             </span>
         </a>
     </div>
-
     <footer>
         <div class="footer-dev-credit">
             <i class="fa-solid fa-code"></i>
@@ -1164,7 +1153,6 @@
             <span class="footer-country"><i class="fa-solid fa-flag"></i> سوريا</span>
         </div>
     </footer>
-
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
@@ -1174,7 +1162,8 @@
         try {
             var firebaseConfig = {
                 apiKey: "AIzaSyCpAzIfRmO_jQzf7uf4uPDLkRqI9DaPhjE",
-                authDomain: "jinansyr-28efc.firebaseapp.com",                databaseURL: "https://jinansyr-28efc-default-rtdb.firebaseio.com",
+                authDomain: "jinansyr-28efc.firebaseapp.com",                
+                databaseURL: "https://jinansyr-28efc-default-rtdb.firebaseio.com",
                 projectId: "jinansyr-28efc",
                 storageBucket: "jinansyr-28efc.firebasestorage.app",
                 messagingSenderId: "662247928226",
@@ -1185,8 +1174,7 @@
             console.log('✅ Firebase connected');
         } catch(e) {
             console.error('❌ Firebase error:', e);
-        }
-        var destinations = [];
+        }        var destinations = [];
         var pulseEvents = [];
         var adsList = [];
         var currentAdIndex = 0;
@@ -1217,13 +1205,13 @@
             1: { id: 1, title: "رحلات سياحية مميزة", desc: "احجز رحلتك القادمة إلى كسب وصلنفة بأسعار خاصة للعائلات.", img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80" },
             2: { id: 2, title: "فنادق ومنتجعات الساحل", desc: "استمتع بإقامة فاخرة مطلة على شواطئ البحر الأبيض المتوسط.", img: "https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&w=600&q=80" }
         };
-
         function initMap() {
             setTimeout(function() {
                 if (!mapInstance) {
                     mapInstance = L.map('map').setView([35.25, 35.9], 10);
                     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                        attribution: '&copy; OpenStreetMap contributors'                    }).addTo(mapInstance);
+                        attribution: '&copy; OpenStreetMap contributors'                    
+                    }).addTo(mapInstance);
                 } else {
                     mapInstance.invalidateSize();
                 }
@@ -1235,8 +1223,7 @@
             mapMarkers.forEach(function(m) { mapInstance.removeLayer(m); });
             mapMarkers = [];
             destinations.forEach(function(dest) {
-                if (dest.lat && dest.lng) {
-                    var marker = L.marker([dest.lat, dest.lng]).addTo(mapInstance);
+                if (dest.lat && dest.lng) {                    var marker = L.marker([dest.lat, dest.lng]).addTo(mapInstance);
                     var popupContent = '<div style="text-align:right; font-family:Tajawal,sans-serif; max-width:340px; word-break:break-word; overflow-wrap:break-word;">' +
                         '<img src="' + (dest.img || '') + '" style="width:100%; height:120px; object-fit:cover; border-radius:6px; margin-bottom:8px;">' +
                         '<h4 style="margin:0 0 6px; font-size:1.05rem; font-weight:800; line-height:1.4; white-space:normal; word-break:break-word;">' + dest.name + '</h4>' +
@@ -1247,7 +1234,6 @@
                 }
             });
         }
-
         function fetchWeather(lat, lng, callback) {
             var cacheKey = lat.toFixed(2) + '_' + lng.toFixed(2);
             if (weatherCache[cacheKey]) {
@@ -1272,7 +1258,8 @@
                 2: { text: 'غائم جزئياً', icon: 'fa-cloud-sun', color: '#94a3b8', tip: 'طقس معتدل ولطيف جداً للمشي' },
                 3: { text: 'غائم بالكامل', icon: 'fa-cloud', color: '#64748b', tip: 'أجواء مظللة، احمل معطفاً خفيفاً' },
                 45: { text: 'ضباب خفيف', icon: 'fa-smog', color: '#cbd5e1', tip: 'رؤية محدودة، انتبه أثناء القيادة في الجبال' },
-                51: { text: 'رذاذ خفيف', icon: 'fa-cloud-rain', color: '#60a5fa', tip: 'احمل مظلة صغيرة معك' },                61: { text: 'مطر خفيف', icon: 'fa-cloud-rain', color: '#3b82f6', tip: 'استعد لأمطار متقطعة، ارتدِ ملابس مناسبة' },
+                51: { text: 'رذاذ خفيف', icon: 'fa-cloud-rain', color: '#60a5fa', tip: 'احمل مظلة صغيرة معك' },                
+                61: { text: 'مطر خفيف', icon: 'fa-cloud-rain', color: '#3b82f6', tip: 'استعد لأمطار متقطعة، ارتدِ ملابس مناسبة' },
                 95: { text: 'عاصفة رعدية', icon: 'fa-cloud-bolt', color: '#dc2626', tip: 'تحذير! ابقَ في أماكن آمنة وتجنب المرتفعات' }
             };
             return map[code] || { text: 'معتدل ومستقر', icon: 'fa-cloud-sun', color: '#3b82f6', tip: 'أجواء مناسبة للزيارة' };
@@ -1285,8 +1272,7 @@
             var pct = Math.min(Math.max((uvVal / 12) * 100, 5), 100);
             if (uv <= 2) return { level: 'منخفض', color: '#10b981', value: uvVal, percent: pct + '%', tip: 'لا حاجة لحماية خاصة، استمتع بيومك بحرية', icon: 'fa-face-smile' };
             if (uv <= 5) return { level: 'متوسط', color: '#f59e0b', value: uvVal, percent: pct + '%', tip: 'يوصى بارتداء نظارات شمسية واستخدام واقي SPF 15+', icon: 'fa-face-meh' };
-            if (uv <= 7) return { level: 'مرتفع', color: '#f97316', value: uvVal, percent: pct + '%', tip: 'احرص على استخدام واقي SPF 30+ وقبعة، وتجنب الشمس وقت الذروة', icon: 'fa-face-flushed' };
-            if (uv <= 10) return { level: 'مرتفع جداً', color: '#ef4444', value: uvVal, percent: pct + '%', tip: 'خطر! تجنب التعرض المباشر، استخدم SPF 50+ وملابس واقية', icon: 'fa-face-dizzy' };
+            if (uv <= 7) return { level: 'مرتفع', color: '#f97316', value: uvVal, percent: pct + '%', tip: 'احرص على استخدام واقي SPF 30+ وقبعة، وتجنب الشمس وقت الذروة', icon: 'fa-face-flushed' };            if (uv <= 10) return { level: 'مرتفع جداً', color: '#ef4444', value: uvVal, percent: pct + '%', tip: 'خطر! تجنب التعرض المباشر، استخدم SPF 50+ وملابس واقية', icon: 'fa-face-dizzy' };
             return { level: 'خطير جداً', color: '#a855f7', value: uvVal, percent: '100%', tip: 'حالة قصوى! ابقَ في الظل تماماً، الحروق تحدث خلال دقائق', icon: 'fa-triangle-exclamation' };
         }
         function updateWeatherWidgetCustom(targetId, lat, lng) {
@@ -1321,7 +1307,8 @@
                             '<span class="uv-title-label"><i class="fa-solid fa-sun" style="color:var(--accent);"></i> مؤشر الأشعة فوق البنفسجية (UV)</span>' +
                             '<span class="uv-badge-pill" style="background: ' + uvInfo.color + ';"><i class="fa-solid ' + uvInfo.icon + '"></i> ' + uvInfo.value + ' · ' + uvInfo.level + '</span>' +
                         '</div>' +
-                        '<div class="uv-gradient-bar">' +                            '<div class="uv-pointer" style="left: ' + uvInfo.percent + ';"></div>' +
+                        '<div class="uv-gradient-bar">' +                            
+                            '<div class="uv-pointer" style="left: ' + uvInfo.percent + ';"></div>' +
                         '</div>' +
                     '</div>' +
                     '<div class="weather-tips">' +
@@ -1332,11 +1319,9 @@
                     '</div>';
             });
         }
-
         function seedData() {
             if (!db) return;
-            db.ref('destinations').once('value', function(snap) {
-                if (!snap.exists()) { db.ref('destinations').set(defaultDestinations); }
+            db.ref('destinations').once('value', function(snap) {                if (!snap.exists()) { db.ref('destinations').set(defaultDestinations); }
             });
             db.ref('pulse_events').once('value', function(snap) {
                 if (!snap.exists()) { db.ref('pulse_events').set(defaultPulse); }
@@ -1345,7 +1330,6 @@
                 if (!snap.exists()) { db.ref('ads_list').set(defaultAds); }
             });
         }
-
         function renderAll() {
             var filtered = destinations;
             if (currentRegion !== 'all') {
@@ -1370,7 +1354,8 @@
                 var wrap = document.getElementById('home-show-more-wrap');
                 if (wrap) wrap.style.display = data.length > 4 ? 'block' : 'none';
             }
-            var html = '';            var count = 0;
+            var html = '';            
+            var count = 0;
             displayData.forEach(function(dest) {
                 var img = dest.img || 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80';
                 html += '<div class="dest-card">';
@@ -1385,8 +1370,7 @@
                 html += '<div class="rating"><i class="fa-solid fa-star"></i> ' + (dest.rating || 4.5) + '</div>';
                 html += '<button class="btn-primary" data-action="explore" data-name="' + dest.name + '">استكشف</button>';
                 html += '</div></div></div>';
-                count++;
-                if (count % 4 === 0 && adsList.length > 0) {
+                count++;                if (count % 4 === 0 && adsList.length > 0) {
                     html += getAdCardHtml(containerId + '-ad-' + count);
                 }
             });
@@ -1419,7 +1403,8 @@
             if (!adsList.length) return;
             currentAdIndex = (currentAdIndex + 1) % adsList.length;
             var adCards = document.querySelectorAll('.ad-card');
-            var currentAd = adsList[currentAdIndex];            adCards.forEach(function(card) {
+            var currentAd = adsList[currentAdIndex];            
+            adCards.forEach(function(card) {
                 var img = card.querySelector('.ad-card-img');
                 var title = card.querySelector('h3');
                 var desc = card.querySelector('.ad-card-desc');
@@ -1434,8 +1419,7 @@
             var container = document.getElementById('pulse-scroll-container');
             if (!container) return;
             if (!pulseEvents.length) { container.innerHTML = '<div style="padding:20px;color:var(--text-muted);">لا توجد فعاليات</div>'; return; }
-            var sorted = pulseEvents.slice().sort(function(a,b) { return (b.createdAt||b.id) - (a.createdAt||a.id); });
-            var html = '';
+            var sorted = pulseEvents.slice().sort(function(a,b) { return (b.createdAt||b.id) - (a.createdAt||a.id); });            var html = '';
             sorted.forEach(function(ev) {
                 html += '<div class="pulse-card" data-id="' + ev.id + '">';
                 html += '<span class="pulse-date"><i class="fa-regular fa-calendar-check"></i> ' + (ev.date || '') + '</span>';
@@ -1468,7 +1452,8 @@
         function renderAdminPulse() {
             var container = document.getElementById('admin-pulse-list');
             if (!container) return;
-            if (!pulseEvents.length) { container.innerHTML = '<p style="color:var(--text-muted);">لا توجد فعاليات</p>'; return; }            var sorted = pulseEvents.slice().sort(function(a,b) { return (b.createdAt||b.id) - (a.createdAt||a.id); });
+            if (!pulseEvents.length) { container.innerHTML = '<p style="color:var(--text-muted);">لا توجد فعاليات</p>'; return; }            
+            var sorted = pulseEvents.slice().sort(function(a,b) { return (b.createdAt||b.id) - (a.createdAt||a.id); });
             var html = '';
             sorted.forEach(function(ev) {
                 html += '<div class="admin-item-row">';
@@ -1483,8 +1468,7 @@
         function renderAdminAds() {
             var container = document.getElementById('admin-ads-list');
             if (!container) return;
-            if (!adsList.length) { container.innerHTML = '<p style="color:var(--text-muted);">لا توجد إعلانات</p>'; return; }
-            var html = '';
+            if (!adsList.length) { container.innerHTML = '<p style="color:var(--text-muted);">لا توجد إعلانات</p>'; return; }            var html = '';
             adsList.forEach(function(ad) {
                 html += '<div class="admin-item-row">';
                 html += '<div><strong>' + ad.title + '</strong></div>';
@@ -1495,7 +1479,6 @@
             });
             container.innerHTML = html;
         }
-
         function saveAd() {
             if (!db) { alert('❌ غير متصل'); return; }
             var editId = document.getElementById('ad-edit-id').value;
@@ -1517,7 +1500,8 @@
             if (!ad) return;
             document.getElementById('ad-edit-id').value = ad.id;
             document.getElementById('ad-title-input').value = ad.title || '';
-            document.getElementById('ad-desc-input').value = ad.desc || '';            document.getElementById('ad-img-input').value = ad.img || '';
+            document.getElementById('ad-desc-input').value = ad.desc || '';            
+            document.getElementById('ad-img-input').value = ad.img || '';
             document.getElementById('ad-save-btn').innerHTML = '<i class="fa-solid fa-pen"></i> تحديث';
             document.getElementById('ad-cancel-btn').style.display = 'inline-flex';
         }
@@ -1529,13 +1513,11 @@
             document.getElementById('ad-save-btn').innerHTML = '<i class="fa-solid fa-plus"></i> إضافة إعلان';
             document.getElementById('ad-cancel-btn').style.display = 'none';
         }
-
         function savePulse() {
             if (!db) return;
             var editId = document.getElementById('pulse-edit-id').value;
             var date = document.getElementById('pulse-date-input').value.trim();
-            var title = document.getElementById('pulse-title-input').value.trim();
-            var desc = document.getElementById('pulse-desc-input').value.trim();
+            var title = document.getElementById('pulse-title-input').value.trim();            var desc = document.getElementById('pulse-desc-input').value.trim();
             if (!date || !title || !desc) { alert('املأ الحقول'); return; }
             var id = editId ? parseInt(editId) : Date.now();
             var obj = { id: id, date: date, title: title, desc: desc, createdAt: Date.now() };
@@ -1564,9 +1546,9 @@
             document.getElementById('pulse-save-btn').innerHTML = '<i class="fa-solid fa-plus"></i> إضافة';
             document.getElementById('pulse-cancel-btn').style.display = 'none';
         }
-
         function saveDestination() {
-            if (!db) return;            var editId = document.getElementById('edit-dest-id').value;
+            if (!db) return;            
+            var editId = document.getElementById('edit-dest-id').value;
             var name = document.getElementById('form-dest-name').value.trim();
             var region = document.getElementById('form-dest-region').value;
             var lat = parseFloat(document.getElementById('form-dest-lat').value) || (region === 'latakia' ? 35.52 : 34.89);
@@ -1584,8 +1566,7 @@
             };
             db.ref('destinations/' + id).set(obj).then(function() { closeDestModal(); alert('✅ تم الحفظ'); });
         }
-        function deleteDestination(id) {
-            if (!db) return;
+        function deleteDestination(id) {            if (!db) return;
             if (!confirm('حذف؟')) return;
             db.ref('destinations/' + id).remove().then(function() { alert('✅ تم الحذف'); });
         }
@@ -1615,9 +1596,9 @@
             document.getElementById('modal-title').innerText = 'إضافة موقع جديد';
             document.getElementById('dest-modal').style.display = 'flex';
         }
-        function closeDestModal() {            document.getElementById('dest-modal').style.display = 'none';
+        function closeDestModal() {            
+            document.getElementById('dest-modal').style.display = 'none';
         }
-
         if (db) {
             seedData();
             db.ref('destinations').on('value', function(snap) {
@@ -1634,14 +1615,12 @@
                 var data = snap.val();
                 adsList = data ? Object.values(data) : [];
                 renderAll();
-            });
-        } else {
+            });        } else {
             destinations = Object.values(defaultDestinations);
             pulseEvents = Object.values(defaultPulse);
             adsList = Object.values(defaultAds);
             renderAll();
         }
-
         document.addEventListener('click', function(e) {
             var card = e.target.closest('.pulse-card');
             if (card && !e.target.closest('.pulse-desc')) {
@@ -1664,7 +1643,8 @@
             var action = el.dataset.action;
             var id = el.dataset.id;
             switch(action) {
-                case 'nav':                    document.querySelectorAll('.section').forEach(function(s) { s.classList.remove('active'); });
+                case 'nav':                    
+                    document.querySelectorAll('.section').forEach(function(s) { s.classList.remove('active'); });
                     var targetSec = el.dataset.section;
                     document.getElementById(targetSec).classList.add('active');
                     document.querySelectorAll('.nav-links a').forEach(function(a) { a.classList.remove('active'); });
@@ -1684,8 +1664,7 @@
                     icon.classList.toggle('fa-sun');
                     break;
                 case 'filter-region':
-                    currentRegion = el.dataset.region;
-                    document.querySelectorAll('.region-btn').forEach(function(b) { b.classList.remove('active'); });
+                    currentRegion = el.dataset.region;                    document.querySelectorAll('.region-btn').forEach(function(b) { b.classList.remove('active'); });
                     el.classList.add('active');
                     renderAll();
                     break;
@@ -1713,7 +1692,8 @@
                 case 'edit-ad': editAd(parseInt(id)); break;
                 case 'delete-ad': deleteAd(parseInt(id)); break;
                 case 'save-pulse': savePulse(); break;
-                case 'reset-pulse-form': resetPulseForm(); break;                case 'edit-pulse': editPulse(parseInt(id)); break;
+                case 'reset-pulse-form': resetPulseForm(); break;                
+                case 'edit-pulse': editPulse(parseInt(id)); break;
                 case 'delete-pulse': deletePulse(parseInt(id)); break;
                 case 'open-dest-modal': openDestModal(); break;
                 case 'close-dest-modal': closeDestModal(); break;
@@ -1723,7 +1703,6 @@
                 case 'explore': alert('📍 ' + el.dataset.name + '\nالموقع متوفر على الخريطة التفاعلية وفي قسم المناطق.'); break;
             }
         });
-
         function updateCounters() {
             document.getElementById('total-visitors-counter').innerText = totalVisitors.toLocaleString();
             document.getElementById('online-users-counter').innerText = onlineUsers;
@@ -1733,14 +1712,18 @@
             sessionStorage.setItem('visited', 'true');
         }
         updateCounters();
-
-        // ===== الدليل الذكي =====
+        
+        // ═══════════════════════════════════════════════════════════════        // ║  محرك الدليل الذكي المتقدم - الإصدار المركز والذكي       ║
+        // ═══════════════════════════════════════════════════════════════
+        
         var aiChatHistory = [];
+        var lastDiscussedContext = null; // ذاكرة السياق
+        
         var smartAiToggle = document.getElementById('smartAiToggle');
         var smartAiModal = document.getElementById('smartAiModal');
         var smartAiOverlay = document.getElementById('smartAiOverlay');
         var smartAiClose = document.getElementById('smartAiClose');
-
+        
         function openAiModal() {
             smartAiModal.classList.add('active');
             smartAiOverlay.classList.add('active');
@@ -1751,155 +1734,218 @@
             smartAiOverlay.classList.remove('active');
             document.body.style.overflow = '';
         }
-
         smartAiToggle.addEventListener('click', function() {
-            if (smartAiModal.classList.contains('active')) {
-                closeAiModal();
-            } else {
-                openAiModal();
-            }
+            if (smartAiModal.classList.contains('active')) closeAiModal();
+            else openAiModal();
         });
         smartAiClose.addEventListener('click', closeAiModal);
         smartAiOverlay.addEventListener('click', closeAiModal);
-
-        function renderAiSuggestions() {            var box = document.getElementById('aiDynamicSuggestions');
+        
+        function renderAiSuggestions() {            
+            var box = document.getElementById('aiDynamicSuggestions');
             if(!box) return;
             var chips = [];
             
             if (destinations.length > 0) {
                 var randomDest = destinations[Math.floor(Math.random() * destinations.length)].name;
-                chips.push('اقترح لي برنامجاً لزيارة ' + randomDest);
+                chips.push('تقييم ' + randomDest);
+                chips.push('طقس ' + randomDest);
+                chips.push('أين تقع ' + randomDest + '؟');
             }
-            if (pulseEvents.length > 0) {
-                chips.push('ما هي أحدث الفعاليات الحية؟');
-            }
-            chips.push('أفضل أماكن اللاذقية');
-            chips.push('أفضل أماكن طرطوس');
-            chips.push('تخطيط يوم كامل في الساحل');
-
+            if (pulseEvents.length > 0) chips.push('الفعاليات الحالية');
+            if (adsList.length > 0) chips.push('العروض المتاحة');
+            chips.push('أفضل المواقع تقييماً');
+            
             var html = '';
             chips.forEach(function(c) {
-                html += '<div class="ai-chip" onclick="handleChipClick(\'' + c + '\')">' + c + '</div>';
+                html += '<div class="ai-chip" onclick="handleChipClick(\'' + c.replace(/'/g, "\\'") + '\')">' + c + '</div>';
             });
             box.innerHTML = html;
         }
-
-        function handleChipClick(text) {
+                function handleChipClick(text) {
             document.getElementById('aiInput').value = text;
             sendSmartAiMessage();
         }
-
+        
         function sendSmartAiMessage() {
             var input = document.getElementById('aiInput');
             var text = input.value.trim();
             if(!text) return;
-
+            
             appendAiMessage(text, 'user');
             input.value = '';
-            
             aiChatHistory.push({ role: 'user', content: text });
-
+            
             var typing = document.getElementById('aiTyping');
             typing.style.display = 'flex';
-
+            
             setTimeout(function() {
                 typing.style.display = 'none';
-                var replyObj = generateContextualAiResponse(text);
-                appendAiMessage(replyObj.reply, 'bot');
-                aiChatHistory.push({ role: 'assistant', content: replyObj.reply });
-                
-                updateDynamicChipsAfterResponse(replyObj.nextQueries);
-            }, 600);
+                var reply = generateFocusedAiResponse(text);
+                appendAiMessage(reply, 'bot');
+                aiChatHistory.push({ role: 'assistant', content: reply });
+            }, 450);
         }
+        
         function appendAiMessage(msg, role) {
             var body = document.getElementById('aiChatBody');
             var div = document.createElement('div');
             div.className = 'ai-msg ' + role;
-            div.innerHTML = msg.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            div.innerHTML = msg.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
             body.appendChild(div);
             body.scrollTop = body.scrollHeight;
         }
-
-        function generateContextualAiResponse(userText) {
-            var text = userText.toLowerCase();
-            var reply = "";
-            var nextQueries = [];
-
-            var foundDest = destinations.find(function(d) {
-                return text.includes(d.name.toLowerCase());
-            });
-
-            if (foundDest) {
-                var regName = foundDest.region === 'latakia' ? 'محافظة اللاذقية' : 'محافظة طرطوس';
-                reply = "📍 **" + foundDest.name + "** (" + regName + "):\n";
-                reply += foundDest.description + "\n";
-                reply += "⭐ التقييم: " + (foundDest.rating || 4.5) + " / 5\n";
-                
-                var cacheKey = (foundDest.lat || 0).toFixed(2) + '_' + (foundDest.lng || 0).toFixed(2);
-                if (weatherCache[cacheKey]) {
+        
+        // ═══════════════════════════════════════════════════════════════
+        // ║  المحرك الذكي: كشف النية + إجابة مركزة + سياق            ║
+        // ═══════════════════════════════════════════════════════════════
+        
+        function detectIntent(text) {
+            // ترتيب الأولوية مهم
+            if (/تقييم|تقيم|رأي|راي|نجوم|ستار|كم نجم/.test(text)) return 'rating';
+            if (/طقس|جو|حرارة|درجة|درجات|حر|برد|مطر|شمس|رياح|رطوبة|حار|بارد/.test(text)) return 'weather';
+            if (/أشعة|uv|فوق بنفسجية|واقي/.test(text)) return 'uv';
+            if (/وين|أين|اين|موقع|مكان|عنوان|جهة|محافظة|تقع|بعيدة|قريبة/.test(text)) return 'location';
+            if (/ما هي|ماهو|ما هو|عرفني|معلومات|صف|تعريف|تاريخ|قصة|عن|وصف/.test(text)) return 'description';
+            if (/فعالي|فعالية|حدث|نشاط|مهرجان|حفلة|حفل|نبض/.test(text)) return 'events';
+            if (/عرض|عروض|خصم|حجز|اعلان|إعلان|ترويج|فندق|مطعم/.test(text)) return 'offers';
+            if (/كم عدد|عدد|احصائيات|إحصائيات/.test(text)) return 'count';
+            if (/افضل|أفضل|احسن|أحسن|ارقى|أرقى|ترتيب|اعلى|أعلى/.test(text)) return 'best';
+            if (/مرحبا|اهلا|أهلا|سلام|هاي|صباح|مساء|هلا/.test(text)) return 'greeting';            if (/شكرا|شكراً|ممنون|يعطيك|عافية|تسلم/.test(text)) return 'thanks';
+            return 'unknown';
+        }
+        
+        function findMentionedDestination(text) {
+            // البحث عن موقع مذكور
+            for (var i = 0; i < destinations.length; i++) {
+                if (text.includes(destinations[i].name.toLowerCase())) {
+                    return destinations[i];
+                }
+            }
+            // محاولة مطابقة جزئية (للكلمات المختصرة)
+            for (var i = 0; i < destinations.length; i++) {
+                var name = destinations[i].name.toLowerCase();
+                if (name.length > 2 && text.includes(name.substring(0, 3))) {
+                    return destinations[i];
+                }
+            }
+            return null;
+        }
+        
+        function generateFocusedAiResponse(userText) {
+            var text = userText.toLowerCase().trim();
+            var intent = detectIntent(text);
+            var dest = findMentionedDestination(text);
+            
+            // ─── سياق ذكي: إذا لم يذكر موقعاً لكن النية تتطلب موقعاً، استخدم آخر موقع تم الحديث عنه ───
+            if (!dest && lastDiscussedContext && (intent === 'weather' || intent === 'rating' || intent === 'location' || intent === 'description' || intent === 'uv')) {
+                dest = destinations.find(function(d) { return d.name === lastDiscussedContext; });
+            }
+            
+            if (dest) lastDiscussedContext = dest.name;
+            
+            // ─── نية: التقييم ───
+            if (intent === 'rating') {
+                if (dest) {
+                    var verdict = dest.rating >= 4.9 ? '✨ ممتاز جداً' : dest.rating >= 4.5 ? '👍 جيد جداً' : dest.rating >= 4.0 ? '✓ جيد' : '⚠️ مقبول';
+                    return '⭐ **' + dest.name + '**\nالتقييم: **' + dest.rating + '/5** ' + verdict;
+                }
+                return '🤔 حدد اسم الموقع لأعطيك تقييمه.\nمثال: "تقييم كسب"';
+            }
+            
+            // ─── نية: الطقس ───
+            if (intent === 'weather') {
+                if (dest && dest.lat && dest.lng) {
+                    var cacheKey = dest.lat.toFixed(2) + '_' + dest.lng.toFixed(2);
                     var w = weatherCache[cacheKey];
-                    reply += "\n🌤️ **الحالة الجوية الحالية هناك:** " + Math.round(w.temperature_2m) + "°مترية | UV: " + (w.uv_index || 'معتدل');
+                    if (w) {
+                        var info = getWeatherInfo(w.weather_code);
+                        return '🌡️ **طقس ' + dest.name + '**\n' + info.text + ' · ' + Math.round(w.temperature_2m) + '°\nرطوبة: ' + w.relative_humidity_2m + '% · رياح: ' + Math.round(w.wind_speed_10m) + ' كم/س';                    }
+                    fetchWeather(dest.lat, dest.lng, function(){});
+                    return '⏳ جاري جلب طقس **' + dest.name + '**... أعد السؤال بعد ثوانٍ.';
                 }
-                
-                nextQueries = ["كيف أصل إلى " + foundDest.name + "؟", "أماكن قريبة من " + foundDest.name, "طقس " + foundDest.name];
+                return '🌤️ حدد المنطقة للسؤال عن طقسها.\nمثال: "طقس كسب" أو "طقس أرواد"';
             }
-            else if (text.includes('فعالي') || text.includes('نشاط') || text.includes('نبض')) {
-                if (pulseEvents.length > 0) {
-                    reply = "🎉 **أحدث الفعاليات والنشاطات الحية في الساحل:**\n\n";
-                    pulseEvents.forEach(function(ev, idx) {
-                        reply += (idx + 1) + ". **" + ev.title + "** (" + ev.date + ")\n" + ev.desc + "\n\n";
-                    });
-                } else {
-                    reply = "لا توجد فعاليات مسجلة حالياً في النظام، تابعنا قريباً!";
+            
+            // ─── نية: الأشعة فوق البنفسجية ───
+            if (intent === 'uv') {
+                if (dest && dest.lat && dest.lng) {
+                    var cacheKey = dest.lat.toFixed(2) + '_' + dest.lng.toFixed(2);
+                    var w = weatherCache[cacheKey];
+                    if (w && w.uv_index !== undefined) {
+                        var uvInfo = getUVInfo(w.uv_index);
+                        return '☀️ **UV في ' + dest.name + '**\nالمؤشر: **' + uvInfo.value + '** (' + uvInfo.level + ')\n💡 ' + uvInfo.tip;
+                    }
+                    fetchWeather(dest.lat, dest.lng, function(){});
+                    return '⏳ جاري جلب بيانات الأشعة...';
                 }
-                nextQueries = ["توصية لرحلة يوم الجمعة", "أفضل المصايف الجبلية"];
+                return '☀️ حدد المنطقة لمعرفة مؤشر UV.\nمثال: "أشعة UV في كسب"';
             }
-            else if (text.includes('اللاذقية')) {
-                var latDests = destinations.filter(function(d){ return d.region === 'latakia'; });
-                reply = "🌊 **أبرز الوجهات في محافظة اللاذقية (" + latDests.length + " موقعاً):**\n";
-                latDests.forEach(function(d){ reply += "• **" + d.name + "**: " + d.description + "\n"; });
-                nextQueries = ["طقس اللاذقية", "فعاليات اللاذقية", "الانتقال إلى طرطوس"];
-            }
-            else if (text.includes('طرطوس')) {                var tarDests = destinations.filter(function(d){ return d.region === 'tartus'; });
-                reply = "🏰 **أبرز الوجهات في محافظة طرطوس (" + tarDests.length + " موقعاً):**\n";
-                tarDests.forEach(function(d){ reply += "• **" + d.name + "**: " + d.description + "\n"; });
-                nextQueries = ["جزيرة أرواد", "فعاليات طرطوس", "عروض الإعلانات"];
-            }
-            else if (text.includes('برنامج') || text.includes('تخطيط') || text.includes('يوم')) {
-                reply = "🗓️ **مقترح برنامج سياحي ذكي ليوم كامل:**\n";
-                reply += "1. **الصباح:** زيارة " + (destinations[0] ? destinations[0].name : "المناطق البحرية") + " للاستمتاع بالطبيعة والطقس المنعش.\n";
-                reply += "2. **الظهيرة:** تناول وجبة غداء بحرية واستكشاف القلاع التاريخية.\n";
-                reply += "3. **المساء:** حضور الفعاليات الحية مثل: " + (pulseEvents[0] ? pulseEvents[0].title : "كورنيش البحر") + ".\n";
-                nextQueries = ["ما هي حالة UV اليوم؟", "اقترح موقعاً جبلياً", "عرض العروض والخصومات"];
-            }
-            else if (text.includes('عرض') || text.includes('إعلان') || text.includes('حجز')) {
-                if (adsList.length > 0) {
-                    reply = "📢 **أحدث العروض الإعلانية في جنان الساحل:**\n";
-                    adsList.forEach(function(ad){ reply += "✨ **" + ad.title + "**: " + ad.desc + "\n"; });
-                } else {
-                    reply = "لا توجد عروض ترويجية متاحة حالياً.";
+            
+            // ─── نية: الموقع ───
+            if (intent === 'location') {
+                if (dest) {
+                    var region = dest.region === 'latakia' ? 'اللاذقية' : 'طرطوس';
+                    return '📍 **' + dest.name + '**\nالمحافظة: **' + region + '**\n🗺️ الإحداثيات: ' + dest.lat.toFixed(2) + ', ' + dest.lng.toFixed(2) + '\n\nافتح **الخريطة التفاعلية** لرؤيتها.';
                 }
-                nextQueries = ["تخطيط يوم كامل", "الرجوع للرئيسية"];
+                return '📍 حدد اسم الموقع لأخبرك بموقعه.';
             }
-            else {
-                reply = "أنا أقرأ جميع مدخلات التطبيق في الوقت الفعلي! لدينا حالياً **" + destinations.length + " موقعاً سياحياً**، و **" + pulseEvents.length + " فعاليات حية**. يمكنك سؤالي عن أي موقع مثل (كسب، صلنفة، جزيرة أرواد) أو طلب تنظيم برنامج لرحلتك!";
-                nextQueries = ["أماكن اللاذقية", "أماكن طرطوس", "الفعاليات الحية"];
+            
+            // ─── نية: الوصف ───
+            if (intent === 'description') {
+                if (dest) {
+                    return '📝 **' + dest.name + '** (' + (dest.region === 'latakia' ? 'اللاذقية' : 'طرطوس') + ')\n' + dest.description;
+                }
+                return '📝 حدد اسم الموقع لأعطيك معلومات عنه.';
             }
-
-            return { reply: reply, nextQueries: nextQueries };
+            
+            // ─── نية: الفعاليات ───
+            if (intent === 'events') {
+                if (pulseEvents.length === 0) return '📭 لا توجد فعاليات حالياً.';
+                var list = pulseEvents.slice(0, 3).map(function(e) { return '• **' + e.title + '** (' + e.date + ')'; }).join('\n');
+                return '🎉 **الفعاليات الحالية:**\n' + list + '\n\nللتفاصيل: اضغط على قسم **نبض الساحل** في الرئيسية.';
+            }
+            
+            // ─── نية: العروض ───
+            if (intent === 'offers') {
+                if (adsList.length === 0) return '📭 لا توجد عروض حالياً.';
+                var list = adsList.map(function(a) { return '• **' + a.title + '**'; }).join('\n');                return '📢 **العروض المتاحة:**\n' + list + '\n\nللتفاصيل: افتح قسم **الخريطة**.';
+            }
+            
+            // ─── نية: الإحصاء ───
+            if (intent === 'count') {
+                var latakia = destinations.filter(function(d){ return d.region === 'latakia'; }).length;
+                var tartus = destinations.filter(function(d){ return d.region === 'tartus'; }).length;
+                return '📊 **إحصائيات جنان الساحل:**\n• المواقع: **' + destinations.length + '** (اللاذقية: ' + latakia + '، طرطوس: ' + tartus + ')\n• الفعاليات: **' + pulseEvents.length + '**\n• العروض: **' + adsList.length + '**';
+            }
+            
+            // ─── نية: الأفضل ───
+            if (intent === 'best') {
+                if (destinations.length === 0) return 'لا توجد مواقع.';
+                var sorted = destinations.slice().sort(function(a,b){ return (b.rating||0) - (a.rating||0); });
+                var top3 = sorted.slice(0, 3);
+                var list = top3.map(function(d, i) { return (i+1) + '. **' + d.name + '** (' + d.rating + '⭐)'; }).join('\n');
+                return '🏆 **أعلى المواقع تقييماً:**\n' + list;
+            }
+            
+            // ─── التحية ───
+            if (intent === 'greeting') {
+                return 'أهلاً بك! 👋 اسألني:\n• **"تقييم كسب"**\n• **"طقس أرواد"**\n• **"الفعاليات"**\n• **"أفضل المواقع"**';
+            }
+            
+            // ─── الشكر ───
+            if (intent === 'thanks') return 'العفو! 🌹 هل تحتاج شيئاً آخر؟';
+            
+            // ─── ذكر موقع دون نية واضحة ───
+            if (dest) {
+                return '📍 **' + dest.name + '** (' + (dest.region === 'latakia' ? 'اللاذقية' : 'طرطوس') + ')\n⭐ ' + dest.rating + '/5\n\nاسألني: **"تقييم"**, **"طقس"**, **"موقع"**, أو **"معلومات"** عن ' + dest.name;
+            }
+            
+            // ─── سؤال غير مفهوم ───
+            return '🤔 لم أفهم السؤال. جرب:\n• **"تقييم [اسم الموقع]"**\n• **"طقس [الموقع]"**\n• **"أين تقع [الموقع]؟"**\n• **"الفعاليات"** أو **"العروض"**';
         }
-
-        function updateDynamicChipsAfterResponse(queries) {
-            var box = document.getElementById('aiDynamicSuggestions');
-            if(!box || !queries || queries.length === 0) return;
-            var html = '';
-            queries.forEach(function(q) {
-                html += '<div class="ai-chip" onclick="handleChipClick(\'' + q + '\')">' + q + '</div>';
-            });
-            box.innerHTML = html;
-        }
-
-        console.log('✅ تم تفعيل وتشغيل الدليل الذكي بجميع المقدرات السياقية والتفاعلية الذكية!');
+        
+        console.log('✅ Smart AI Engine v3.0 - Contextual & Focused');
     </script>
 </body>
 </html>
