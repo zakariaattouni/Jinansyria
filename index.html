@@ -458,9 +458,7 @@
             overflow-y: auto;
         }
 
-        /* ============================================================
-           معرض الصور المصغر داخل بطاقة المنطقة
-           ============================================================ */
+        /* معرض الصور المصغر داخل بطاقة المنطقة */
         .dest-gallery {
             margin: 10px 0 12px;
         }
@@ -530,9 +528,7 @@
             padding: 4px 0;
         }
 
-        /* ============================================================
-           Lightbox للتكبير
-           ============================================================ */
+        /* Lightbox للتكبير مع حقل الاسم */
         .gallery-lightbox {
             display: none;
             position: fixed;
@@ -639,21 +635,41 @@
             margin-top: 0.2rem;
         }
         .gallery-lightbox .lb-comment-input {
-            display: flex;
-            gap: 8px;
             margin-top: 1rem;
         }
-        .gallery-lightbox .lb-comment-input input {
-            flex: 1;
+        .gallery-lightbox .lb-comment-input .input-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .gallery-lightbox .lb-comment-input input#lbCommentName {
+            flex: 0 0 130px;
+            min-width: 100px;
             padding: 8px 12px;
             border: 1px solid var(--border);
             border-radius: 8px;
             background: var(--bg-main);
             color: var(--text-main);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             outline: none;
+            font-family: inherit;
         }
-        .gallery-lightbox .lb-comment-input input:focus {
+        .gallery-lightbox .lb-comment-input input#lbCommentName:focus {
+            border-color: var(--primary);
+        }
+        .gallery-lightbox .lb-comment-input input#lbCommentInput {
+            flex: 1;
+            min-width: 150px;
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--bg-main);
+            color: var(--text-main);
+            font-size: 0.85rem;
+            outline: none;
+            font-family: inherit;
+        }
+        .gallery-lightbox .lb-comment-input input#lbCommentInput:focus {
             border-color: var(--primary);
         }
         .gallery-lightbox .lb-comment-input button {
@@ -666,9 +682,23 @@
             cursor: pointer;
             transition: var(--transition);
             font-family: inherit;
+            white-space: nowrap;
         }
         .gallery-lightbox .lb-comment-input button:hover {
             background: var(--primary-dark);
+        }
+        @media (max-width: 600px) {
+            .gallery-lightbox .lb-comment-input input#lbCommentName {
+                flex: 1 1 100%;
+                min-width: 100%;
+            }
+            .gallery-lightbox .lb-comment-input input#lbCommentInput {
+                flex: 1 1 100%;
+                min-width: 100%;
+            }
+            .gallery-lightbox .lb-comment-input button {
+                flex: 1 1 100%;
+            }
         }
 
         .dest-grid {
@@ -1659,7 +1689,7 @@
         </div>
     </div>
 
-    <!-- Lightbox للتكبير -->
+    <!-- Lightbox مع حقل اسم المستخدم -->
     <div class="gallery-lightbox" id="galleryLightbox">
         <div class="lb-content">
             <button class="lb-close" onclick="closeLightbox()"><i class="fa-solid fa-xmark"></i></button>
@@ -1670,8 +1700,11 @@
                 <h4><i class="fa-solid fa-comments"></i> التعليقات</h4>
                 <div id="lbComments"></div>
                 <div class="lb-comment-input">
-                    <input type="text" id="lbCommentInput" placeholder="اكتب تعليقك..." onkeypress="if(event.key==='Enter') addLightboxComment()">
-                    <button onclick="addLightboxComment()"><i class="fa-solid fa-paper-plane"></i> أرسل</button>
+                    <div class="input-row">
+                        <input type="text" id="lbCommentName" placeholder="اسمك..." value="زائر">
+                        <input type="text" id="lbCommentInput" placeholder="اكتب تعليقك..." onkeypress="if(event.key==='Enter') addLightboxComment()">
+                        <button onclick="addLightboxComment()"><i class="fa-solid fa-paper-plane"></i> أرسل</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1762,7 +1795,7 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script>
         // =============================================================
-        //  PWA: إنشاء المانيفست ديناميكياً كـ Blob URL
+        //  PWA: إنشاء المانيفست ديناميكياً
         // =============================================================
         (function() {
             var iconSVG = "data:image/svg+xml," + encodeURIComponent(
@@ -2062,7 +2095,7 @@
         var destinations = [];
         var pulseEvents = [];
         var adsList = [];
-        var galleryItems = [];  // { id, destId, title, img, comments: [{user, text, time}] }
+        var galleryItems = [];
         var currentAdIndex = 0;
         var adInterval = null;
         var homeExpanded = false;
@@ -2072,7 +2105,7 @@
         var weatherCache = {};
         var mapInstance = null;
         var mapMarkers = [];
-        var lightboxData = null;  // للصورة المعروضة حالياً في الـ Lightbox
+        var lightboxData = null;
         
         var defaultDestinations = {
             1: { id: 1, name: "كسب", region: "latakia", lat: 35.9325, lng: 35.9892, description: "بلدة سياحية غناء تعانق الجبال وتطل على البحر في اللاذقية.", img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80", rating: 4.9 },
@@ -2262,7 +2295,7 @@
         }
 
         // =============================================================
-        //  Lightbox للتكبير
+        //  Lightbox للتكبير مع حقل اسم المستخدم
         // =============================================================
         function openLightbox(id) {
             var item = galleryItems.find(function(g) { return g.id === id; });
@@ -2276,6 +2309,10 @@
             var dest = destinations.find(function(d) { return d.id === item.destId; });
             var regionName = dest ? (dest.region === 'latakia' ? 'اللاذقية' : 'طرطوس') : '';
             document.getElementById('lbMeta').textContent = regionName ? '📍 ' + regionName : '';
+            
+            // تعيين اسم افتراضي
+            document.getElementById('lbCommentName').value = 'زائر';
+            document.getElementById('lbCommentInput').value = '';
             
             renderLightboxComments();
             lb.classList.add('active');
@@ -2313,12 +2350,14 @@
         
         function addLightboxComment() {
             if (!lightboxData) return;
-            var input = document.getElementById('lbCommentInput');
-            var text = input.value.trim();
+            var nameInput = document.getElementById('lbCommentName');
+            var textInput = document.getElementById('lbCommentInput');
+            var name = nameInput.value.trim() || 'زائر';
+            var text = textInput.value.trim();
             if (!text) { alert('الرجاء كتابة تعليق'); return; }
             
             var comment = {
-                user: 'زائر',
+                user: name,
                 text: text,
                 time: Date.now()
             };
@@ -2326,14 +2365,14 @@
             if (!lightboxData.comments) lightboxData.comments = [];
             lightboxData.comments.push(comment);
             
-            // تحديث في Firebase
             if (db) {
                 db.ref('gallery/' + lightboxData.id + '/comments').set(lightboxData.comments);
             }
             
-            input.value = '';
+            textInput.value = '';
+            nameInput.value = 'زائر';
             renderLightboxComments();
-            renderAll(); // إعادة عرض الكل لتحديث أعداد التعليقات
+            renderAll();
         }
 
         // =============================================================
@@ -2394,7 +2433,6 @@
                 html += '<div class="weather-widget weather-loading" id="weather-' + containerId + '-' + dest.id + '"><i class="fa-solid fa-spinner"></i> جاري جلب الطقس...</div>';
                 html += '<p class="dest-desc">' + (dest.description || '') + '</p>';
                 html += '<button class="toggle-desc-btn" data-action="toggle-desc"><i class="fa-solid fa-chevron-down"></i> اقرأ المزيد</button>';
-                // معرض الصور المصغر
                 html += '<div id="' + galleryContainerId + '"></div>';
                 html += '<div class="dest-footer">';
                 html += '<div class="rating"><i class="fa-solid fa-star"></i> ' + (dest.rating || 4.5) + '</div>';
@@ -2410,14 +2448,12 @@
             });
             container.innerHTML = html || '<p style="color:var(--text-muted);">لا توجد مواقع لعرضها</p>';
             
-            // تحديث الطقس لكل وجهة
             displayData.forEach(function(dest) {
                 if (dest.lat && dest.lng) {
                     updateWeatherWidgetCustom(containerId + '-' + dest.id, dest.lat, dest.lng);
                 }
             });
             
-            // عرض معارض الصور لكل وجهة
             displayData.forEach(function(dest) {
                 var galleryContainerId = 'gallery-dest-' + dest.id + '-' + containerId;
                 renderDestGallery(dest.id, galleryContainerId);
@@ -2575,7 +2611,6 @@
         //  دوال CRUD للبيانات المختلفة
         // =============================================================
         
-        // --- الإعلانات ---
         function saveAd() {
             if (!db) { alert('❌ غير متصل'); return; }
             var editId = document.getElementById('ad-edit-id').value;
@@ -2614,7 +2649,6 @@
             document.getElementById('ad-cancel-btn').style.display = 'none';
         }
         
-        // --- الفعاليات ---
         function savePulse() {
             if (!db) return;
             var editId = document.getElementById('pulse-edit-id').value;
@@ -2653,7 +2687,6 @@
             document.getElementById('pulse-cancel-btn').style.display = 'none';
         }
         
-        // --- الوجهات السياحية ---
         function saveDestination() {
             if (!db) return;
             var editId = document.getElementById('edit-dest-id').value;
@@ -2678,7 +2711,6 @@
         function deleteDestination(id) {
             if (!db) return;
             if (!confirm('حذف الموقع؟')) return;
-            // حذف الصور المرتبطة بهذه الوجهة
             var relatedImages = galleryItems.filter(function(g) { return g.destId === id; });
             relatedImages.forEach(function(img) {
                 db.ref('gallery/' + img.id).remove();
@@ -2718,7 +2750,6 @@
             document.getElementById('dest-modal').style.display = 'none';
         }
         
-        // --- معرض الصور ---
         function saveGalleryItem() {
             if (!db) { alert('❌ غير متصل'); return; }
             var editId = document.getElementById('gallery-edit-id').value;
@@ -2738,7 +2769,6 @@
                 comments: []
             };
             
-            // إذا كان تعديل، احتفظ بالتعليقات القديمة
             if (editId) {
                 var existing = galleryItems.find(function(g) { return g.id == id; });
                 if (existing && existing.comments) {
@@ -2812,7 +2842,6 @@
         //  معالجة الأحداث (Event Delegation)
         // =============================================================
         document.addEventListener('click', function(e) {
-            // إغلاق الـ Lightbox عند النقر على الخلفية
             if (e.target.closest('#galleryLightbox') && !e.target.closest('.lb-content')) {
                 closeLightbox();
                 return;
@@ -2952,7 +2981,7 @@
             }
         });
 
-        // ═══ FAB: فتح/إغلاق ═══
+        // ═══ FAB ═══
         (function() {
             var fabBtn = document.getElementById('shareFabBtn');
             var fabContainer = document.getElementById('shareFabContainer');
@@ -3066,11 +3095,10 @@
             });
             
             console.log('✅ عداد الزوار المتقدم جاهز: إجمالي=' + totalVisitors + ', نشطاء=' + onlineUsers);
-            console.log('✅ القيم الافتراضية: إجمالي 170,010 | متواجدون 48');
         })();
 
         // =============================================================
-        //  محرك الدليل الذكي المتقدم
+        //  محرك الدليل الذكي
         // =============================================================
         var aiChatHistory = [];
         var lastDiscussedContext = null;
@@ -3304,14 +3332,11 @@
             return '🤔 لم أفهم السؤال. جرب:\n• **"تقييم [اسم الموقع]"**\n• **"طقس [الموقع]"**\n• **"صور [الموقع]"**\n• **"أين تقع [الموقع]؟"**\n• **"الفعاليات"** أو **"العروض"**';
         }
         
-        console.log('✅ Smart AI Engine v4.0 - باﻹضافة إلى معرض الصور');
-        console.log('✅ Share Engine v1.0 - Ready');
-        console.log('✅ Gallery System in Destination Cards - Active');
-        console.log('✅ Lightbox with Comments - Active');
-        console.log('✅ Advanced Counter System - Final Fixed Version');
+        console.log('✅ Smart AI Engine v4.0 - مع معرض الصور');
+        console.log('✅ Lightbox مع حقل اسم المستخدم - جاهز');
+        console.log('✅ معرض صور داخل كل بطاقة منطقة');
         console.log('✅ Total Visitors: 170,010 | Online Users: 48');
         console.log('✅ Pulse text color enhanced (darker & bolder)');
-        console.log('✅ Per-destination gallery with admin control');
     </script>
 </body>
 </html>
