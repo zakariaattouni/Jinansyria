@@ -519,7 +519,7 @@
             opacity: 0.6;
             padding: 4px 0;
         }
-        /* Lightbox للتكبير مع حقل اسم المستخدم - بدون زر حذف للزوار */
+        /* Lightbox مع حقل اسم المستخدم - بدون زر حذف للزوار */
         .gallery-lightbox {
             display: none;
             position: fixed;
@@ -1454,6 +1454,95 @@
             padding: 0 15px 8px;
             background: var(--bg-main);
         }
+
+        /* ===== NEW STYLES FOR ENGAGEMENT ===== */
+        .trending-section {
+            background: linear-gradient(135deg, rgba(217, 119, 6, 0.06), rgba(2, 132, 199, 0.06));
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.2rem;
+            margin-bottom: 2rem;
+        }
+        .trending-section .section-title {
+            font-size: 1.1rem;
+            font-weight: 800;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .trending-cards {
+            display: flex;
+            gap: 1rem;
+            overflow-x: auto;
+            padding-bottom: 6px;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary) transparent;
+        }
+        .trending-cards::-webkit-scrollbar { height: 4px; }
+        .trending-cards::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 4px; }
+        .trending-card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 0.8rem 1rem;
+            min-width: 150px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            flex-shrink: 0;
+            text-align: center;
+        }
+        .trending-card .rank {
+            font-size: 1.2rem;
+            font-weight: 900;
+            color: var(--accent);
+        }
+        .trending-card .name {
+            font-weight: 700;
+            font-size: 0.95rem;
+            margin-top: 0.2rem;
+        }
+        .trending-card .meta {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.2rem;
+        }
+
+        .dest-actions {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            margin-top: 6px;
+        }
+        .dest-actions button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 4px 6px;
+            border-radius: 6px;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            color: var(--text-muted);
+        }
+        .dest-actions button:hover {
+            background: rgba(2, 132, 199, 0.08);
+            color: var(--primary);
+        }
+        .dest-actions button.liked {
+            color: #ef4444;
+        }
+        .dest-actions button.faved {
+            color: var(--accent);
+        }
+        .dest-actions button i {
+            pointer-events: none;
+        }
+        .dest-actions .count {
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
     </style>
 </head>
 <body>
@@ -1515,6 +1604,11 @@
             <div class="pulse-section">
                 <h2 class="section-title"><i class="fa-solid fa-heart-pulse" style="color:var(--accent);"></i> نبض الساحل: فعاليات ونشاطات</h2>
                 <div class="pulse-scroll" id="pulse-scroll-container"></div>
+            </div>
+            <!-- NEW: Trending destinations -->
+            <div class="trending-section" id="trendingSection">
+                <div class="section-title"><i class="fa-solid fa-fire" style="color:var(--accent);"></i> الوجهات الأكثر رواجاً</div>
+                <div class="trending-cards" id="trendingCards"></div>
             </div>
             <div class="dest-grid" id="home-destinations-grid"></div>
             <div class="show-more-wrap" id="home-show-more-wrap" style="display:none;">
@@ -2100,6 +2194,45 @@
         var mapMarkers = [];
         var lightboxData = null;
         
+        // =============================================================
+        //  NEW: تفاعلات المستخدم (إعجابات ومفضلة) - تخزين محلي
+        // =============================================================
+        var likesData = JSON.parse(localStorage.getItem('jinan_likes') || '{}');
+        var favsData = JSON.parse(localStorage.getItem('jinan_favs') || '{}');
+        
+        function toggleLike(destId) {
+            var key = 'dest_' + destId;
+            if (likesData[key]) {
+                delete likesData[key];
+            } else {
+                likesData[key] = true;
+            }
+            localStorage.setItem('jinan_likes', JSON.stringify(likesData));
+            renderAll(); // تحديث الواجهة
+        }
+        function toggleFav(destId) {
+            var key = 'dest_' + destId;
+            if (favsData[key]) {
+                delete favsData[key];
+            } else {
+                favsData[key] = true;
+            }
+            localStorage.setItem('jinan_favs', JSON.stringify(favsData));
+            renderAll();
+        }
+        function isLiked(destId) {
+            return !!likesData['dest_' + destId];
+        }
+        function isFaved(destId) {
+            return !!favsData['dest_' + destId];
+        }
+        function getLikeCount(destId) {
+            // عدد الإعجابات الوهمي – بناءً على التقييم + تفاعلات عشوائية
+            var base = Math.floor(destinations.find(d => d.id === destId)?.rating * 4) || 10;
+            var extra = Object.keys(likesData).filter(k => k === 'dest_' + destId).length;
+            return base + extra;
+        }
+        
         var defaultDestinations = {
             1: { id: 1, name: "كسب", region: "latakia", lat: 35.9325, lng: 35.9892, description: "بلدة سياحية غناء تعانق الجبال وتطل على البحر في اللاذقية.", img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80", rating: 4.9 },
             2: { id: 2, name: "رأس البسيط", region: "latakia", lat: 35.9183, lng: 35.8056, description: "شبه جزيرة ساحرة ذات رمال ذهبية ومياه نقية في اللاذقية.", img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80", rating: 4.8 },
@@ -2394,9 +2527,35 @@
             renderPulse();
             renderAdminLists();
             renderAdminComments();
+            renderTrending();
             if (mapInstance) updateMapMarkers();
             renderAiSuggestions();
             updateGalleryDestSelect();
+        }
+        
+        // =============================================================
+        //  NEW: عرض الوجهات الرائجة
+        // =============================================================
+        function renderTrending() {
+            var container = document.getElementById('trendingCards');
+            if (!container) return;
+            if (!destinations.length) { container.innerHTML = '<p style="color:var(--text-muted);">لا توجد وجهات بعد</p>'; return; }
+            
+            var sorted = destinations.slice().sort(function(a,b) {
+                var aLikes = getLikeCount(a.id);
+                var bLikes = getLikeCount(b.id);
+                return bLikes - aLikes;
+            });
+            var top = sorted.slice(0, 5);
+            var html = '';
+            top.forEach(function(d, idx) {
+                html += '<div class="trending-card">' +
+                    '<div class="rank">#' + (idx+1) + '</div>' +
+                    '<div class="name">' + d.name + '</div>' +
+                    '<div class="meta"><i class="fa-regular fa-heart"></i> ' + getLikeCount(d.id) + '</div>' +
+                    '</div>';
+            });
+            container.innerHTML = html;
         }
         
         function renderGridWithAds(containerId, data, isHome) {
@@ -2415,6 +2574,10 @@
             displayData.forEach(function(dest) {
                 var img = dest.img || 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80';
                 var galleryContainerId = 'gallery-dest-' + dest.id + '-' + containerId;
+                var likeCount = getLikeCount(dest.id);
+                var liked = isLiked(dest.id);
+                var faved = isFaved(dest.id);
+                
                 html += '<div class="dest-card">';
                 html += '<img src="' + img + '" class="dest-img" alt="' + dest.name + '">';
                 html += '<div class="dest-body">';
@@ -2424,6 +2587,13 @@
                 html += '<p class="dest-desc">' + (dest.description || '') + '</p>';
                 html += '<button class="toggle-desc-btn" data-action="toggle-desc"><i class="fa-solid fa-chevron-down"></i> اقرأ المزيد</button>';
                 html += '<div id="' + galleryContainerId + '"></div>';
+                
+                // NEW: أزرار التفاعل
+                html += '<div class="dest-actions">';
+                html += '<button onclick="toggleLike(' + dest.id + ')" class="' + (liked ? 'liked' : '') + '"><i class="fa-solid fa-heart"></i> <span class="count">' + likeCount + '</span></button>';
+                html += '<button onclick="toggleFav(' + dest.id + ')" class="' + (faved ? 'faved' : '') + '"><i class="fa-solid fa-star"></i></button>';
+                html += '</div>';
+                
                 html += '<div class="dest-footer">';
                 html += '<div class="rating"><i class="fa-solid fa-star"></i> ' + (dest.rating || 4.5) + '</div>';
                 html += '<div style="display:flex; gap:6px; align-items:center;">';
@@ -3339,6 +3509,8 @@
         console.log('✅ Lightbox بدون زر حذف للزوار');
         console.log('✅ إدارة التعليقات في لوحة التحكم');
         console.log('✅ عداد المتواجدين عشوائي متغير (لا يقل عن 50)');
+        console.log('✅ ميزات التفاعل: إعجاب ❤️ ومفضلة ⭐');
+        console.log('✅ الوجهات الرائجة تعرض تلقائياً');
         console.log('✅ جميع الميزات جاهزة');
     </script>
 </body>
