@@ -369,6 +369,7 @@
             padding-bottom: 8px;
             scrollbar-width: thin;
             scrollbar-color: var(--accent) transparent;
+            flex-wrap: nowrap; /* التمرير الأفقي */
         }
         .pulse-scroll::-webkit-scrollbar { height: 5px; }
         .pulse-scroll::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
@@ -473,6 +474,7 @@
             padding-bottom: 6px;
             scrollbar-width: thin;
             scrollbar-color: var(--primary) transparent;
+            flex-wrap: nowrap; /* التمرير الأفقي */
         }
         .dest-gallery-thumbs::-webkit-scrollbar { height: 4px; }
         .dest-gallery-thumbs::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 4px; }
@@ -960,7 +962,7 @@
             justify-content: center;
             gap: 10px;
             flex-wrap: wrap;
-            margin-bottom: 1.2rem;
+            margin-bottom: 0.8rem;
         }
         footer .footer-dev-credit i {
             color: var(--accent);
@@ -979,168 +981,7 @@
             font-size: 0.85rem;
         }
         
-        .footer-share-section {
-            padding-top: 1.2rem;
-            margin-top: 0.5rem;
-            border-top: 1px dashed var(--border);
-        }
-        .footer-share-title {
-            font-size: 0.9rem;
-            font-weight: 800;
-            color: var(--text-main);
-            margin-bottom: 0.8rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-        .footer-share-title i { color: var(--accent); }
-        .footer-share-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-        .footer-share-btn {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            border: none;
-            color: white;
-            font-size: 1.15rem;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            text-decoration: none;
-            position: relative;
-            overflow: hidden;
-        }
-        .footer-share-btn::before {
-            content: '';
-            position: absolute;
-            top: 50%; left: 50%;
-            width: 0; height: 0;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.3);
-            transform: translate(-50%, -50%);
-            transition: width 0.4s, height 0.4s;
-        }
-        .footer-share-btn:hover::before { width: 120%; height: 120%; }
-        .footer-share-btn:hover { transform: translateY(-4px) scale(1.1); }
-        .footer-share-btn.whatsapp { background: linear-gradient(135deg, #25D366, #128C7E); }
-        .footer-share-btn.facebook { background: linear-gradient(135deg, #1877F2, #0C5DC7); }
-        .footer-share-btn.twitter { background: linear-gradient(135deg, #000000, #1a1a1a); }
-        .footer-share-btn.telegram { background: linear-gradient(135deg, #0088cc, #006699); }
-        .footer-share-btn.instagram { background: linear-gradient(135deg, #E1306C, #833AB4, #F77737); }
-        .footer-share-btn.linkedin { background: linear-gradient(135deg, #0077B5, #005582); }
-        .footer-share-btn.copy-link { background: linear-gradient(135deg, #64748b, #475569); }
-        .share-fab-container {
-            position: fixed;
-            bottom: 25px;
-            left: 25px;
-            z-index: 999;
-        }
-        .share-fab-btn {
-            width: 58px;
-            height: 58px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 8px 25px rgba(2, 132, 199, 0.5);
-            font-size: 1.4rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            z-index: 102;
-        }
-        .share-fab-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 12px 30px rgba(2, 132, 199, 0.65);
-        }
-        .share-fab-btn.active i {
-            transform: rotate(45deg);
-        }
-        .share-fab-btn i {
-            transition: transform 0.35s ease;
-        }
-        .share-fab-menu {
-            position: absolute;
-            bottom: 70px;
-            left: 0;
-            display: flex;
-            flex-direction: column-reverse;
-            gap: 10px;
-            opacity: 0;
-            pointer-events: none;
-            transform: translateY(20px) scale(0.8);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .share-fab-container.open .share-fab-menu {
-            opacity: 1;
-            pointer-events: all;
-            transform: translateY(0) scale(1);
-        }
-        .share-fab-item {
-            width: 46px;
-            height: 46px;
-            border-radius: 50%;
-            border: none;
-            color: white;
-            font-size: 1.15rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            transition: all 0.3s ease;
-            position: relative;
-        }
-        .share-fab-item:hover { transform: scale(1.15) translateX(-5px); }
-        .share-fab-item::after {
-            content: attr(title);
-            position: absolute;
-            right: 55px;
-            background: var(--bg-card);
-            color: var(--text-main);
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            white-space: nowrap;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.2s;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            border: 1px solid var(--border);
-        }
-        .share-fab-item:hover::after { opacity: 1; }
-        .share-fab-item.whatsapp { background: linear-gradient(135deg, #25D366, #128C7E); }
-        .share-fab-item.facebook { background: linear-gradient(135deg, #1877F2, #0C5DC7); }
-        .share-fab-item.twitter { background: linear-gradient(135deg, #000000, #1a1a1a); }
-        .share-fab-item.telegram { background: linear-gradient(135deg, #0088cc, #006699); }
-        .share-fab-item.copy { background: linear-gradient(135deg, #64748b, #475569); }
-        .share-fab-item.native { background: linear-gradient(135deg, var(--accent), #b45309); }
-        
-        @keyframes fabItemIn {
-            from { opacity: 0; transform: translateY(15px) scale(0.6); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-        .share-fab-container.open .share-fab-item {
-            animation: fabItemIn 0.35s ease-out backwards;
-        }
-        .share-fab-container.open .share-fab-item:nth-child(1) { animation-delay: 0.02s; }
-        .share-fab-container.open .share-fab-item:nth-child(2) { animation-delay: 0.06s; }
-        .share-fab-container.open .share-fab-item:nth-child(3) { animation-delay: 0.1s; }
-        .share-fab-container.open .share-fab-item:nth-child(4) { animation-delay: 0.14s; }
-        .share-fab-container.open .share-fab-item:nth-child(5) { animation-delay: 0.18s; }
-        .share-fab-container.open .share-fab-item:nth-child(6) { animation-delay: 0.22s; }
+        /* تم حذف .footer-share-section بالكامل */
         
         .btn-share-mini {
             background: rgba(2, 132, 199, 0.1);
@@ -1454,7 +1295,6 @@
             padding: 0 15px 8px;
             background: var(--bg-main);
         }
-
         /* ===== NEW STYLES FOR ENGAGEMENT ===== */
         .trending-section {
             background: linear-gradient(135deg, rgba(217, 119, 6, 0.06), rgba(2, 132, 199, 0.06));
@@ -1478,6 +1318,7 @@
             padding-bottom: 6px;
             scrollbar-width: thin;
             scrollbar-color: var(--primary) transparent;
+            flex-wrap: nowrap; /* التمرير الأفقي */
         }
         .trending-cards::-webkit-scrollbar { height: 4px; }
         .trending-cards::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 4px; }
@@ -1506,7 +1347,6 @@
             color: var(--text-muted);
             margin-top: 0.2rem;
         }
-
         .dest-actions {
             display: flex;
             gap: 6px;
@@ -1543,6 +1383,111 @@
             font-size: 0.75rem;
             font-weight: 600;
         }
+        /* إعادة تعريف الـ share-fab-container */
+        .share-fab-container {
+            position: fixed;
+            bottom: 25px;
+            left: 25px;
+            z-index: 999;
+        }
+        .share-fab-btn {
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(2, 132, 199, 0.5);
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            z-index: 102;
+        }
+        .share-fab-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 30px rgba(2, 132, 199, 0.65);
+        }
+        .share-fab-btn.active i {
+            transform: rotate(45deg);
+        }
+        .share-fab-btn i {
+            transition: transform 0.35s ease;
+        }
+        .share-fab-menu {
+            position: absolute;
+            bottom: 70px;
+            left: 0;
+            display: flex;
+            flex-direction: column-reverse;
+            gap: 10px;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(20px) scale(0.8);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .share-fab-container.open .share-fab-menu {
+            opacity: 1;
+            pointer-events: all;
+            transform: translateY(0) scale(1);
+        }
+        .share-fab-item {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            border: none;
+            color: white;
+            font-size: 1.15rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .share-fab-item:hover { transform: scale(1.15) translateX(-5px); }
+        .share-fab-item::after {
+            content: attr(title);
+            position: absolute;
+            right: 55px;
+            background: var(--bg-card);
+            color: var(--text-main);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border: 1px solid var(--border);
+        }
+        .share-fab-item:hover::after { opacity: 1; }
+        .share-fab-item.whatsapp { background: linear-gradient(135deg, #25D366, #128C7E); }
+        .share-fab-item.facebook { background: linear-gradient(135deg, #1877F2, #0C5DC7); }
+        .share-fab-item.twitter { background: linear-gradient(135deg, #000000, #1a1a1a); }
+        .share-fab-item.telegram { background: linear-gradient(135deg, #0088cc, #006699); }
+        .share-fab-item.copy { background: linear-gradient(135deg, #64748b, #475569); }
+        .share-fab-item.native { background: linear-gradient(135deg, var(--accent), #b45309); }
+        
+        @keyframes fabItemIn {
+            from { opacity: 0; transform: translateY(15px) scale(0.6); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .share-fab-container.open .share-fab-item {
+            animation: fabItemIn 0.35s ease-out backwards;
+        }
+        .share-fab-container.open .share-fab-item:nth-child(1) { animation-delay: 0.02s; }
+        .share-fab-container.open .share-fab-item:nth-child(2) { animation-delay: 0.06s; }
+        .share-fab-container.open .share-fab-item:nth-child(3) { animation-delay: 0.1s; }
+        .share-fab-container.open .share-fab-item:nth-child(4) { animation-delay: 0.14s; }
+        .share-fab-container.open .share-fab-item:nth-child(5) { animation-delay: 0.18s; }
+        .share-fab-container.open .share-fab-item:nth-child(6) { animation-delay: 0.22s; }
     </style>
 </head>
 <body>
@@ -1814,36 +1759,7 @@
             <span class="footer-dev-name">زكريا محمد عطوني</span>
             <span class="footer-country"><i class="fa-solid fa-flag"></i> سوريا</span>
         </div>
-        
-        <div class="footer-share-section">
-            <div class="footer-share-title">
-                <i class="fa-solid fa-share-nodes"></i>
-                <span>شارك جنان الساحل مع أصدقائك</span>
-            </div>
-            <div class="footer-share-buttons">
-                <button class="footer-share-btn whatsapp" data-share-site="whatsapp" title="واتساب" aria-label="مشاركة على واتساب">
-                    <i class="fa-brands fa-whatsapp"></i>
-                </button>
-                <button class="footer-share-btn facebook" data-share-site="facebook" title="فيسبوك" aria-label="مشاركة على فيسبوك">
-                    <i class="fa-brands fa-facebook-f"></i>
-                </button>
-                <button class="footer-share-btn twitter" data-share-site="twitter" title="X (تويتر)" aria-label="مشاركة على X">
-                    <i class="fa-brands fa-x-twitter"></i>
-                </button>
-                <button class="footer-share-btn telegram" data-share-site="telegram" title="تيليجرام" aria-label="مشاركة على تيليجرام">
-                    <i class="fa-brands fa-telegram"></i>
-                </button>
-                <button class="footer-share-btn instagram" data-share-site="instagram" title="انستجرام" aria-label="مشاركة على انستجرام">
-                    <i class="fa-brands fa-instagram"></i>
-                </button>
-                <button class="footer-share-btn linkedin" data-share-site="linkedin" title="لينكد إن" aria-label="مشاركة على لينكد إن">
-                    <i class="fa-brands fa-linkedin-in"></i>
-                </button>
-                <button class="footer-share-btn copy-link" data-share-site="copy" title="نسخ الرابط" aria-label="نسخ الرابط">
-                    <i class="fa-solid fa-link"></i>
-                </button>
-            </div>
-        </div>
+        <!-- تم حذف قسم المشاركة الأفقي (footer-share-section) -->
     </footer>
     
     <div class="share-fab-container" id="shareFabContainer">
@@ -2227,7 +2143,6 @@
             return !!favsData['dest_' + destId];
         }
         function getLikeCount(destId) {
-            // عدد الإعجابات الوهمي – بناءً على التقييم + تفاعلات عشوائية
             var base = Math.floor(destinations.find(d => d.id === destId)?.rating * 4) || 10;
             var extra = Object.keys(likesData).filter(k => k === 'dest_' + destId).length;
             return base + extra;
@@ -2571,6 +2486,10 @@
             }
             var html = '';
             var count = 0;
+            // إضافة الإعلان قبل أول بطاقة (إذا كان هناك إعلانات)
+            if (displayData.length > 0 && adsList.length > 0) {
+                html += getAdCardHtml(containerId + '-pre-ad');
+            }
             displayData.forEach(function(dest) {
                 var img = dest.img || 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80';
                 var galleryContainerId = 'gallery-dest-' + dest.id + '-' + containerId;
@@ -2602,7 +2521,8 @@
                 html += '</div>';
                 html += '</div></div></div>';
                 count++;
-                if (count % 4 === 0 && adsList.length > 0) {
+                // إضافة إعلان بعد كل 4 بطاقات (اختياري، لكننا نتركه)
+                if (count % 4 === 0 && adsList.length > 1) {
                     html += getAdCardHtml(containerId + '-ad-' + count);
                 }
             });
@@ -3511,6 +3431,8 @@
         console.log('✅ عداد المتواجدين عشوائي متغير (لا يقل عن 50)');
         console.log('✅ ميزات التفاعل: إعجاب ❤️ ومفضلة ⭐');
         console.log('✅ الوجهات الرائجة تعرض تلقائياً');
+        console.log('✅ التمرير الأفقي لعناصر نبض الساحل والرائجة ومعرض الصور (تم استعادته)');
+        console.log('✅ تم حذف أزرار المشاركة الأفقية من الفوتر');
         console.log('✅ جميع الميزات جاهزة');
     </script>
 </body>
