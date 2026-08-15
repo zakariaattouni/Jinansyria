@@ -234,8 +234,8 @@
             font-weight: 900;
             letter-spacing: 0.5px;
         }
-        
-        /* ===== NEW HOLIDAY PLAN BUTTON ===== */
+
+        /* ===== HOLIDAY PLAN BUTTON ===== */
         .holiday-plan-wrapper {
             display: flex;
             justify-content: center;
@@ -302,7 +302,7 @@
                 font-size: 1rem;
             }
         }
-        
+
         @media(max-width: 950px) {
             .mobile-toggle { display: flex; }
             .nav-links {
@@ -375,6 +375,8 @@
             border-color: var(--primary);
             transform: translateY(-3px);
         }
+        
+        /* ===== AD CARD MODIFICATIONS ===== */
         .ad-card {
             background: linear-gradient(135deg, rgba(2, 132, 199, 0.08), rgba(217, 119, 6, 0.08));
             border: 2px dashed var(--accent);
@@ -387,34 +389,36 @@
             position: relative;
         }
         .ad-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px -5px rgba(0,0,0,0.1); }
-        .ad-card-badge {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: var(--accent);
-            color: white;
-            padding: 3px 10px;
-            border-radius: 50px;
-            font-size: 0.75rem;
-            font-weight: 800;
-            z-index: 2;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        /* تم حذف .ad-card-badge بالكامل - لم تعد هناك شارة "إعلان مميز" */
+        .ad-card-img {
+            height: 250px;
+            width: 100%;
+            object-fit: cover;
+            transition: opacity 0.5s ease-in-out;
         }
-        .ad-card-img { height: 200px; width: 100%; object-fit: cover; transition: opacity 0.5s ease-in-out; }
-        .ad-card-body { padding: 1.25rem; flex: 1; display: flex; flex-direction: column; }
-        .ad-card-body h3 { font-size: 1.2rem; margin-bottom: 0.4rem; font-weight: 800; color: var(--text-main); }
-        .ad-card-desc { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem; line-height: 1.5; flex: 1; }
-        .ad-card-footer {
+        .ad-card-body {
+            padding: 0.8rem 1rem 0.6rem;
+            flex: 1;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-top: 1px solid var(--border);
-            padding-top: 0.8rem;
-            margin-top: auto;
-            font-size: 0.8rem;
-            color: var(--accent);
-            font-weight: 700;
+            flex-direction: column;
         }
+        .ad-card-body h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.3rem;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+        .ad-card-desc {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-bottom: 0.3rem;
+            line-height: 1.4;
+            max-height: 3.8em;
+            overflow: hidden;
+            flex: 1;
+        }
+        /* تم حذف .ad-card-footer بالكامل - لم يعد هناك تذييل */
+        
         .pulse-section {
             margin-bottom: 2rem;
             padding: 1.2rem;
@@ -1046,6 +1050,7 @@
             border-radius: 50px;
             font-size: 0.85rem;
         }
+        /* تم حذف .footer-share-section بالكامل */
         .btn-share-mini {
             background: rgba(2, 132, 199, 0.1);
             color: var(--primary);
@@ -1598,7 +1603,7 @@
         </div>
     </header>
 
-    <!-- ===== NEW HOLIDAY PLAN BUTTON ===== -->
+    <!-- ===== HOLIDAY PLAN BUTTON ===== -->
     <div class="holiday-plan-wrapper">
         <a href="https://ais-pre-ink2rarex362pwc66ataca-723648286973.europe-west2.run.app/" target="_blank" rel="noopener noreferrer" class="holiday-plan-btn">
             <i class="fa-solid fa-umbrella-beach"></i>
@@ -1646,7 +1651,6 @@
             <h2 class="section-title"><i class="fa-solid fa-map-location-dot"></i> الخريطة التفاعلية للمواقع السياحية</h2>
             <p style="color:var(--text-muted); margin-bottom:1rem;">تستعرض الخريطة أدناه جميع المواقع المضافة وإحداثياتها بدقة. يمكنك الضغط على أي علامة لمعرفة تفاصيل الموقع.</p>
             <div id="map"></div>
-            
             <h3 style="margin: 2rem 0 1rem; font-size: 1.2rem;"><i class="fa-solid fa-bullhorn" style="color:var(--accent);"></i> إعلانات وعروض جنان الساحل</h3>
             <div class="dest-grid" id="map-ads-grid" style="grid-template-columns: 1fr; max-width: 600px; margin: 0 auto;"></div>
         </section>
@@ -1675,7 +1679,6 @@
                     </div>
                     <div id="admin-ads-list"></div>
                 </div>
-                <!-- إدارة معرض الصور الخاص بالوجهات -->
                 <div style="background:var(--bg-main); padding:1.2rem; border-radius:8px; border:1px solid var(--border); margin-bottom:1.5rem;">
                     <h3 style="margin-bottom:0.5rem; font-size:1.1rem;"><i class="fa-solid fa-images" style="color:var(--primary);"></i> إدارة معرض الصور (لكل وجهة)</h3>
                     <div class="admin-note">أضف صوراً لكل منطقة سياحية. الصور تظهر داخل بطاقة المنطقة كمعرض مصغر.</div>
@@ -1693,7 +1696,6 @@
                     </div>
                     <div id="admin-gallery-list"></div>
                 </div>
-                <!-- إدارة التعليقات (للمدير فقط) -->
                 <div style="background:var(--bg-main); padding:1.2rem; border-radius:8px; border:1px solid var(--border); margin-bottom:1.5rem;">
                     <h3 style="margin-bottom:0.5rem; font-size:1.1rem;"><i class="fa-solid fa-comment-slash" style="color:var(--accent);"></i> إدارة التعليقات</h3>
                     <div class="admin-note">هنا يمكنك الاطلاع على جميع التعليقات وحذف أي تعليق مسيء.</div>
@@ -2616,16 +2618,15 @@
             container.innerHTML = getAdCardHtml('map-page-ad');
         }
         
+        // ===== MODIFIED AD CARD: Clean, no badge, no footer =====
         function getAdCardHtml(elementId) {
             if (!adsList.length) return '';
             var ad = adsList[currentAdIndex % adsList.length];
             return '<div class="ad-card" id="' + elementId + '">' +
-                   '<span class="ad-card-badge"><i class="fa-solid fa-bullhorn"></i> إعلان مميز</span>' +
                    '<img src="' + (ad.img || '') + '" class="ad-card-img" alt="إعلان">' +
                    '<div class="ad-card-body">' +
                    '<h3>' + (ad.title || '') + '</h3>' +
                    '<p class="ad-card-desc">' + (ad.desc || '') + '</p>' +
-                   '<div class="ad-card-footer"><span>جنان الساحل</span><i class="fa-solid fa-ad"></i></div>' +
                    '</div></div>';
         }
         
@@ -3504,6 +3505,8 @@
         console.log('✅ التمرير الأفقي لعناصر نبض الساحل والرائجة ومعرض الصور (تم استعادته)');
         console.log('✅ تم حذف أزرار المشاركة الأفقية من الفوتر');
         console.log('✅ تم إضافة زر "خطط لعطلتك السعيدة" تحت الهيدر');
+        console.log('✅ تم تعديل النافذة الإعلانية: حذف "إعلان مميز" وحذف أيقونة ad');
+        console.log('✅ النافذة الإعلانية أصبحت نظيفة (صورة + عنوان + وصف فقط)');
         console.log('✅ جميع الميزات جاهزة');
     </script>
 </body>
