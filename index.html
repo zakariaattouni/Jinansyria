@@ -114,6 +114,7 @@
             display: flex;
             gap: 0.5rem;
             align-items: center;
+            position: relative;
         }
         .btn-install {
             background: rgba(255, 255, 255, 0.2);
@@ -144,8 +145,142 @@
             justify-content: center;
             font-size: 0.85rem;
             transition: var(--transition);
+            position: relative;
         }
         .btn-icon:hover { background: rgba(255, 255, 255, 0.35); }
+        /* ===== NOTIFICATION BELL ===== */
+        .notification-bell {
+            position: relative;
+        }
+        .notification-bell .badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background: #ef4444;
+            color: white;
+            font-size: 0.6rem;
+            font-weight: 800;
+            min-width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 4px;
+            border: 2px solid rgba(2,132,199,0.98);
+            box-shadow: 0 2px 6px rgba(239,68,68,0.4);
+            opacity: 0;
+            transform: scale(0.5);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            pointer-events: none;
+        }
+        .notification-bell .badge.show {
+            opacity: 1;
+            transform: scale(1);
+        }
+        /* ===== NOTIFICATION DROPDOWN ===== */
+        .notif-dropdown {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            width: 360px;
+            max-width: calc(100vw - 20px);
+            max-height: 400px;
+            overflow-y: auto;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            padding: 0.5rem 0;
+            display: none;
+            z-index: 2000;
+            direction: rtl;
+        }
+        .notif-dropdown.open {
+            display: block;
+        }
+        .notif-dropdown .notif-header {
+            padding: 0.6rem 1rem;
+            font-weight: 800;
+            font-size: 0.9rem;
+            color: var(--text-main);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .notif-dropdown .notif-header .mark-read {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--primary);
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+        .notif-dropdown .notif-header .mark-read:hover { text-decoration: underline; }
+        .notif-item {
+            padding: 0.7rem 1rem;
+            border-bottom: 1px solid var(--border);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+        .notif-item:hover {
+            background: rgba(2,132,199,0.05);
+        }
+        .notif-item:last-child { border-bottom: none; }
+        .notif-item .notif-user {
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: var(--text-main);
+        }
+        .notif-item .notif-text {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin: 0.2rem 0;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .notif-item .notif-location {
+            font-size: 0.7rem;
+            color: var(--primary);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .notif-item .notif-time {
+            font-size: 0.6rem;
+            color: var(--text-muted);
+            opacity: 0.6;
+        }
+        .notif-item .go-to-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 2px 10px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 4px;
+        }
+        .notif-item .go-to-btn:hover { background: var(--primary-dark); }
+        .notif-empty {
+            padding: 1.5rem;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+        @media (max-width: 600px) {
+            .notif-dropdown {
+                width: calc(100vw - 20px);
+                right: -10px;
+                max-height: 350px;
+            }
+        }
         .mobile-toggle {
             display: none;
             background: rgba(255, 255, 255, 0.2);
@@ -389,7 +524,6 @@
             position: relative;
         }
         .ad-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px -5px rgba(0,0,0,0.1); }
-        /* تم حذف .ad-card-badge بالكامل - لم تعد هناك شارة "إعلان مميز" */
         .ad-card-img {
             height: 250px;
             width: 100%;
@@ -417,7 +551,6 @@
             overflow: hidden;
             flex: 1;
         }
-        /* تم حذف .ad-card-footer بالكامل - لم يعد هناك تذييل */
         
         .pulse-section {
             margin-bottom: 2rem;
@@ -1050,7 +1183,6 @@
             border-radius: 50px;
             font-size: 0.85rem;
         }
-        /* تم حذف .footer-share-section بالكامل */
         .btn-share-mini {
             background: rgba(2, 132, 199, 0.1);
             color: var(--primary);
@@ -1578,6 +1710,20 @@
                     <i class="fa-solid fa-download"></i>
                     <span>تثبيت</span>
                 </button>
+                <!-- ===== NOTIFICATION BELL ===== -->
+                <div class="notification-bell" id="notifBell">
+                    <button class="btn-icon" id="notifToggle" title="الإشعارات">
+                        <i class="fa-regular fa-bell"></i>
+                    </button>
+                    <span class="badge" id="notifBadge">0</span>
+                    <div class="notif-dropdown" id="notifDropdown">
+                        <div class="notif-header">
+                            <span>📬 الإشعارات</span>
+                            <button class="mark-read" id="markAllRead">تحديد الكل كمقروء</button>
+                        </div>
+                        <div id="notifList"></div>
+                    </div>
+                </div>
                 <button class="btn-icon" data-action="toggle-theme"><i class="fa-solid fa-moon" id="theme-icon"></i></button>
                 <button class="mobile-toggle" data-action="toggle-menu"><i class="fa-solid fa-bars"></i></button>
             </div>
@@ -2424,6 +2570,9 @@
             renderLightboxComments();
             lb.classList.add('active');
             document.body.style.overflow = 'hidden';
+            
+            // ===== Mark comments as read for this gallery item =====
+            markCommentsAsRead(item.id);
         }
         
         function closeLightbox() {
@@ -2483,6 +2632,7 @@
             nameInput.value = 'زائر';
             renderLightboxComments();
             renderAll();
+            // بعد إضافة التعليق، سيتم تحديث الإشعارات تلقائياً عبر listener
         }
         // =============================================================
         //  دوال عرض البيانات
@@ -2518,7 +2668,157 @@
             if (mapInstance) updateMapMarkers();
             renderAiSuggestions();
             updateGalleryDestSelect();
+            updateNotificationBadge(); // تحديث الإشعارات
         }
+        
+        // =============================================================
+        //  NEW: نظام الإشعارات
+        // =============================================================
+        var lastReadTime = parseInt(localStorage.getItem('jinan_last_read_time') || '0');
+        var unreadComments = [];
+        
+        // استمع للتغييرات في التعليقات
+        function listenForComments() {
+            if (!db) return;
+            db.ref('gallery').on('value', function(snap) {
+                var data = snap.val();
+                if (!data) return;
+                // تحديث galleryItems
+                galleryItems = Object.values(data);
+                // التحقق من التعليقات الجديدة
+                checkNewComments();
+                renderAll();
+            });
+        }
+        
+        function checkNewComments() {
+            unreadComments = [];
+            var now = Date.now();
+            galleryItems.forEach(function(item) {
+                if (!item.comments || !item.comments.length) return;
+                // نأخذ أحدث تعليق فقط
+                var latest = item.comments[item.comments.length - 1];
+                if (latest.time && latest.time > lastReadTime) {
+                    var dest = destinations.find(function(d) { return d.id === item.destId; });
+                    unreadComments.push({
+                        galleryId: item.id,
+                        destName: dest ? dest.name : 'غير معروف',
+                        imageTitle: item.title || 'صورة',
+                        user: latest.user || 'زائر',
+                        text: latest.text || '',
+                        time: latest.time
+                    });
+                }
+            });
+            // نرتب من الأحدث للأقدم
+            unreadComments.sort(function(a,b) { return b.time - a.time; });
+            updateNotificationBadge();
+            renderNotificationDropdown();
+        }
+        
+        function updateNotificationBadge() {
+            var badge = document.getElementById('notifBadge');
+            var count = unreadComments.length;
+            if (count > 0) {
+                badge.textContent = count > 99 ? '99+' : count;
+                badge.classList.add('show');
+            } else {
+                badge.classList.remove('show');
+            }
+        }
+        
+        function renderNotificationDropdown() {
+            var list = document.getElementById('notifList');
+            if (!list) return;
+            if (!unreadComments.length) {
+                list.innerHTML = '<div class="notif-empty">📭 لا توجد إشعارات جديدة</div>';
+                return;
+            }
+            var html = '';
+            unreadComments.forEach(function(notif) {
+                var time = new Date(notif.time);
+                var timeStr = time.toLocaleString('ar-SY');
+                html += '<div class="notif-item" data-gallery-id="' + notif.galleryId + '">';
+                html += '<div class="notif-user"><i class="fa-regular fa-user"></i> ' + notif.user + '</div>';
+                html += '<div class="notif-text">' + notif.text + '</div>';
+                html += '<div class="notif-location"><i class="fa-regular fa-image"></i> ' + notif.imageTitle + ' · ' + notif.destName + '</div>';
+                html += '<div class="notif-time">' + timeStr + '</div>';
+                html += '<button class="go-to-btn" onclick="goToComment(' + notif.galleryId + ')"><i class="fa-solid fa-arrow-left"></i> اذهب إلى التعليق</button>';
+                html += '</div>';
+            });
+            list.innerHTML = html;
+        }
+        
+        // الذهاب إلى التعليق (فتح الـ Lightbox الخاص بالصورة)
+        function goToComment(galleryId) {
+            var item = galleryItems.find(function(g) { return g.id === galleryId; });
+            if (!item) return;
+            // إغلاق القائمة المنسدلة
+            document.getElementById('notifDropdown').classList.remove('open');
+            // فتح الـ Lightbox
+            openLightbox(galleryId);
+            // تعيين كمقروء
+            markCommentsAsRead(galleryId);
+        }
+        
+        // تحديد جميع التعليقات كمقروءة
+        function markAllAsRead() {
+            if (!unreadComments.length) return;
+            lastReadTime = Date.now();
+            localStorage.setItem('jinan_last_read_time', String(lastReadTime));
+            unreadComments = [];
+            updateNotificationBadge();
+            renderNotificationDropdown();
+            // إغلاق القائمة
+            document.getElementById('notifDropdown').classList.remove('open');
+        }
+        
+        // تحديد تعليقات صورة معينة كمقروءة
+        function markCommentsAsRead(galleryId) {
+            var found = false;
+            unreadComments = unreadComments.filter(function(notif) {
+                if (notif.galleryId === galleryId) {
+                    found = true;
+                    return false;
+                }
+                return true;
+            });
+            if (found) {
+                // تحديث آخر وقت قراءة
+                lastReadTime = Date.now();
+                localStorage.setItem('jinan_last_read_time', String(lastReadTime));
+                updateNotificationBadge();
+                renderNotificationDropdown();
+            }
+        }
+        
+        // ===== أحداث الإشعارات =====
+        document.addEventListener('DOMContentLoaded', function() {
+            var bell = document.getElementById('notifToggle');
+            var dropdown = document.getElementById('notifDropdown');
+            if (bell && dropdown) {
+                bell.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    dropdown.classList.toggle('open');
+                    if (dropdown.classList.contains('open')) {
+                        renderNotificationDropdown();
+                    }
+                });
+                document.addEventListener('click', function(e) {
+                    if (!bell.contains(e.target) && !dropdown.contains(e.target)) {
+                        dropdown.classList.remove('open');
+                    }
+                });
+                // زر تحديد الكل كمقروء
+                var markBtn = document.getElementById('markAllRead');
+                if (markBtn) {
+                    markBtn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        markAllAsRead();
+                    });
+                }
+            }
+        });
         
         // =============================================================
         //  NEW: عرض الوجهات الرائجة
@@ -2618,7 +2918,7 @@
             container.innerHTML = getAdCardHtml('map-page-ad');
         }
         
-        // ===== MODIFIED AD CARD: Clean, no badge, no footer =====
+        // ===== AD CARD: Clean, no badge, no footer =====
         function getAdCardHtml(elementId) {
             if (!adsList.length) return '';
             var ad = adsList[currentAdIndex % adsList.length];
@@ -3041,11 +3341,8 @@
                 adsList = data ? Object.values(data) : [];
                 renderAll();
             });
-            db.ref('gallery').on('value', function(snap) {
-                var data = snap.val();
-                galleryItems = data ? Object.values(data) : [];
-                renderAll();
-            });
+            // استمع لتغييرات المعرض والإشعارات
+            listenForComments();
         } else {
             destinations = Object.values(defaultDestinations);
             pulseEvents = Object.values(defaultPulse);
@@ -3496,18 +3793,9 @@
             return '🤔 لم أفهم السؤال. جرب:\n• **"تقييم [اسم الموقع]"**\n• **"طقس [الموقع]"**\n• **"صور [الموقع]"**\n• **"أين تقع [الموقع]؟"**\n• **"الفعاليات"** أو **"العروض"**';
         }
         
-        console.log('✅ Smart AI Engine v4.0 - مع معرض الصور وحذف التعليقات للمدير فقط');
-        console.log('✅ Lightbox بدون زر حذف للزوار');
-        console.log('✅ إدارة التعليقات في لوحة التحكم');
-        console.log('✅ عداد المتواجدين عشوائي متغير (لا يقل عن 50)');
-        console.log('✅ ميزات التفاعل: إعجاب ❤️ ومفضلة ⭐');
-        console.log('✅ الوجهات الرائجة تعرض تلقائياً');
-        console.log('✅ التمرير الأفقي لعناصر نبض الساحل والرائجة ومعرض الصور (تم استعادته)');
-        console.log('✅ تم حذف أزرار المشاركة الأفقية من الفوتر');
-        console.log('✅ تم إضافة زر "خطط لعطلتك السعيدة" تحت الهيدر');
-        console.log('✅ تم تعديل النافذة الإعلانية: حذف "إعلان مميز" وحذف أيقونة ad');
-        console.log('✅ النافذة الإعلانية أصبحت نظيفة (صورة + عنوان + وصف فقط)');
-        console.log('✅ جميع الميزات جاهزة');
+        console.log('✅ نظام الإشعارات الجديد تم إضافته بنجاح!');
+        console.log('🔔 سيتم إعلامك بأي تعليق جديد مع تحديد مكانه.');
+        console.log('✅ جميع الميزات الأخرى محفوظة كما هي.');
     </script>
 </body>
 </html>
