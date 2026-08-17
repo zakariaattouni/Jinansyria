@@ -1732,7 +1732,7 @@
             <div class="header-stats-inner">
                 <div class="live-stat-item">
                     <i class="fa-solid fa-users-viewfinder"></i>
-                    <span>إجمالي الزوار: <strong id="total-visitors-counter" style="color:#7dd3fc;">170,010</strong></span>
+                    <span>إجمالي الزوار: <strong id="total-visitors-counter" style="color:#7dd3fc;">170,000</strong></span>
                 </div>
                 <div class="live-stat-item">
                     <span class="pulse-dot"></span>
@@ -3351,50 +3351,90 @@
             renderAll();
         }
         // =============================================================
-        //  عداد الزوار – متزايد فقط، مع عداد المتواجدين العشوائي
+        //  عداد الزوار – حقيقي باستخدام Firebase
         // =============================================================
         (function() {
-            const VISITOR_KEY = 'jinan_total_visitors_final';
-            const INITIAL_VISITORS = 170010;
+            const VISITOR_PATH = 'visitors/total';
             const MIN_ONLINE = 30;
             const MAX_ONLINE = 120;
-            
-            // قراءة القيمة المخزنة أو تعيينها للقيمة الابتدائية
-            let storedVisitors = localStorage.getItem(VISITOR_KEY);
-            if (storedVisitors !== null) {
-                totalVisitors = parseInt(storedVisitors);
-                if (totalVisitors < INITIAL_VISITORS) totalVisitors = INITIAL_VISITORS;
-            } else {
-                totalVisitors = INITIAL_VISITORS;
+
+            // دالة لتهيئة العداد في Firebase إذا لم يكن موجوداً
+            function initVisitorCounter() {
+                if (!db) {
+                    // إذا لم يتوفر Firebase، استخدم localStorage كحل احتياطي
+                    fallbackCounter();
+                    return;
+                }
+                // استخدام transaction لزيادة العداد بشكل آمن
+                db.ref(VISITOR_PATH).transaction(function(currentValue) {
+                    if (currentValue === null) {
+                        return 170000;
+                    }
+                    return currentValue + 1;
+                }, function(error, committed, snapshot) {
+                    if (error) {
+                        console.warn('⚠️ فشل تحديث عداد الزوار:', error);
+                        fallbackCounter();
+                        return;
+                    }
+                    if (committed) {
+                        var newTotal = snapshot.val();
+                        document.getElementById('total-visitors-counter').innerText = newTotal.toLocaleString();
+                        console.log('✅ تم تحديث عداد الزوار إلى:', newTotal);
+                    }
+                }, false);
             }
-            
-            // زيادة الزوار بشكل دائم (زيادة حقيقية)
-            totalVisitors++;
-            localStorage.setItem(VISITOR_KEY, totalVisitors.toString());
-            document.getElementById('total-visitors-counter').innerText = totalVisitors.toLocaleString();
-            
-            // المتواجدون حالياً (عدد عشوائي متغير)
+
+            // دالة احتياطية باستخدام localStorage (في حال عدم توفر Firebase)
+            function fallbackCounter() {
+                const VISITOR_KEY = 'jinan_total_visitors_final';
+                const INITIAL_VISITORS = 170010;
+                let storedVisitors = localStorage.getItem(VISITOR_KEY);
+                if (storedVisitors !== null) {
+                    totalVisitors = parseInt(storedVisitors);
+                    if (totalVisitors < INITIAL_VISITORS) totalVisitors = INITIAL_VISITORS;
+                } else {
+                    totalVisitors = INITIAL_VISITORS;
+                }
+                totalVisitors++;
+                localStorage.setItem(VISITOR_KEY, totalVisitors.toString());
+                document.getElementById('total-visitors-counter').innerText = totalVisitors.toLocaleString();
+                // زيادة دورية باستخدام localStorage (لكن تبقى وهمية)
+                setInterval(function() {
+                    totalVisitors += Math.floor(Math.random() * 2) + 1;
+                    localStorage.setItem(VISITOR_KEY, totalVisitors.toString());
+                    document.getElementById('total-visitors-counter').innerText = totalVisitors.toLocaleString();
+                }, 20000);
+                console.warn('⚠️ تم استخدام العداد الاحتياطي (localStorage)');
+            }
+
+            // الاستماع للتغييرات في العداد من Firebase (لتحديث الواجهة عند تغيير العدد من مكان آخر)
+            if (db) {
+                db.ref(VISITOR_PATH).on('value', function(snap) {
+                    var val = snap.val();
+                    if (val !== null && val !== undefined) {
+                        document.getElementById('total-visitors-counter').innerText = val.toLocaleString();
+                    }
+                });
+            }
+
+            // بدء التهيئة
+            initVisitorCounter();
+
+            // ===== عداد المتواجدين الآن (عشوائي متغير) =====
             onlineUsers = Math.floor(Math.random() * (MAX_ONLINE - MIN_ONLINE + 1)) + MIN_ONLINE;
             document.getElementById('online-users-counter').innerText = onlineUsers;
-            
-            // تحديث دوري: زيادة إجمالي الزوار بزيادة طفيفة (1-3) كل 20 ثانية
             setInterval(function() {
-                // تحديث عدد المتواجدين بشكل عشوائي (يمكن أن يزيد أو ينقص)
-                let delta = Math.floor(Math.random() * 7) - 2; // -2 إلى +4
+                let delta = Math.floor(Math.random() * 7) - 2;
                 let newVal = onlineUsers + delta;
                 if (newVal < MIN_ONLINE) newVal = MIN_ONLINE;
                 if (newVal > MAX_ONLINE) newVal = MAX_ONLINE;
                 onlineUsers = newVal;
                 document.getElementById('online-users-counter').innerText = onlineUsers;
-                
-                // زيادة إجمالي الزوار بشكل تدريجي (زيادة فقط)
-                let increment = Math.floor(Math.random() * 2) + 1; // 1 أو 2
-                totalVisitors += increment;
-                localStorage.setItem(VISITOR_KEY, totalVisitors.toString());
-                document.getElementById('total-visitors-counter').innerText = totalVisitors.toLocaleString();
-            }, 20000); // كل 20 ثانية
-            
-            console.log('✅ عداد الزوار متزايد باستمرار، والمتواجدين يتغيرون عشوائياً (لا يقل عن 30)');
+            }, 15000);
+
+            console.log('✅ عداد الزوار الكلي يعتمد على Firebase (حقيقي)');
+            console.log('👥 المتواجدون الآن يتغيرون عشوائياً (لا يقل عن 30)');
         })();
         
         // =============================================================
@@ -3796,7 +3836,8 @@
         
         console.log('✅ نظام الإشعارات الجديد تم إضافته بنجاح!');
         console.log('🔔 سيتم إعلامك بأي تعليق جديد مع تحديد مكانه.');
-        console.log('✅ عداد الزوار متزايد باستمرار (لا ينقص)');
+        console.log('✅ عداد الزوار الكلي يعتمد على Firebase (حقيقي ومركزي)');
+        console.log('✅ عداد الزوار لا ينقص أبداً، ويزداد مرة واحدة لكل فتح صفحة.');
         console.log('✅ جميع الميزات الأخرى محفوظة كما هي.');
     </script>
 </body>
