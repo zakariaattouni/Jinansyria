@@ -3351,49 +3351,50 @@
             renderAll();
         }
         // =============================================================
-        //  عداد المتواجدين – تغيير عشوائي بفارق بسيط ولا يقل عن 50
+        //  عداد الزوار – متزايد فقط، مع عداد المتواجدين العشوائي
         // =============================================================
         (function() {
             const VISITOR_KEY = 'jinan_total_visitors_final';
             const INITIAL_VISITORS = 170010;
-            const MIN_ONLINE = 50;
+            const MIN_ONLINE = 30;
             const MAX_ONLINE = 120;
             
+            // قراءة القيمة المخزنة أو تعيينها للقيمة الابتدائية
             let storedVisitors = localStorage.getItem(VISITOR_KEY);
             if (storedVisitors !== null) {
                 totalVisitors = parseInt(storedVisitors);
                 if (totalVisitors < INITIAL_VISITORS) totalVisitors = INITIAL_VISITORS;
             } else {
                 totalVisitors = INITIAL_VISITORS;
-                localStorage.setItem(VISITOR_KEY, totalVisitors.toString());
             }
             
+            // زيادة الزوار بشكل دائم (زيادة حقيقية)
             totalVisitors++;
             localStorage.setItem(VISITOR_KEY, totalVisitors.toString());
             document.getElementById('total-visitors-counter').innerText = totalVisitors.toLocaleString();
             
+            // المتواجدون حالياً (عدد عشوائي متغير)
             onlineUsers = Math.floor(Math.random() * (MAX_ONLINE - MIN_ONLINE + 1)) + MIN_ONLINE;
             document.getElementById('online-users-counter').innerText = onlineUsers;
             
+            // تحديث دوري: زيادة إجمالي الزوار بزيادة طفيفة (1-3) كل 20 ثانية
             setInterval(function() {
-                let delta = Math.floor(Math.random() * 6) + 1;
-                if (Math.random() > 0.5) delta = -delta;
-                
+                // تحديث عدد المتواجدين بشكل عشوائي (يمكن أن يزيد أو ينقص)
+                let delta = Math.floor(Math.random() * 7) - 2; // -2 إلى +4
                 let newVal = onlineUsers + delta;
                 if (newVal < MIN_ONLINE) newVal = MIN_ONLINE;
                 if (newVal > MAX_ONLINE) newVal = MAX_ONLINE;
-                
                 onlineUsers = newVal;
                 document.getElementById('online-users-counter').innerText = onlineUsers;
                 
-                if (Math.random() > 0.7) {
-                    totalVisitors++;
-                    localStorage.setItem(VISITOR_KEY, totalVisitors.toString());
-                    document.getElementById('total-visitors-counter').innerText = totalVisitors.toLocaleString();
-                }
-            }, 15000);
+                // زيادة إجمالي الزوار بشكل تدريجي (زيادة فقط)
+                let increment = Math.floor(Math.random() * 2) + 1; // 1 أو 2
+                totalVisitors += increment;
+                localStorage.setItem(VISITOR_KEY, totalVisitors.toString());
+                document.getElementById('total-visitors-counter').innerText = totalVisitors.toLocaleString();
+            }, 20000); // كل 20 ثانية
             
-            console.log('✅ عداد المتواجدين عشوائي متغير (لا يقل عن 50)');
+            console.log('✅ عداد الزوار متزايد باستمرار، والمتواجدين يتغيرون عشوائياً (لا يقل عن 30)');
         })();
         
         // =============================================================
@@ -3795,6 +3796,7 @@
         
         console.log('✅ نظام الإشعارات الجديد تم إضافته بنجاح!');
         console.log('🔔 سيتم إعلامك بأي تعليق جديد مع تحديد مكانه.');
+        console.log('✅ عداد الزوار متزايد باستمرار (لا ينقص)');
         console.log('✅ جميع الميزات الأخرى محفوظة كما هي.');
     </script>
 </body>
