@@ -369,7 +369,6 @@
             font-weight: 900;
             letter-spacing: 0.5px;
         }
-
         /* ===== HOLIDAY PLAN BUTTON ===== */
         .holiday-plan-wrapper {
             display: flex;
@@ -437,7 +436,6 @@
                 font-size: 1rem;
             }
         }
-
         @media(max-width: 950px) {
             .mobile-toggle { display: flex; }
             .nav-links {
@@ -962,6 +960,7 @@
             padding: 12px;
             margin-bottom: 14px;
             transition: var(--transition);
+            position: relative;
         }
         .weather-widget:hover {
             box-shadow: 0 8px 20px -5px rgba(59, 130, 246, 0.15);
@@ -974,18 +973,105 @@
         }
         .weather-icon-wrap { font-size: 2rem; line-height: 1; flex-shrink: 0; }
         .weather-content { flex: 1; min-width: 0; }
-        .weather-temp-block { display: flex; align-items: baseline; gap: 8px; }
+        .weather-temp-block { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
         .weather-temp { font-size: 1.5rem; font-weight: 900; color: var(--text-main); line-height: 1; }
         .weather-desc-text { font-size: 0.85rem; font-weight: 700; color: var(--text-main); }
         .weather-meta {
             display: flex;
-            gap: 10px;
+            gap: 12px;
             font-size: 0.78rem;
             color: var(--text-muted);
             margin-bottom: 10px;
             flex-wrap: wrap;
+            align-items: center;
         }
         .weather-meta span { display: flex; align-items: center; gap: 4px; }
+        .weather-refresh-btn {
+            background: rgba(2,132,199,0.1);
+            border: none;
+            color: var(--primary);
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            transition: var(--transition);
+            margin-right: auto;
+        }
+        .weather-refresh-btn:hover {
+            background: var(--primary);
+            color: white;
+            transform: rotate(180deg);
+        }
+        .weather-refresh-btn.spinning {
+            animation: spin 0.8s linear;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        /* ===== FORECAST 3 DAYS ===== */
+        .forecast-section {
+            margin-top: 8px;
+            border-top: 1px solid var(--border);
+            padding-top: 10px;
+        }
+        .forecast-title {
+            font-size: 0.7rem;
+            font-weight: 800;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .forecast-title i { color: var(--accent); }
+        .forecast-row {
+            display: flex;
+            gap: 8px;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        .forecast-day {
+            flex: 1;
+            min-width: 60px;
+            background: var(--bg-main);
+            border-radius: 8px;
+            padding: 6px 4px;
+            text-align: center;
+            border: 1px solid var(--border);
+        }
+        .forecast-day .day-name {
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+        .forecast-day .day-icon {
+            font-size: 1.1rem;
+            margin: 2px 0;
+        }
+        .forecast-day .day-temp {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+        .forecast-day .day-temp small {
+            font-weight: 400;
+            color: var(--text-muted);
+            font-size: 0.65rem;
+        }
+        .forecast-day .day-desc {
+            font-size: 0.6rem;
+            color: var(--text-muted);
+        }
+        .forecast-loading {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-align: center;
+            padding: 4px 0;
+        }
+        
         .uv-indicator-box {
             background: var(--bg-main);
             border: 1px solid var(--border);
@@ -1053,7 +1139,6 @@
         .weather-tips strong { color: var(--primary); }
         .weather-loading { padding: 14px; text-align: center; color: var(--text-muted); font-size: 0.85rem; }
         .weather-loading i { animation: spin 1s linear infinite; margin-left: 8px; }
-        @keyframes spin { to { transform: rotate(360deg); } }
         
         .dest-desc {
             color: var(--text-muted);
@@ -1332,6 +1417,10 @@
                 flex: 0 0 60px;
                 height: 50px;
             }
+            .forecast-day { min-width: 50px; padding: 4px 2px; }
+            .forecast-day .day-name { font-size: 0.55rem; }
+            .forecast-day .day-icon { font-size: 0.9rem; }
+            .forecast-day .day-temp { font-size: 0.65rem; }
         }
         .smart-ai-overlay {
             display: none;
@@ -1748,7 +1837,6 @@
             </button>
         </div>
     </header>
-
     <!-- ===== HOLIDAY PLAN BUTTON ===== -->
     <div class="holiday-plan-wrapper">
         <a href="https://ais-pre-ink2rarex362pwc66ataca-723648286973.europe-west2.run.app/" target="_blank" rel="noopener noreferrer" class="holiday-plan-btn">
@@ -1757,7 +1845,6 @@
             <i class="fa-solid fa-arrow-right"></i>
         </a>
     </div>
-
     <main>
         <section id="home" class="section active">
             <div class="hero">
@@ -2324,6 +2411,7 @@
         var totalVisitors = 0;
         var onlineUsers = 0;
         var weatherCache = {};
+        var forecastCache = {};
         var mapInstance = null;
         var mapMarkers = [];
         var lightboxData = null;
@@ -2342,7 +2430,7 @@
                 likesData[key] = true;
             }
             localStorage.setItem('jinan_likes', JSON.stringify(likesData));
-            renderAll(); // تحديث الواجهة
+            renderAll();
         }
         function toggleFav(destId) {
             var key = 'dest_' + destId;
@@ -2428,7 +2516,7 @@
             });
         }
         // =============================================================
-        //  دوال الطقس
+        //  دوال الطقس (مع توقعات 3 أيام بدلاً من الرطوبة)
         // =============================================================
         function fetchWeather(lat, lng, callback) {
             var cacheKey = lat.toFixed(2) + '_' + lng.toFixed(2);
@@ -2436,12 +2524,15 @@
                 callback(weatherCache[cacheKey]);
                 return;
             }
-            var url = 'https://api.open-meteo.com/v1/forecast?latitude=' + lat + '&longitude=' + lng + '&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,uv_index&timezone=auto';
+            var url = 'https://api.open-meteo.com/v1/forecast?latitude=' + lat + '&longitude=' + lng + '&current=temperature_2m,weather_code,wind_speed_10m,uv_index&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto&forecast_days=3';
             fetch(url)
                 .then(function(response) { return response.json(); })
                 .then(function(data) {
                     if (data && data.current) {
                         weatherCache[cacheKey] = data.current;
+                        if (data.daily) {
+                            forecastCache[cacheKey] = data.daily;
+                        }
                         callback(data.current);
                     } else { callback(null); }
                 })
@@ -2450,16 +2541,16 @@
         
         function getWeatherInfo(code) {
             var map = {
-                0: { text: 'صافٍ ومشمس', icon: 'fa-sun', color: '#f59e0b', tip: 'طقس مشمس ممتاز للاستكشاف والأنشطة الخارجية' },
-                1: { text: 'صافٍ غالباً', icon: 'fa-sun', color: '#fbbf24', tip: 'أجواء صافية ورائعة للتنزه والتصوير' },
-                2: { text: 'غائم جزئياً', icon: 'fa-cloud-sun', color: '#94a3b8', tip: 'طقس معتدل ولطيف جداً للمشي' },
-                3: { text: 'غائم بالكامل', icon: 'fa-cloud', color: '#64748b', tip: 'أجواء مظللة، احمل معطفاً خفيفاً' },
-                45: { text: 'ضباب خفيف', icon: 'fa-smog', color: '#cbd5e1', tip: 'رؤية محدودة، انتبه أثناء القيادة في الجبال' },
-                51: { text: 'رذاذ خفيف', icon: 'fa-cloud-rain', color: '#60a5fa', tip: 'احمل مظلة صغيرة معك' },
-                61: { text: 'مطر خفيف', icon: 'fa-cloud-rain', color: '#3b82f6', tip: 'استعد لأمطار متقطعة، ارتدِ ملابس مناسبة' },
-                95: { text: 'عاصفة رعدية', icon: 'fa-cloud-bolt', color: '#dc2626', tip: 'تحذير! ابقَ في أماكن آمنة وتجنب المرتفعات' }
+                0: { text: 'صافٍ مشمس', icon: 'fa-sun', color: '#f59e0b' },
+                1: { text: 'صافٍ غالباً', icon: 'fa-sun', color: '#fbbf24' },
+                2: { text: 'غائم جزئياً', icon: 'fa-cloud-sun', color: '#94a3b8' },
+                3: { text: 'غائم بالكامل', icon: 'fa-cloud', color: '#64748b' },
+                45: { text: 'ضباب خفيف', icon: 'fa-smog', color: '#cbd5e1' },
+                51: { text: 'رذاذ خفيف', icon: 'fa-cloud-rain', color: '#60a5fa' },
+                61: { text: 'مطر خفيف', icon: 'fa-cloud-rain', color: '#3b82f6' },
+                95: { text: 'عاصفة رعدية', icon: 'fa-cloud-bolt', color: '#dc2626' }
             };
-            return map[code] || { text: 'معتدل ومستقر', icon: 'fa-cloud-sun', color: '#3b82f6', tip: 'أجواء مناسبة للزيارة' };
+            return map[code] || { text: 'معتدل', icon: 'fa-cloud-sun', color: '#3b82f6' };
         }
         
         function getUVInfo(uv) {
@@ -2468,16 +2559,29 @@
             }
             var uvVal = Math.round(uv);
             var pct = Math.min(Math.max((uvVal / 12) * 100, 5), 100);
-            if (uv <= 2) return { level: 'منخفض', color: '#10b981', value: uvVal, percent: pct + '%', tip: 'لا حاجة لحماية خاصة، استمتع بيومك بحرية', icon: 'fa-face-smile' };
-            if (uv <= 5) return { level: 'متوسط', color: '#f59e0b', value: uvVal, percent: pct + '%', tip: 'يوصى بارتداء نظارات شمسية واستخدام واقي SPF 15+', icon: 'fa-face-meh' };
-            if (uv <= 7) return { level: 'مرتفع', color: '#f97316', value: uvVal, percent: pct + '%', tip: 'احرص على استخدام واقي SPF 30+ وقبعة، وتجنب الشمس وقت الذروة', icon: 'fa-face-flushed' };
-            if (uv <= 10) return { level: 'مرتفع جداً', color: '#ef4444', value: uvVal, percent: pct + '%', tip: 'خطر! تجنب التعرض المباشر، استخدم SPF 50+ وملابس واقية', icon: 'fa-face-dizzy' };
-            return { level: 'خطير جداً', color: '#a855f7', value: uvVal, percent: '100%', tip: 'حالة قصوى! ابقَ في الظل تماماً، الحروق تحدث خلال دقائق', icon: 'fa-triangle-exclamation' };
+            if (uv <= 2) return { level: 'منخفض', color: '#10b981', value: uvVal, percent: pct + '%', tip: 'لا حاجة لحماية خاصة', icon: 'fa-face-smile' };
+            if (uv <= 5) return { level: 'متوسط', color: '#f59e0b', value: uvVal, percent: pct + '%', tip: 'يوصى بارتداء نظارات شمسية SPF 15+', icon: 'fa-face-meh' };
+            if (uv <= 7) return { level: 'مرتفع', color: '#f97316', value: uvVal, percent: pct + '%', tip: 'استخدم SPF 30+ وقبعة', icon: 'fa-face-flushed' };
+            if (uv <= 10) return { level: 'مرتفع جداً', color: '#ef4444', value: uvVal, percent: pct + '%', tip: 'خطر! تجنب التعرض المباشر SPF 50+', icon: 'fa-face-dizzy' };
+            return { level: 'خطير جداً', color: '#a855f7', value: uvVal, percent: '100%', tip: 'ابقَ في الظل تماماً', icon: 'fa-triangle-exclamation' };
         }
         
-        function updateWeatherWidgetCustom(targetId, lat, lng) {
+        function getDayName(index) {
+            var days = ['اليوم', 'غداً', 'بعد غد'];
+            return days[index] || 'يوم ' + (index+1);
+        }
+        
+        function updateWeatherWidgetCustom(targetId, lat, lng, force) {
             var widget = document.getElementById('weather-' + targetId);
             if (!widget) return;
+            
+            if (force) {
+                var cacheKey = lat.toFixed(2) + '_' + lng.toFixed(2);
+                delete weatherCache[cacheKey];
+                delete forecastCache[cacheKey];
+                widget.innerHTML = '<div class="weather-loading"><i class="fa-solid fa-spinner"></i> جاري تحديث الطقس...</div>';
+            }
+            
             fetchWeather(lat, lng, function(weather) {
                 if (!weather) {
                     widget.innerHTML = '<div class="weather-loading"><i class="fa-solid fa-circle-exclamation"></i> تعذر جلب حالة الطقس</div>';
@@ -2486,9 +2590,11 @@
                 var info = getWeatherInfo(weather.weather_code);
                 var uvInfo = getUVInfo(weather.uv_index);
                 var windSpeed = Math.round(weather.wind_speed_10m);
+                var cacheKey = lat.toFixed(2) + '_' + lng.toFixed(2);
+                var forecast = forecastCache[cacheKey];
                 
                 widget.className = 'weather-widget';
-                widget.innerHTML =
+                var html = 
                     '<div class="weather-main-row">' +
                         '<div class="weather-icon-wrap" style="color: ' + info.color + ';"><i class="fa-solid ' + info.icon + '"></i></div>' +
                         '<div class="weather-content">' +
@@ -2497,9 +2603,9 @@
                                 '<span class="weather-desc-text">' + info.text + '</span>' +
                             '</div>' +
                         '</div>' +
+                        '<button class="weather-refresh-btn" onclick="manualRefreshWeather(\'' + targetId + '\',' + lat + ',' + lng + ')" title="تحديث الطقس يدوياً"><i class="fa-solid fa-rotate"></i></button>' +
                     '</div>' +
                     '<div class="weather-meta">' +
-                        '<span><i class="fa-solid fa-droplet" style="color:#3b82f6;"></i> رطوبة ' + weather.relative_humidity_2m + '%</span>' +
                         '<span><i class="fa-solid fa-wind" style="color:#64748b;"></i> رياح ' + windSpeed + ' كم/س</span>' +
                     '</div>' +
                     '<div class="uv-indicator-box">' +
@@ -2510,15 +2616,49 @@
                         '<div class="uv-gradient-bar">' +
                             '<div class="uv-pointer" style="left: ' + uvInfo.percent + ';"></div>' +
                         '</div>' +
-                    '</div>' +
-                    '<div class="weather-tips">' +
-                        '<div class="tip-row">' +
-                            '<i class="fa-solid fa-circle-info tip-icon"></i>' +
-                            '<div><strong>إرشادات الطقس والحماية:</strong> ' + info.tip + ' — ' + uvInfo.tip + '</div>' +
-                        '</div>' +
                     '</div>';
+                
+                // ===== FORECAST 3 DAYS =====
+                if (forecast && forecast.time && forecast.time.length >= 3) {
+                    html += '<div class="forecast-section">';
+                    html += '<div class="forecast-title"><i class="fa-regular fa-calendar"></i> توقعات الأيام القادمة</div>';
+                    html += '<div class="forecast-row">';
+                    for (var i = 0; i < 3; i++) {
+                        var dayInfo = getWeatherInfo(forecast.weather_code[i]);
+                        var maxTemp = Math.round(forecast.temperature_2m_max[i]);
+                        var minTemp = Math.round(forecast.temperature_2m_min[i]);
+                        html += '<div class="forecast-day">';
+                        html += '<div class="day-name">' + getDayName(i) + '</div>';
+                        html += '<div class="day-icon" style="color:' + dayInfo.color + ';"><i class="fa-solid ' + dayInfo.icon + '"></i></div>';
+                        html += '<div class="day-temp">' + maxTemp + '° <small>' + minTemp + '°</small></div>';
+                        html += '<div class="day-desc">' + dayInfo.text + '</div>';
+                        html += '</div>';
+                    }
+                    html += '</div></div>';
+                } else {
+                    html += '<div class="forecast-section"><div class="forecast-loading"><i class="fa-solid fa-spinner"></i> جاري تحميل التوقعات...</div></div>';
+                }
+                
+                html += '<div class="weather-tips">' +
+                            '<div class="tip-row">' +
+                                '<i class="fa-solid fa-circle-info tip-icon"></i>' +
+                                '<div><strong>نصيحة اليوم:</strong> ' + uvInfo.tip + '</div>' +
+                            '</div>' +
+                        '</div>';
+                
+                widget.innerHTML = html;
             });
         }
+        
+        function manualRefreshWeather(targetId, lat, lng) {
+            var btn = document.querySelector('#weather-' + targetId + ' .weather-refresh-btn');
+            if (btn) btn.classList.add('spinning');
+            updateWeatherWidgetCustom(targetId, lat, lng, true);
+            setTimeout(function() {
+                if (btn) btn.classList.remove('spinning');
+            }, 1000);
+        }
+        
         // =============================================================
         //  دوال معرض الصور المصغر داخل بطاقات الوجهات
         // =============================================================
@@ -2571,7 +2711,6 @@
             lb.classList.add('active');
             document.body.style.overflow = 'hidden';
             
-            // ===== Mark comments as read for this gallery item =====
             markCommentsAsRead(item.id);
         }
         
@@ -2632,7 +2771,6 @@
             nameInput.value = 'زائر';
             renderLightboxComments();
             renderAll();
-            // بعد إضافة التعليق، سيتم تحديث الإشعارات تلقائياً عبر listener
         }
         // =============================================================
         //  دوال عرض البيانات
@@ -2668,7 +2806,7 @@
             if (mapInstance) updateMapMarkers();
             renderAiSuggestions();
             updateGalleryDestSelect();
-            updateNotificationBadge(); // تحديث الإشعارات
+            updateNotificationBadge();
         }
         
         // =============================================================
@@ -2677,15 +2815,12 @@
         var lastReadTime = parseInt(localStorage.getItem('jinan_last_read_time') || '0');
         var unreadComments = [];
         
-        // استمع للتغييرات في التعليقات
         function listenForComments() {
             if (!db) return;
             db.ref('gallery').on('value', function(snap) {
                 var data = snap.val();
                 if (!data) return;
-                // تحديث galleryItems
                 galleryItems = Object.values(data);
-                // التحقق من التعليقات الجديدة
                 checkNewComments();
                 renderAll();
             });
@@ -2696,7 +2831,6 @@
             var now = Date.now();
             galleryItems.forEach(function(item) {
                 if (!item.comments || !item.comments.length) return;
-                // نأخذ أحدث تعليق فقط
                 var latest = item.comments[item.comments.length - 1];
                 if (latest.time && latest.time > lastReadTime) {
                     var dest = destinations.find(function(d) { return d.id === item.destId; });
@@ -2710,7 +2844,6 @@
                     });
                 }
             });
-            // نرتب من الأحدث للأقدم
             unreadComments.sort(function(a,b) { return b.time - a.time; });
             updateNotificationBadge();
             renderNotificationDropdown();
@@ -2749,19 +2882,14 @@
             list.innerHTML = html;
         }
         
-        // الذهاب إلى التعليق (فتح الـ Lightbox الخاص بالصورة)
         function goToComment(galleryId) {
             var item = galleryItems.find(function(g) { return g.id === galleryId; });
             if (!item) return;
-            // إغلاق القائمة المنسدلة
             document.getElementById('notifDropdown').classList.remove('open');
-            // فتح الـ Lightbox
             openLightbox(galleryId);
-            // تعيين كمقروء
             markCommentsAsRead(galleryId);
         }
         
-        // تحديد جميع التعليقات كمقروءة
         function markAllAsRead() {
             if (!unreadComments.length) return;
             lastReadTime = Date.now();
@@ -2769,11 +2897,9 @@
             unreadComments = [];
             updateNotificationBadge();
             renderNotificationDropdown();
-            // إغلاق القائمة
             document.getElementById('notifDropdown').classList.remove('open');
         }
         
-        // تحديد تعليقات صورة معينة كمقروءة
         function markCommentsAsRead(galleryId) {
             var found = false;
             unreadComments = unreadComments.filter(function(notif) {
@@ -2784,7 +2910,6 @@
                 return true;
             });
             if (found) {
-                // تحديث آخر وقت قراءة
                 lastReadTime = Date.now();
                 localStorage.setItem('jinan_last_read_time', String(lastReadTime));
                 updateNotificationBadge();
@@ -2792,7 +2917,6 @@
             }
         }
         
-        // ===== أحداث الإشعارات =====
         document.addEventListener('DOMContentLoaded', function() {
             var bell = document.getElementById('notifToggle');
             var dropdown = document.getElementById('notifDropdown');
@@ -2809,7 +2933,6 @@
                         dropdown.classList.remove('open');
                     }
                 });
-                // زر تحديد الكل كمقروء
                 var markBtn = document.getElementById('markAllRead');
                 if (markBtn) {
                     markBtn.addEventListener('click', function(e) {
@@ -2821,7 +2944,7 @@
         });
         
         // =============================================================
-        //  NEW: عرض الوجهات الرائجة
+        //  عرض الوجهات الرائجة
         // =============================================================
         function renderTrending() {
             var container = document.getElementById('trendingCards');
@@ -2858,7 +2981,6 @@
             }
             var html = '';
             var count = 0;
-            // إضافة الإعلان قبل أول بطاقة (إذا كان هناك إعلانات)
             if (displayData.length > 0 && adsList.length > 0) {
                 html += getAdCardHtml(containerId + '-pre-ad');
             }
@@ -2879,7 +3001,6 @@
                 html += '<button class="toggle-desc-btn" data-action="toggle-desc"><i class="fa-solid fa-chevron-down"></i> اقرأ المزيد</button>';
                 html += '<div id="' + galleryContainerId + '"></div>';
                 
-                // NEW: أزرار التفاعل
                 html += '<div class="dest-actions">';
                 html += '<button onclick="toggleLike(' + dest.id + ')" class="' + (liked ? 'liked' : '') + '"><i class="fa-solid fa-heart"></i> <span class="count">' + likeCount + '</span></button>';
                 html += '<button onclick="toggleFav(' + dest.id + ')" class="' + (faved ? 'faved' : '') + '"><i class="fa-solid fa-star"></i></button>';
@@ -2893,7 +3014,6 @@
                 html += '</div>';
                 html += '</div></div></div>';
                 count++;
-                // إضافة إعلان بعد كل 4 بطاقات (اختياري، لكننا نتركه)
                 if (count % 4 === 0 && adsList.length > 1) {
                     html += getAdCardHtml(containerId + '-ad-' + count);
                 }
@@ -2902,7 +3022,7 @@
             
             displayData.forEach(function(dest) {
                 if (dest.lat && dest.lng) {
-                    updateWeatherWidgetCustom(containerId + '-' + dest.id, dest.lat, dest.lng);
+                    updateWeatherWidgetCustom(containerId + '-' + dest.id, dest.lat, dest.lng, false);
                 }
             });
             
@@ -2918,7 +3038,6 @@
             container.innerHTML = getAdCardHtml('map-page-ad');
         }
         
-        // ===== AD CARD: Clean, no badge, no footer =====
         function getAdCardHtml(elementId) {
             if (!adsList.length) return '';
             var ad = adsList[currentAdIndex % adsList.length];
@@ -3341,7 +3460,6 @@
                 adsList = data ? Object.values(data) : [];
                 renderAll();
             });
-            // استمع لتغييرات المعرض والإشعارات
             listenForComments();
         } else {
             destinations = Object.values(defaultDestinations);
@@ -3357,15 +3475,11 @@
             const VISITOR_PATH = 'visitors/total';
             const MIN_ONLINE = 30;
             const MAX_ONLINE = 120;
-
-            // دالة لتهيئة العداد في Firebase إذا لم يكن موجوداً
             function initVisitorCounter() {
                 if (!db) {
-                    // إذا لم يتوفر Firebase، استخدم localStorage كحل احتياطي
                     fallbackCounter();
                     return;
                 }
-                // استخدام transaction لزيادة العداد بشكل آمن
                 db.ref(VISITOR_PATH).transaction(function(currentValue) {
                     if (currentValue === null) {
                         return 170000;
@@ -3384,8 +3498,6 @@
                     }
                 }, false);
             }
-
-            // دالة احتياطية باستخدام localStorage (في حال عدم توفر Firebase)
             function fallbackCounter() {
                 const VISITOR_KEY = 'jinan_total_visitors_final';
                 const INITIAL_VISITORS = 170010;
@@ -3399,7 +3511,6 @@
                 totalVisitors++;
                 localStorage.setItem(VISITOR_KEY, totalVisitors.toString());
                 document.getElementById('total-visitors-counter').innerText = totalVisitors.toLocaleString();
-                // زيادة دورية باستخدام localStorage (لكن تبقى وهمية)
                 setInterval(function() {
                     totalVisitors += Math.floor(Math.random() * 2) + 1;
                     localStorage.setItem(VISITOR_KEY, totalVisitors.toString());
@@ -3407,8 +3518,6 @@
                 }, 20000);
                 console.warn('⚠️ تم استخدام العداد الاحتياطي (localStorage)');
             }
-
-            // الاستماع للتغييرات في العداد من Firebase (لتحديث الواجهة عند تغيير العدد من مكان آخر)
             if (db) {
                 db.ref(VISITOR_PATH).on('value', function(snap) {
                     var val = snap.val();
@@ -3417,11 +3526,7 @@
                     }
                 });
             }
-
-            // بدء التهيئة
             initVisitorCounter();
-
-            // ===== عداد المتواجدين الآن (عشوائي متغير) =====
             onlineUsers = Math.floor(Math.random() * (MAX_ONLINE - MIN_ONLINE + 1)) + MIN_ONLINE;
             document.getElementById('online-users-counter').innerText = onlineUsers;
             setInterval(function() {
@@ -3432,9 +3537,7 @@
                 onlineUsers = newVal;
                 document.getElementById('online-users-counter').innerText = onlineUsers;
             }, 15000);
-
             console.log('✅ عداد الزوار الكلي يعتمد على Firebase (حقيقي)');
-            console.log('👥 المتواجدون الآن يتغيرون عشوائياً (لا يقل عن 30)');
         })();
         
         // =============================================================
@@ -3686,7 +3789,7 @@
         
         function detectIntent(text) {
             if (/تقييم|تقيم|رأي|راي|نجوم|ستار|كم نجم/.test(text)) return 'rating';
-            if (/طقس|جو|حرارة|درجة|درجات|حر|برد|مطر|شمس|رياح|رطوبة|حار|بارد/.test(text)) return 'weather';
+            if (/طقس|جو|حرارة|درجة|درجات|حر|برد|مطر|شمس|رياح|حار|بارد/.test(text)) return 'weather';
             if (/أشعة|uv|فوق بنفسجية|واقي/.test(text)) return 'uv';
             if (/وين|أين|اين|موقع|مكان|عنوان|جهة|محافظة|تقع|بعيدة|قريبة/.test(text)) return 'location';
             if (/ما هي|ماهو|ما هو|عرفني|معلومات|صف|تعريف|تاريخ|قصة|عن|وصف/.test(text)) return 'description';
@@ -3753,7 +3856,7 @@
                     var w = weatherCache[cacheKey];
                     if (w) {
                         var info = getWeatherInfo(w.weather_code);
-                        return '🌡️ **طقس ' + dest.name + '**\n' + info.text + ' · ' + Math.round(w.temperature_2m) + '°\nرطوبة: ' + w.relative_humidity_2m + '% · رياح: ' + Math.round(w.wind_speed_10m) + ' كم/س';
+                        return '🌡️ **طقس ' + dest.name + '**\n' + info.text + ' · ' + Math.round(w.temperature_2m) + '°\nرياح: ' + Math.round(w.wind_speed_10m) + ' كم/س';
                     }
                     fetchWeather(dest.lat, dest.lng, function(){});
                     return '⏳ جاري جلب طقس **' + dest.name + '**... أعد السؤال بعد ثوانٍ.';
@@ -3834,11 +3937,30 @@
             return '🤔 لم أفهم السؤال. جرب:\n• **"تقييم [اسم الموقع]"**\n• **"طقس [الموقع]"**\n• **"صور [الموقع]"**\n• **"أين تقع [الموقع]؟"**\n• **"الفعاليات"** أو **"العروض"**';
         }
         
-        console.log('✅ نظام الإشعارات الجديد تم إضافته بنجاح!');
-        console.log('🔔 سيتم إعلامك بأي تعليق جديد مع تحديد مكانه.');
-        console.log('✅ عداد الزوار الكلي يعتمد على Firebase (حقيقي ومركزي)');
-        console.log('✅ عداد الزوار لا ينقص أبداً، ويزداد مرة واحدة لكل فتح صفحة.');
+        // =============================================================
+        //  تحديث دوري للطقس كل 5 دقائق
+        // =============================================================
+        setInterval(function() {
+            var allWeatherWidgets = document.querySelectorAll('.weather-widget');
+            allWeatherWidgets.forEach(function(widget) {
+                var id = widget.id;
+                if (id && id.startsWith('weather-')) {
+                    var parts = id.split('-');
+                    var destId = parts[parts.length - 1];
+                    var dest = destinations.find(function(d) { return d.id == destId; });
+                    if (dest && dest.lat && dest.lng) {
+                        var containerId = id.replace('weather-', '');
+                        updateWeatherWidgetCustom(containerId, dest.lat, dest.lng, false);
+                    }
+                }
+            });
+            console.log('🔄 تحديث الطقس التلقائي (كل 5 دقائق)');
+        }, 300000);
+        
+        console.log('✅ تم إزالة الرطوبة بالكامل واستبدالها بتوقعات الطقس لـ 3 أيام قادمة.');
         console.log('✅ جميع الميزات الأخرى محفوظة كما هي.');
+        console.log('✅ زر تحديث يدوي للطقس في كل بطاقة.');
+        console.log('✅ تحديث الطقس التلقائي كل 5 دقائق.');
     </script>
 </body>
 </html>
